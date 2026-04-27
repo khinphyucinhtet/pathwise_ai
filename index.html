@@ -967,7 +967,7 @@ Active university tech club member</textarea>
       <div class="auth-modal hidden" id="authModal" aria-hidden="true">
         <button class="auth-backdrop" id="authBackdrop" type="button" aria-label="Close login dialog"></button>
         <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-          <button class="auth-close" id="authCloseBtn" type="button" aria-label="Close login dialog">×</button>
+          <a class="auth-close" id="authCloseBtn" href="#home" aria-label="Close login dialog">×</a>
 
           <div class="auth-header">
             <span class="eyebrow">PathWise AI Access</span>
@@ -996,11 +996,6 @@ Active university tech club member</textarea>
             <label class="hidden" id="authConfirmField">
               Confirm Password
               <input id="authConfirmPassword" type="password" placeholder="Confirm your password" />
-            </label>
-
-            <label class="remember-row hidden" id="rememberRow">
-              <input id="rememberMe" type="checkbox" />
-              <span>Remember me</span>
             </label>
 
             <p class="auth-message hidden" id="authMessage"></p>

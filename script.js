@@ -585,8 +585,6 @@ const authConfirmPassword = document.getElementById("authConfirmPassword");
 const authFullnameField = document.getElementById("authFullnameField");
 const authPasswordField = document.getElementById("authPasswordField");
 const authConfirmField = document.getElementById("authConfirmField");
-const rememberRow = document.getElementById("rememberRow");
-const rememberMe = document.getElementById("rememberMe");
 const authMessage = document.getElementById("authMessage");
 const authSubmitBtn = document.getElementById("authSubmitBtn");
 const authBackBtn = document.getElementById("authBackBtn");
@@ -687,7 +685,6 @@ function setAuthMode(mode, account = null) {
   authFullnameField.classList.toggle("hidden", mode !== "signup");
   authPasswordField.classList.toggle("hidden", mode === "email");
   authConfirmField.classList.toggle("hidden", mode !== "signup");
-  rememberRow.classList.toggle("hidden", mode !== "signin");
   setAuthNote("");
 
   if (mode === "email") {
@@ -700,7 +697,6 @@ function setAuthMode(mode, account = null) {
     const rememberedEmail = localStorage.getItem(AUTH_STORAGE_KEYS.rememberedEmail) || "";
     if (!authEmail.value && rememberedEmail) {
       authEmail.value = rememberedEmail;
-      rememberMe.checked = true;
     }
     return;
   }
@@ -735,15 +731,21 @@ function openAuthModal() {
 function closeAuthModal() {
   authModal.classList.add("hidden");
   authModal.setAttribute("aria-hidden", "true");
+  authEmail.value = "";
+  authFullName.value = "";
+  authPassword.value = "";
+  authConfirmPassword.value = "";
+  setAuthMode("email");
+  window.location.hash = "home";
+  const homeSection = document.getElementById("home");
+  if (homeSection) {
+    homeSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
-function signInAccount(account, remember) {
+function signInAccount(account) {
   setCurrentUser({ email: account.email, fullName: account.fullName });
-  if (remember) {
-    localStorage.setItem(AUTH_STORAGE_KEYS.rememberedEmail, account.email);
-  } else {
-    localStorage.removeItem(AUTH_STORAGE_KEYS.rememberedEmail);
-  }
+  localStorage.setItem(AUTH_STORAGE_KEYS.rememberedEmail, account.email);
   updateLoginButton();
   setAuthNote(`Signed in successfully as ${account.fullName}.`);
   window.setTimeout(closeAuthModal, 500);
@@ -776,7 +778,7 @@ function registerAccount() {
   const account = { email, fullName, password };
   accounts.push(account);
   saveStoredAccounts(accounts);
-  signInAccount(account, true);
+  signInAccount(account);
 }
 
 function handleAuthSubmit(event) {
@@ -812,7 +814,7 @@ function handleAuthSubmit(event) {
       setAuthNote("Incorrect password. Please try again.");
       return;
     }
-    signInAccount(existingAccount, rememberMe.checked);
+    signInAccount(existingAccount);
     return;
   }
 
@@ -1853,9 +1855,18 @@ themeToggle.addEventListener("click", () => {
 });
 
 loginTriggerBtn.addEventListener("click", openAuthModal);
-authBackdrop.addEventListener("click", closeAuthModal);
-authCloseBtn.addEventListener("click", closeAuthModal);
-authBackBtn.addEventListener("click", closeAuthModal);
+authBackdrop.addEventListener("click", (event) => {
+  event.preventDefault();
+  closeAuthModal();
+});
+authCloseBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  closeAuthModal();
+});
+authBackBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  closeAuthModal();
+});
 authForm.addEventListener("submit", handleAuthSubmit);
 
 menuToggle.addEventListener("click", () => {
