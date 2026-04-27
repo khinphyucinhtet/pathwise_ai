@@ -33,9 +33,11 @@
 
         <nav class="main-nav" id="mainNav">
           <a href="#home">Home</a>
-          <a href="#resume-builder">Features</a>
-          <a href="#dashboard">Dashboard</a>
           <a href="#interview-demo">Demo</a>
+          <a href="#resume-builder">Resume</a>
+          <a href="#career-path">Careers</a>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#team">Team</a>
           <a href="#footer">Contact</a>
         </nav>
 
@@ -961,6 +963,55 @@ Active university tech club member</textarea>
           </div>
         </div>
       </footer>
+
+      <div class="auth-modal hidden" id="authModal" aria-hidden="true">
+        <button class="auth-backdrop" id="authBackdrop" type="button" aria-label="Close login dialog"></button>
+        <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+          <button class="auth-close" id="authCloseBtn" type="button" aria-label="Close login dialog">×</button>
+
+          <div class="auth-header">
+            <span class="eyebrow">PathWise AI Access</span>
+            <h3 id="authTitle">Continue to Login</h3>
+            <p id="authSubtitle">
+              Enter your email first. If the account exists, you can sign in. If not, you can register a new local demo account.
+            </p>
+          </div>
+
+          <form class="auth-form" id="authForm">
+            <label>
+              Email
+              <input id="authEmail" type="email" placeholder="Enter your email" required />
+            </label>
+
+            <label class="hidden" id="authFullnameField">
+              Full Name
+              <input id="authFullName" type="text" placeholder="Enter your full name" />
+            </label>
+
+            <label class="hidden" id="authPasswordField">
+              Password
+              <input id="authPassword" type="password" placeholder="Enter your password" />
+            </label>
+
+            <label class="hidden" id="authConfirmField">
+              Confirm Password
+              <input id="authConfirmPassword" type="password" placeholder="Confirm your password" />
+            </label>
+
+            <label class="remember-row hidden" id="rememberRow">
+              <input id="rememberMe" type="checkbox" />
+              <span>Remember me</span>
+            </label>
+
+            <p class="auth-message hidden" id="authMessage"></p>
+
+            <div class="auth-actions">
+              <button class="secondary-btn full-btn" id="authBackBtn" type="button">Cancel</button>
+              <button class="primary-btn full-btn" id="authSubmitBtn" type="submit">OK</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>

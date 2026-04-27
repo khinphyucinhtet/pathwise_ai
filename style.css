@@ -785,8 +785,14 @@ main {
   height: 100%;
   min-height: 240px;
   object-fit: cover;
-  object-position: center top;
+  object-position: center 22%;
   display: block;
+}
+
+.hr-avatar .speaker-photo,
+.technical-avatar .speaker-photo,
+.manager-avatar .speaker-photo {
+  object-position: center 20%;
 }
 
 .speaker-avatar::before {
@@ -1355,12 +1361,9 @@ select:focus {
   grid-column: span 5;
 }
 
-.resume-card {
-  grid-column: span 5;
-}
-
+.resume-card,
 .career-card {
-  grid-column: span 7;
+  grid-column: span 12;
 }
 
 .impact-card,
@@ -1645,7 +1648,7 @@ select:focus {
 
 .career-results {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1fr;
   gap: 18px;
 }
 
@@ -1657,12 +1660,20 @@ select:focus {
   background: var(--surface-strong);
 }
 
-.career-row {
+#careerResults {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
-  margin-top: 12px;
+  margin-top: 14px;
+}
+
+.career-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 0;
+  min-height: 220px;
 }
 
 .career-rank {
@@ -1679,7 +1690,7 @@ select:focus {
 
 .career-row strong {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .career-score {
@@ -1701,6 +1712,30 @@ select:focus {
   border-radius: inherit;
   background: linear-gradient(90deg, #7be3ac, #47b777);
   transition: width 0.75s ease;
+}
+
+.career-row-head {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.career-row-copy {
+  width: 100%;
+}
+
+.career-row-copy p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.career-mini-tip {
+  margin-top: auto;
+  font-size: 0.88rem;
+  color: var(--muted);
 }
 
 .impact-grid {
@@ -1737,7 +1772,7 @@ select:focus {
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: 18px;
-  align-items: center;
+  align-items: stretch;
 }
 
 .team-members {
@@ -1748,17 +1783,24 @@ select:focus {
 
 .person-card,
 .mentor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 156px;
   text-align: center;
 }
 
 .person-avatar {
-  width: 70px;
-  height: 70px;
+  width: 84px;
+  height: 84px;
   margin: 0 auto 12px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, rgba(107, 63, 242, 0.2), rgba(72, 199, 142, 0.18));
+  background: linear-gradient(135deg, rgba(107, 63, 242, 0.12), rgba(72, 199, 142, 0.1));
+  border: 1px solid rgba(107, 63, 242, 0.12);
+  box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.95);
   font-weight: 800;
   font-size: 1.35rem;
   overflow: hidden;
@@ -1769,12 +1811,14 @@ select:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
 }
 
 .mentor-card {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 14px;
   text-align: left;
 }
@@ -1782,6 +1826,106 @@ select:focus {
 .mentor-avatar {
   margin: 0;
   background: linear-gradient(135deg, rgba(75, 147, 255, 0.22), rgba(107, 63, 242, 0.18));
+}
+
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.auth-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(18, 11, 47, 0.48);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.auth-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 460px);
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(107, 63, 242, 0.14);
+  box-shadow: 0 28px 70px rgba(42, 24, 102, 0.24);
+}
+
+.auth-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--stroke);
+  background: var(--surface-strong);
+  color: var(--text);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.auth-header h3 {
+  margin: 14px 0 8px;
+  font-size: 1.8rem;
+}
+
+.auth-header p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.auth-form {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-form label,
+.remember-row {
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.remember-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+  width: fit-content;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.remember-row input {
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.remember-row span {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.auth-message {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.auth-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .report-panel {
@@ -2064,7 +2208,8 @@ select:focus {
   .dashboard-grid,
   .team-members,
   .sdg-grid,
-  .report-grid {
+  .report-grid,
+  .auth-actions {
     grid-template-columns: 1fr;
   }
 

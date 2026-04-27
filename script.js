@@ -363,6 +363,102 @@ const careerCatalog = [
     dataComfort: ["low", "medium"],
     tips: ["Strengthen people skills", "Practice interview communication", "Learn recruitment workflows"],
     summary: "Well suited to empathetic, organized people who enjoy supporting growth and workplace culture."
+  },
+  {
+    name: "Mobile App Developer",
+    skills: ["flutter", "kotlin", "swift", "javascript", "ui", "app", "mobile"],
+    interests: ["mobile", "product", "technology", "interface", "creative"],
+    study: ["computer science", "software", "it"],
+    personalities: ["creative", "analytical"],
+    environments: ["remote", "hybrid", "office"],
+    workStyle: ["balanced", "solo"],
+    stress: ["medium", "high"],
+    leadership: ["low", "medium"],
+    communication: ["good", "strong"],
+    creativity: ["medium", "high"],
+    dataComfort: ["medium"],
+    tips: ["Build mobile projects", "Learn app performance basics", "Practice UI responsiveness"],
+    summary: "Great for people who want to build interactive mobile products and polished user experiences."
+  },
+  {
+    name: "Cloud Engineer",
+    skills: ["cloud", "deployment", "linux", "system", "automation", "network"],
+    interests: ["infrastructure", "systems", "technology", "automation"],
+    study: ["computer science", "software", "it", "engineering"],
+    personalities: ["analytical"],
+    environments: ["remote", "hybrid", "office"],
+    workStyle: ["solo", "balanced"],
+    stress: ["medium", "high"],
+    leadership: ["low", "medium"],
+    communication: ["good"],
+    creativity: ["medium"],
+    dataComfort: ["high"],
+    tips: ["Learn AWS or Azure basics", "Practice deployments", "Study Linux and networking"],
+    summary: "A strong fit for people who enjoy infrastructure, reliability, and systems at scale."
+  },
+  {
+    name: "Product Manager",
+    skills: ["communication", "planning", "research", "product", "leadership", "strategy"],
+    interests: ["product", "business", "users", "strategy", "teamwork"],
+    study: ["business", "management", "computer science", "it"],
+    personalities: ["leader", "supportive"],
+    environments: ["hybrid", "office", "remote"],
+    workStyle: ["collaborative", "balanced"],
+    stress: ["medium", "high"],
+    leadership: ["medium", "high"],
+    communication: ["strong"],
+    creativity: ["medium", "high"],
+    dataComfort: ["medium", "high"],
+    tips: ["Practice product thinking", "Improve stakeholder communication", "Learn roadmap planning"],
+    summary: "Ideal for people who enjoy connecting users, business needs, and product direction."
+  },
+  {
+    name: "Machine Learning Assistant",
+    skills: ["python", "data", "analysis", "model", "statistics", "research"],
+    interests: ["ai", "data", "research", "technology", "innovation"],
+    study: ["computer science", "data", "math", "statistics"],
+    personalities: ["analytical"],
+    environments: ["remote", "hybrid", "office"],
+    workStyle: ["solo", "balanced"],
+    stress: ["medium"],
+    leadership: ["low"],
+    communication: ["good"],
+    creativity: ["medium"],
+    dataComfort: ["high"],
+    tips: ["Build small ML projects", "Strengthen Python and math", "Practice with datasets"],
+    summary: "Suitable for data-focused learners interested in AI, experimentation, and applied research."
+  },
+  {
+    name: "Systems Analyst",
+    skills: ["analysis", "documentation", "system", "requirements", "process", "communication"],
+    interests: ["systems", "business", "operations", "improvement"],
+    study: ["computer science", "it", "business", "management"],
+    personalities: ["analytical", "supportive"],
+    environments: ["office", "hybrid"],
+    workStyle: ["balanced", "collaborative"],
+    stress: ["medium"],
+    leadership: ["medium"],
+    communication: ["strong"],
+    creativity: ["medium"],
+    dataComfort: ["medium", "high"],
+    tips: ["Practice requirement analysis", "Learn system mapping", "Improve documentation clarity"],
+    summary: "Best for problem-solvers who like understanding workflows and improving systems."
+  },
+  {
+    name: "DevRel Specialist",
+    skills: ["communication", "writing", "javascript", "community", "presentation", "product"],
+    interests: ["technology", "community", "education", "content", "developer tools"],
+    study: ["computer science", "it", "communication", "multimedia"],
+    personalities: ["creative", "supportive", "leader"],
+    environments: ["remote", "hybrid", "office"],
+    workStyle: ["collaborative", "balanced"],
+    stress: ["medium"],
+    leadership: ["medium"],
+    communication: ["strong"],
+    creativity: ["high"],
+    dataComfort: ["medium"],
+    tips: ["Practice technical writing", "Build public demos", "Improve presentation skills"],
+    summary: "A good match for technical people who also enjoy teaching, community, and communication."
   }
 ];
 
@@ -475,6 +571,25 @@ const themeToggle = document.getElementById("themeToggle");
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 const jumpButtons = document.querySelectorAll(".jump-btn");
+const loginTriggerBtn = document.getElementById("loginTriggerBtn");
+const authModal = document.getElementById("authModal");
+const authBackdrop = document.getElementById("authBackdrop");
+const authCloseBtn = document.getElementById("authCloseBtn");
+const authForm = document.getElementById("authForm");
+const authTitle = document.getElementById("authTitle");
+const authSubtitle = document.getElementById("authSubtitle");
+const authEmail = document.getElementById("authEmail");
+const authFullName = document.getElementById("authFullName");
+const authPassword = document.getElementById("authPassword");
+const authConfirmPassword = document.getElementById("authConfirmPassword");
+const authFullnameField = document.getElementById("authFullnameField");
+const authPasswordField = document.getElementById("authPasswordField");
+const authConfirmField = document.getElementById("authConfirmField");
+const rememberRow = document.getElementById("rememberRow");
+const rememberMe = document.getElementById("rememberMe");
+const authMessage = document.getElementById("authMessage");
+const authSubmitBtn = document.getElementById("authSubmitBtn");
+const authBackBtn = document.getElementById("authBackBtn");
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -495,6 +610,16 @@ const interviewState = {
   avatarStyle: "friendly"
 };
 
+const AUTH_STORAGE_KEYS = {
+  accounts: "pathwiseAiAccounts",
+  currentUser: "pathwiseAiCurrentUser",
+  rememberedEmail: "pathwiseAiRememberedEmail"
+};
+
+const authState = {
+  mode: "email"
+};
+
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
@@ -511,6 +636,193 @@ function listFromTextarea(value) {
     .split(/\n+/)
     .map((item) => item.replace(/^[\-\u2022]\s*/, "").trim())
     .filter(Boolean);
+}
+
+function getStoredAccounts() {
+  try {
+    return JSON.parse(localStorage.getItem(AUTH_STORAGE_KEYS.accounts) || "[]");
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveStoredAccounts(accounts) {
+  localStorage.setItem(AUTH_STORAGE_KEYS.accounts, JSON.stringify(accounts.slice(0, 5)));
+}
+
+function getCurrentUser() {
+  try {
+    return JSON.parse(localStorage.getItem(AUTH_STORAGE_KEYS.currentUser) || "null");
+  } catch (error) {
+    return null;
+  }
+}
+
+function setCurrentUser(user) {
+  if (user) {
+    localStorage.setItem(AUTH_STORAGE_KEYS.currentUser, JSON.stringify(user));
+  } else {
+    localStorage.removeItem(AUTH_STORAGE_KEYS.currentUser);
+  }
+}
+
+function findAccountByEmail(email) {
+  return getStoredAccounts().find((account) => account.email === email.toLowerCase());
+}
+
+function updateLoginButton() {
+  const currentUser = getCurrentUser();
+  loginTriggerBtn.textContent = currentUser ? `Hi, ${currentUser.fullName.split(" ")[0]}` : "Login";
+}
+
+function setAuthNote(message = "") {
+  authMessage.textContent = message;
+  authMessage.classList.toggle("hidden", !message);
+}
+
+function setAuthMode(mode, account = null) {
+  authState.mode = mode;
+
+  authEmail.readOnly = mode !== "email";
+  authFullnameField.classList.toggle("hidden", mode !== "signup");
+  authPasswordField.classList.toggle("hidden", mode === "email");
+  authConfirmField.classList.toggle("hidden", mode !== "signup");
+  rememberRow.classList.toggle("hidden", mode !== "signin");
+  setAuthNote("");
+
+  if (mode === "email") {
+    authTitle.textContent = "Continue to Login";
+    authSubtitle.textContent = "Enter your email first. If the account exists, you can sign in. If not, you can register a new local demo account.";
+    authSubmitBtn.textContent = "OK";
+    authPassword.value = "";
+    authConfirmPassword.value = "";
+    authFullName.value = "";
+    const rememberedEmail = localStorage.getItem(AUTH_STORAGE_KEYS.rememberedEmail) || "";
+    if (!authEmail.value && rememberedEmail) {
+      authEmail.value = rememberedEmail;
+      rememberMe.checked = true;
+    }
+    return;
+  }
+
+  if (mode === "signin") {
+    authTitle.textContent = "Sign In";
+    authSubtitle.textContent = "Welcome back. Enter your password to continue to the demo account.";
+    authSubmitBtn.textContent = "OK";
+    authPassword.value = "";
+    authConfirmPassword.value = "";
+    if (account) {
+      setAuthNote(`Account found for ${account.fullName}.`);
+    }
+    return;
+  }
+
+  authTitle.textContent = "Create Local Demo Account";
+  authSubtitle.textContent = "No existing account was found for this email. Register a new local demo account below.";
+  authSubmitBtn.textContent = "OK";
+  authPassword.value = "";
+  authConfirmPassword.value = "";
+  setAuthNote("Complete the details below to register.");
+}
+
+function openAuthModal() {
+  authModal.classList.remove("hidden");
+  authModal.setAttribute("aria-hidden", "false");
+  setAuthMode("email");
+  authEmail.focus();
+}
+
+function closeAuthModal() {
+  authModal.classList.add("hidden");
+  authModal.setAttribute("aria-hidden", "true");
+}
+
+function signInAccount(account, remember) {
+  setCurrentUser({ email: account.email, fullName: account.fullName });
+  if (remember) {
+    localStorage.setItem(AUTH_STORAGE_KEYS.rememberedEmail, account.email);
+  } else {
+    localStorage.removeItem(AUTH_STORAGE_KEYS.rememberedEmail);
+  }
+  updateLoginButton();
+  setAuthNote(`Signed in successfully as ${account.fullName}.`);
+  window.setTimeout(closeAuthModal, 500);
+}
+
+function registerAccount() {
+  const email = authEmail.value.trim().toLowerCase();
+  const fullName = authFullName.value.trim();
+  const password = authPassword.value.trim();
+  const confirmPassword = authConfirmPassword.value.trim();
+  const accounts = getStoredAccounts();
+
+  if (!fullName) {
+    setAuthNote("Please enter your full name.");
+    return;
+  }
+  if (accounts.length >= 5) {
+    setAuthNote("This demo allows up to 5 local accounts only.");
+    return;
+  }
+  if (password.length < 4) {
+    setAuthNote("Use a password with at least 4 characters for this demo.");
+    return;
+  }
+  if (password !== confirmPassword) {
+    setAuthNote("Passwords do not match. Please check and try again.");
+    return;
+  }
+
+  const account = { email, fullName, password };
+  accounts.push(account);
+  saveStoredAccounts(accounts);
+  signInAccount(account, true);
+}
+
+function handleAuthSubmit(event) {
+  event.preventDefault();
+  const email = authEmail.value.trim().toLowerCase();
+
+  if (!email) {
+    setAuthNote("Please enter your email first.");
+    return;
+  }
+
+  if (authState.mode === "email") {
+    const existingAccount = findAccountByEmail(email);
+    if (existingAccount) {
+      authEmail.value = existingAccount.email;
+      setAuthMode("signin", existingAccount);
+    } else {
+      authEmail.value = email;
+      setAuthMode("signup");
+      authFullName.focus();
+    }
+    return;
+  }
+
+  if (authState.mode === "signin") {
+    const existingAccount = findAccountByEmail(email);
+    if (!existingAccount) {
+      setAuthNote("No account was found with that email. Please register first.");
+      setAuthMode("signup");
+      return;
+    }
+    if (existingAccount.password !== authPassword.value.trim()) {
+      setAuthNote("Incorrect password. Please try again.");
+      return;
+    }
+    signInAccount(existingAccount, rememberMe.checked);
+    return;
+  }
+
+  registerAccount();
+}
+
+function logoutCurrentUser() {
+  setCurrentUser(null);
+  updateLoginButton();
+  setAuthMode("email");
 }
 
 function updateSessionStatus(text) {
@@ -737,12 +1049,20 @@ function pickVoice(role) {
 
   const englishVoices = availableVoices.filter((voice) => /en/i.test(voice.lang));
   const pool = englishVoices.length ? englishVoices : availableVoices;
-  const map = {
-    hr: 0,
-    technical: Math.floor(pool.length / 3),
-    manager: Math.floor((pool.length / 3) * 2)
+  const voicePreferences = {
+    hr: [/female/i, /zira/i, /aria/i, /samantha/i, /victoria/i, /ava/i, /google uk english female/i],
+    technical: [/male/i, /david/i, /daniel/i, /alex/i, /guy/i, /google us english/i],
+    manager: [/male/i, /mark/i, /thomas/i, /james/i, /david/i, /george/i]
   };
-  return pool[Math.min(map[role], pool.length - 1)];
+
+  for (const pattern of voicePreferences[role]) {
+    const match = pool.find((voice) => pattern.test(voice.name));
+    if (match) {
+      return match;
+    }
+  }
+
+  return pool[0];
 }
 
 function stopSpeaking() {
@@ -1357,7 +1677,7 @@ function renderCareerResults() {
       score: scoreCareer(role, profile)
     }))
     .sort((a, b) => b.score - a.score)
-    .slice(0, 5);
+    .slice(0, 8);
 
   careerResults.innerHTML = "";
 
@@ -1373,15 +1693,18 @@ function renderCareerResults() {
     const row = document.createElement("div");
     row.className = "career-row";
     row.innerHTML = `
-      <span class="career-rank">${index + 1}</span>
-      <div>
+      <div class="career-row-head">
+        <span class="career-rank">${index + 1}</span>
+        <span class="career-score">${role.score}% Match</span>
+      </div>
+      <div class="career-row-copy">
         <strong>${role.name}</strong>
         <p>${role.summary}</p>
         <div class="career-bar-wrap">
           <div class="career-bar" style="width: ${role.score}%"></div>
         </div>
       </div>
-      <span class="career-score">${role.score}%</span>
+      <p class="career-mini-tip"><strong>Improve:</strong> ${role.tips.slice(0, 2).join(", ")}</p>
     `;
     careerResults.appendChild(row);
   });
@@ -1529,6 +1852,12 @@ themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark-mode");
 });
 
+loginTriggerBtn.addEventListener("click", openAuthModal);
+authBackdrop.addEventListener("click", closeAuthModal);
+authCloseBtn.addEventListener("click", closeAuthModal);
+authBackBtn.addEventListener("click", closeAuthModal);
+authForm.addEventListener("submit", handleAuthSubmit);
+
 menuToggle.addEventListener("click", () => {
   mainNav.classList.toggle("open");
 });
@@ -1562,3 +1891,4 @@ updateResumePreview();
 renderCareerResults();
 updateWellbeing(3);
 updateDashboardBar(dashboardInterviewBar, 78);
+updateLoginButton();
