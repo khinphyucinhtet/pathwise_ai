@@ -1684,10 +1684,18 @@ function renderCareerResults() {
   careerResults.innerHTML = "";
 
   if (!scoredRoles.length) {
-    topCareerName.textContent = "No strong match yet";
-    careerFitMeta.textContent = "Add more profile details to generate better recommendations.";
-    careerReason.textContent = "The system needs more information about your skills, interests, and preferences before recommending a career path.";
-    careerTips.innerHTML = "<li>Add more specific skills and interests</li><li>Choose your work preferences</li><li>Refresh the career match</li>";
+    if (topCareerName) {
+      topCareerName.textContent = "No strong match yet";
+    }
+    if (careerFitMeta) {
+      careerFitMeta.textContent = "Add more profile details to generate better recommendations.";
+    }
+    if (careerReason) {
+      careerReason.textContent = "The system needs more information about your skills, interests, and preferences before recommending a career path.";
+    }
+    if (careerTips) {
+      careerTips.innerHTML = "<li>Add more specific skills and interests</li><li>Choose your work preferences</li><li>Refresh the career match</li>";
+    }
     return;
   }
 
@@ -1712,16 +1720,23 @@ function renderCareerResults() {
   });
 
   const topRole = scoredRoles[0];
-  topCareerName.textContent = topRole.name;
-  careerFitMeta.textContent = `Best fit based on your skills, study background, ${profile.personality} personality, and ${profile.workStyle} work preference.`;
-  careerReason.textContent = buildCareerReason(topRole, profile);
-
-  careerTips.innerHTML = "";
-  topRole.tips.forEach((tip) => {
-    const item = document.createElement("li");
-    item.textContent = tip;
-    careerTips.appendChild(item);
-  });
+  if (topCareerName) {
+    topCareerName.textContent = topRole.name;
+  }
+  if (careerFitMeta) {
+    careerFitMeta.textContent = `Best fit based on your skills, study background, ${profile.personality} personality, and ${profile.workStyle} work preference.`;
+  }
+  if (careerReason) {
+    careerReason.textContent = buildCareerReason(topRole, profile);
+  }
+  if (careerTips) {
+    careerTips.innerHTML = "";
+    topRole.tips.forEach((tip) => {
+      const item = document.createElement("li");
+      item.textContent = tip;
+      careerTips.appendChild(item);
+    });
+  }
 
   updateCareerDashboard(topRole.score);
 }
