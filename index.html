@@ -86,14 +86,13 @@
           </div>
 
           <div class="hero-visual">
-            <img class="hero-visual-image" src="assets/hero_visual.png" alt="PathWise AI hero illustration" />
+            <img class="hero-visual-image" src="assets/home.png" alt="PathWise AI hero illustration" />
           </div>
         </section>
 
         <section class="section-card interview-demo" id="interview-demo">
           <div class="section-title centered">
-            <h3>AI Interview Coaching - Live Demo</h3>
-            <p>3 AI Interviewers • Voice / Text Answers • Camera Preview • Instant Feedback</p>
+            <h3>AI Interview Practice</h3>
           </div>
 
           <div class="video-stage avatar-style-friendly" id="videoStage">
@@ -110,36 +109,51 @@
             </div>
 
             <div class="stage-toolbar">
-              <div>
-                <span class="mini-label stage-label">Choose Interviewer</span>
+              <div class="interview-panel-main">
+                <span class="mini-label stage-label">Your Interview Coaches</span>
                 <div class="speaker-grid">
                   <button class="speaker-card" type="button" data-role="hr">
                     <div class="speaker-avatar hr-avatar">
-                      <img class="speaker-photo" src="assets/avatar_set_1_hr.png" alt="HR AI avatar" />
+                      <span class="speaker-wave" aria-hidden="true">Live</span>
+                      <img class="speaker-photo" src="assets/interview_hr_new.png" alt="HR AI avatar" />
                     </div>
                     <div class="speaker-meta">
-                      <strong>HR AI</strong>
+                      <div class="speaker-meta-top">
+                        <span class="speaker-online" aria-hidden="true"></span>
+                        <strong>HR AI</strong>
+                      </div>
                       <span>Behavioral Expert</span>
+                      <span class="speaker-action">About This Interviewer</span>
                     </div>
                   </button>
 
                   <button class="speaker-card" type="button" data-role="technical">
                     <div class="speaker-avatar technical-avatar">
-                      <img class="speaker-photo" src="assets/avatar_set_2_tech.png" alt="Technical AI avatar" />
+                      <span class="speaker-wave" aria-hidden="true">Live</span>
+                      <img class="speaker-photo" src="assets/interview_technical_new.png" alt="Technical AI avatar" />
                     </div>
                     <div class="speaker-meta">
-                      <strong>Technical AI</strong>
+                      <div class="speaker-meta-top">
+                        <span class="speaker-online" aria-hidden="true"></span>
+                        <strong>Technical AI</strong>
+                      </div>
                       <span>Technical Expert</span>
+                      <span class="speaker-action">About This Interviewer</span>
                     </div>
                   </button>
 
                   <button class="speaker-card active" type="button" data-role="manager">
                     <div class="speaker-avatar manager-avatar">
-                      <img class="speaker-photo" src="assets/avatar_set_3_manager.png" alt="Manager AI avatar" />
+                      <span class="speaker-wave" aria-hidden="true">Live</span>
+                      <img class="speaker-photo" src="assets/interview_manager_new.png" alt="Manager AI avatar" />
                     </div>
                     <div class="speaker-meta">
-                      <strong>Manager AI</strong>
+                      <div class="speaker-meta-top">
+                        <span class="speaker-online" aria-hidden="true"></span>
+                        <strong>Manager AI</strong>
+                      </div>
                       <span>Management Expert</span>
+                      <span class="speaker-action">About This Interviewer</span>
                     </div>
                   </button>
                 </div>
@@ -147,7 +161,7 @@
 
               <div class="user-stage-card">
                 <div class="user-stage-head">
-                  <span class="mini-label stage-label">Your Camera Preview</span>
+                  <span class="mini-label stage-label">Your Camera</span>
                   <span class="camera-indicator" id="cameraIndicator">Offline</span>
                 </div>
                 <div class="user-video-wrap">
@@ -158,12 +172,41 @@
                     <span>Open camera for a realistic mock interview experience.</span>
                   </div>
                 </div>
+                <div class="camera-summary-grid">
+                  <div class="camera-summary-card">
+                    <span class="mini-label stage-label">Interview Agenda</span>
+                    <ul class="agenda-list">
+                      <li class="active">Introduction &amp; Background</li>
+                      <li>Role-specific Questions</li>
+                      <li>Problem Solving</li>
+                      <li>Behavioral Questions</li>
+                      <li>Closing &amp; Feedback</li>
+                    </ul>
+                  </div>
+                  <div class="camera-summary-card">
+                    <span class="mini-label stage-label">Session Overview</span>
+                    <div class="overview-stats">
+                      <div class="overview-item">
+                        <span>Total Time</span>
+                        <strong>30:00</strong>
+                      </div>
+                      <div class="overview-item">
+                        <span>Elapsed Time</span>
+                        <strong id="elapsedClock">01:24</strong>
+                      </div>
+                      <div class="overview-item">
+                        <span>Question</span>
+                        <strong id="overviewQuestionCounter">1 of 4</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div class="call-config-bar">
               <div class="avatar-style-picker">
-                <span class="mini-label stage-label">Avatar Style</span>
+                <span class="mini-label stage-label">Interview Style</span>
                 <div class="style-options">
                   <button class="style-chip" type="button" data-avatar-style="professional">Professional</button>
                   <button class="style-chip active" type="button" data-avatar-style="friendly">Friendly</button>
@@ -172,7 +215,7 @@
               </div>
 
               <div class="ai-response-box">
-                <span class="mini-label stage-label">Avatar Response</span>
+                <span class="mini-label stage-label">AI Response</span>
                 <p id="aiResponseText">
                   I am ready to start. Choose an interviewer, turn on your camera if
                   you want, and begin the mock call.
@@ -181,18 +224,18 @@
             </div>
 
             <div class="stage-controls">
-              <button class="control-btn" id="startInterviewBtn" type="button">▶ Start Session</button>
-              <button class="control-btn" id="openCameraBtn" type="button">📷 Open Camera</button>
-              <button class="control-btn" id="closeCameraBtn" type="button">🚫 Close Camera</button>
-              <button class="control-btn" id="replayQuestionBtn" type="button">🔊 Replay Question</button>
-              <button class="control-btn" id="voiceAnswerBtn" type="button">🎙 Use Microphone</button>
-              <button class="control-btn danger-control" id="finishInterviewBtn" type="button">■ End &amp; Report</button>
+              <button class="control-btn" id="startInterviewBtn" type="button">Start Session</button>
+              <button class="control-btn" id="openCameraBtn" type="button">Open Camera</button>
+              <button class="control-btn" id="closeCameraBtn" type="button">Close Camera</button>
+              <button class="control-btn" id="replayQuestionBtn" type="button">Replay Question</button>
+              <button class="control-btn" id="voiceAnswerBtn" type="button">Use Microphone</button>
+              <button class="control-btn danger-control" id="finishInterviewBtn" type="button">End Interview &amp; Report</button>
               <span class="session-status" id="sessionStatus">Ready to begin</span>
             </div>
           </div>
 
           <div class="demo-panels">
-            <article class="mini-panel question-panel">
+            <article class="mini-panel qa-panel">
               <span class="mini-label">Current Question (<span id="questionRoleLabel">Manager AI</span>)</span>
               <p id="questionText">
                 Tell me about yourself and the kind of role you want to grow
@@ -256,6 +299,11 @@
             </article>
           </div>
 
+          <div class="stage-note-bar">
+            <span class="session-note-copy">Session updates appear in the control bar above.</span>
+            <span class="session-tip">Tip: Take your time. Think before you answer.</span>
+          </div>
+
           <article class="mini-panel report-panel hidden" id="sessionReport">
             <div class="report-head">
               <div>
@@ -303,55 +351,51 @@
               better career decisions.
             </p>
 
-            <div class="solution-columns">
-              <div class="solution-box">
-                <span class="solution-badge">1</span>
-                <h4>AI Interview Coaching System</h4>
-                <p>
-                  A video-call-like mock interview where users answer realistic
-                  questions by voice or text and receive instant feedback.
-                </p>
-                <ul class="bullet-list compact">
-                  <li>HR AI asks behavioral and personality questions</li>
-                  <li>Technical AI asks skill-based and problem-solving questions</li>
-                  <li>Manager AI asks decision-making and real-world questions</li>
-                  <li>System evaluates confidence, clarity, relevance, and answer quality</li>
-                </ul>
-                <button class="text-action jump-btn" type="button" data-jump="#interview-demo">
-                  Try Interview Coach
-                </button>
+            <div class="solution-master-card">
+              <div class="solution-columns">
+                <div class="solution-box flat-box">
+                  <span class="solution-badge">1</span>
+                  <h4>AI Interview Coaching System</h4>
+                  <p>Role-based mock interviews with voice or text answers and instant response scoring.</p>
+                  <ul class="bullet-list compact">
+                    <li>HR AI for behavioral and personality questions</li>
+                    <li>Technical AI for skill-based and problem-solving questions</li>
+                    <li>Manager AI for decision-making and real-world questions</li>
+                    <li>Evaluates confidence, clarity, relevance, and answer quality</li>
+                  </ul>
+                  <button class="text-action jump-btn" type="button" data-jump="#interview-demo">
+                    Try Interview Coach
+                  </button>
+                </div>
+
+                <div class="solution-box flat-box">
+                  <span class="solution-badge">2</span>
+                  <h4>AI Career &amp; Resume System</h4>
+                  <p>Build a professional CV, discover suitable roles, and receive balanced guidance for growth.</p>
+                  <ul class="bullet-list compact">
+                    <li>Resume Builder AI with role-specific suggestions</li>
+                    <li>Career Recommendation based on skills, interests, and profile</li>
+                    <li>Mental Support for balanced and realistic career growth</li>
+                  </ul>
+                  <button class="text-action jump-btn" type="button" data-jump="#resume-builder">
+                    Explore Now
+                  </button>
+                </div>
               </div>
 
-              <div class="solution-box">
-                <span class="solution-badge">2</span>
-                <h4>AI Career &amp; Resume System</h4>
-                <p>
-                  Users build a professional CV, explore suitable roles, and get
-                  guidance that also considers stress level and work preferences.
-                </p>
-                <ul class="bullet-list compact">
-                  <li>Resume Builder AI with role-specific suggestions</li>
-                  <li>Career Recommendation based on skills, interests, and profile</li>
-                  <li>Mental Support Element for balanced and realistic career growth</li>
-                </ul>
-                <button class="text-action jump-btn" type="button" data-jump="#resume-builder">
-                  Explore Now
-                </button>
-              </div>
-            </div>
-
-            <div class="mini-highlight-grid">
-              <div class="mini-highlight">
-                <strong>Builds confidence</strong>
-                <span>Prepares users for interviews with structured role-based practice</span>
-              </div>
-              <div class="mini-highlight">
-                <strong>Reduces confusion</strong>
-                <span>Connects user profile, wellbeing, and career direction in one platform</span>
-              </div>
-              <div class="mini-highlight">
-                <strong>Improves employability</strong>
-                <span>Supports resume quality, interview readiness, and career discovery</span>
+              <div class="mini-highlight-grid">
+                <div class="mini-highlight">
+                  <strong>Builds confidence</strong>
+                  <span>Structured role-based practice prepares users for interviews.</span>
+                </div>
+                <div class="mini-highlight">
+                  <strong>Reduces confusion</strong>
+                  <span>Connects user profile, wellbeing, and career direction in one flow.</span>
+                </div>
+                <div class="mini-highlight">
+                  <strong>Improves employability</strong>
+                  <span>Supports stronger resumes, interview readiness, and career discovery.</span>
+                </div>
               </div>
             </div>
           </article>
@@ -366,8 +410,8 @@
               user’s current stress level.
             </p>
 
-            <div class="wellbeing-layout">
-              <div>
+            <div class="wellbeing-layout vertical-layout">
+              <div class="wellbeing-top-card">
                 <p class="wellbeing-question">How stressed are you feeling today?</p>
                 <div class="stress-selector" id="stressSelector">
                   <button class="stress-btn" type="button" data-level="1">
@@ -395,28 +439,35 @@
                   <span>Very Calm</span>
                   <span>Very Stressed</span>
                 </div>
-              </div>
-
-                <div class="wellbeing-advice">
-                  <div class="wellbeing-advice-text">
-                    <span class="mini-label">Your Wellbeing Advice</span>
-                    <p id="wellbeingMessage">
-                      It is normal to feel this way sometimes. Take small breaks, stay
-                      positive, and focus on one step at a time.
-                    </p>
-                    <ul class="bullet-list compact" id="wellbeingTips">
-                      <li>Take short breaks and breathe</li>
-                      <li>Stay active and drink water</li>
-                      <li>Talk to someone you trust</li>
-                      <li>Focus on progress, not perfection</li>
-                    </ul>
+                <div class="wellbeing-status-strip">
+                  <div class="wellbeing-status-pill">
+                    <span class="mini-label">Mental Check-In</span>
+                    <strong id="wellbeingStatusTitle">Balanced Today</strong>
                   </div>
-                  <div class="wellbeing-advice-visual">
-                    <img src="assets/wellbeing_avatar.png" alt="Wellbeing support illustration" />
-                  </div>
+                  <p class="wellbeing-status-copy">A simple emotional check-in to keep career preparation manageable and supportive.</p>
                 </div>
               </div>
-            </article>
+
+              <div class="wellbeing-advice">
+                <div class="wellbeing-advice-text">
+                  <span class="mini-label">Your Wellbeing Advice</span>
+                  <p id="wellbeingMessage">
+                    It is normal to feel this way sometimes. Take small breaks, stay
+                    positive, and focus on one step at a time.
+                  </p>
+                  <ul class="bullet-list compact" id="wellbeingTips">
+                    <li>Take short breaks and breathe</li>
+                    <li>Stay active and drink water</li>
+                    <li>Talk to someone you trust</li>
+                    <li>Focus on progress, not perfection</li>
+                  </ul>
+                </div>
+                <div class="wellbeing-advice-visual">
+                  <img src="assets/wellbeing_avatar.png" alt="Wellbeing support illustration" />
+                </div>
+              </div>
+            </div>
+          </article>
 
             <article class="section-card resume-card section-anchor" id="resume-builder">
               <div class="section-title">
@@ -674,7 +725,6 @@ Active university tech club member</textarea>
                     <div id="careerResults"></div>
                   </div>
                 </div>
-              </div>
             </form>
             </article>
 
@@ -682,11 +732,11 @@ Active university tech club member</textarea>
             <div class="section-title">
               <h3>Uses and Applications</h3>
             </div>
-            <ul class="bullet-list">
-              <li>Students can use the platform to practice interviews early, explore career directions, and build confidence before entering the job market.</li>
-              <li>Job seekers can improve resume quality, strengthen interview performance, and approach applications with better preparation and less uncertainty.</li>
-              <li>Graduates can discover role options that align with their strengths, interests, working style, and growth potential.</li>
-              <li>Universities and institutions can use the concept as a student employability support prototype that promotes readiness, self-awareness, and career planning.</li>
+            <ul class="bullet-list compact">
+              <li>Students practice early, explore career options, and build confidence.</li>
+              <li>Job seekers improve resumes, interview readiness, and application quality.</li>
+              <li>Graduates discover roles that fit their strengths and growth direction.</li>
+              <li>Universities can use it as an employability support prototype.</li>
             </ul>
           </article>
 
@@ -698,18 +748,18 @@ Active university tech club member</textarea>
               <div>
                 <span class="mini-label">Prototype Includes</span>
                 <ul class="bullet-list compact">
-                  <li>An AI-style interview interface with multi-role questioning, simulated live responses, and instant scoring feedback.</li>
-                  <li>A mock interview simulation module that supports text input, voice interaction, and session-end reporting.</li>
-                  <li>A live resume builder that updates a CV preview dynamically and supports print-ready demonstration output.</li>
-                  <li>A profile-based career recommendation engine that maps users to possible roles using broader personal and academic factors.</li>
+                  <li>Multi-role interview interface with live scoring feedback.</li>
+                  <li>Mock interview flow with text, voice, and session-end reporting.</li>
+                  <li>Live resume builder with print-ready CV preview.</li>
+                  <li>Profile-based career recommendation engine.</li>
                 </ul>
               </div>
               <div>
                 <span class="mini-label">Future Improvements</span>
                 <ul class="bullet-list compact">
-                  <li>Real-time job and internship integration to connect recommendations with actual opportunities.</li>
-                  <li>Voice and video analysis for deeper communication, confidence, and interview delivery insights.</li>
-                  <li>More advanced emotion and stress detection for richer wellbeing support and adaptive guidance.</li>
+                  <li>Real-time job and internship integration.</li>
+                  <li>Voice and video analysis for deeper communication insights.</li>
+                  <li>Smarter stress detection and adaptive wellbeing guidance.</li>
                 </ul>
               </div>
             </div>
@@ -719,11 +769,11 @@ Active university tech club member</textarea>
             <div class="section-title">
               <h3>Novelty and Inventiveness</h3>
             </div>
-            <ul class="bullet-list">
-              <li>Combines practical career development support with simple, positive wellbeing guidance in one connected user experience.</li>
-              <li>Uses a multi-role AI interview simulation with HR, Technical, and Manager perspectives instead of relying on a single interview style.</li>
-              <li>Provides instant feedback together with session summaries so users can reflect, improve, and repeat practice more effectively.</li>
-              <li>Generates personalized recommendations using a broader profile view rather than matching users by technical skills alone.</li>
+            <ul class="bullet-list compact">
+              <li>Combines career development with positive wellbeing support.</li>
+              <li>Uses HR, Technical, and Manager perspectives in one simulation.</li>
+              <li>Gives instant feedback with repeatable practice and summary reports.</li>
+              <li>Matches users through broader profile fit, not skills alone.</li>
             </ul>
           </article>
 
@@ -791,7 +841,7 @@ Active university tech club member</textarea>
                   <span>Resume Completion</span>
                   <span>📄</span>
                 </div>
-                <strong class="metric-number" id="dashboardResumeScore" data-target="90">90%</strong>
+                <strong class="metric-number" id="dashboardResumeScore" data-target="98">98%</strong>
                 <div class="metric-line large">
                   <div class="metric-fill green-fill" id="dashboardResumeBar"></div>
                 </div>
@@ -802,7 +852,7 @@ Active university tech club member</textarea>
                   <span>Career Match</span>
                   <span>💙</span>
                 </div>
-                <strong class="metric-number" id="dashboardCareerScore" data-target="92">92%</strong>
+                <strong class="metric-number" id="dashboardCareerScore" data-target="97">97%</strong>
                 <div class="metric-line large">
                   <div class="metric-fill blue-fill" id="dashboardCareerBar"></div>
                 </div>
@@ -851,8 +901,8 @@ Active university tech club member</textarea>
               </div>
 
               <div class="mentor-card">
-                <div class="person-avatar mentor-avatar"><img src="assets/mentor_avatar.png" alt="Mentor avatar" /></div>
-                <div>
+                <div class="person-avatar mentor-avatar"><img src="assets/interview_manager_new.png" alt="Mentor avatar" /></div>
+                <div class="mentor-copy">
                   <span class="mini-label">Mentor</span>
                   <strong>Dr Hafizul Bin Othman</strong>
                   <p>Management and Science University (MSU)</p>
@@ -869,8 +919,7 @@ Active university tech club member</textarea>
           <div>
             <h3>PathWise AI</h3>
             <p>
-              PathWise AI is your AI-powered companion for career growth,
-              confidence building, and mental wellbeing.
+              AI-powered support for career growth, confidence building, and mental wellbeing.
             </p>
           </div>
         </div>

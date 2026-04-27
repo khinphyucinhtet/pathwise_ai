@@ -492,6 +492,8 @@ const closeCameraBtn = document.getElementById("closeCameraBtn");
 const cameraStatus = document.getElementById("cameraStatus");
 const micStatus = document.getElementById("micStatus");
 const cameraIndicator = document.getElementById("cameraIndicator");
+const elapsedClock = document.getElementById("elapsedClock");
+const overviewQuestionCounter = document.getElementById("overviewQuestionCounter");
 const userVideo = document.getElementById("userVideo");
 const userVideoPlaceholder = document.getElementById("userVideoPlaceholder");
 
@@ -556,6 +558,7 @@ const recommendCareerBtn = document.getElementById("recommendCareerBtn");
 const stressButtons = document.querySelectorAll(".stress-btn");
 const wellbeingMessage = document.getElementById("wellbeingMessage");
 const wellbeingTips = document.getElementById("wellbeingTips");
+const wellbeingStatusTitle = document.getElementById("wellbeingStatusTitle");
 
 const dashboardInterviewScore = document.getElementById("dashboardInterviewScore");
 const dashboardResumeScore = document.getElementById("dashboardResumeScore");
@@ -869,6 +872,9 @@ function updateQuestionDisplay() {
   questionRoleLabel.textContent = interviewData[interviewState.role].label;
   questionText.textContent = getCurrentQuestion();
   questionCounter.textContent = `Question ${interviewState.index + 1} of ${interviewState.questions.length || 4}`;
+  if (overviewQuestionCounter) {
+    overviewQuestionCounter.textContent = `${interviewState.index + 1} of ${interviewState.questions.length || 4}`;
+  }
 }
 
 function setAvatarStyle(style) {
@@ -1679,7 +1685,7 @@ function renderCareerResults() {
       score: scoreCareer(role, profile)
     }))
     .sort((a, b) => b.score - a.score)
-    .slice(0, 8);
+    .slice(0, 14);
 
   careerResults.innerHTML = "";
 
@@ -1749,6 +1755,9 @@ function updateWellbeing(level) {
   });
 
   wellbeingMessage.textContent = config.message;
+  if (wellbeingStatusTitle) {
+    wellbeingStatusTitle.textContent = config.status;
+  }
   wellbeingTips.innerHTML = "";
   config.tips.forEach((tip) => {
     const item = document.createElement("li");
@@ -1763,7 +1772,11 @@ function tickClock() {
   clockSeconds += 1;
   const minutes = String(Math.floor(clockSeconds / 60)).padStart(2, "0");
   const seconds = String(clockSeconds % 60).padStart(2, "0");
-  stageClock.textContent = `${minutes}:${seconds}`;
+  const timeText = `${minutes}:${seconds}`;
+  stageClock.textContent = timeText;
+  if (elapsedClock) {
+    elapsedClock.textContent = timeText;
+  }
 }
 
 function downloadReport() {
