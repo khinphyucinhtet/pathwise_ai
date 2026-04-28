@@ -439,6 +439,43 @@
                   <span>Very Calm</span>
                   <span>Very Stressed</span>
                 </div>
+                <div class="wellbeing-check-grid">
+                  <label>
+                    Sleep Hours
+                    <select id="wellbeingSleep">
+                      <option value="less-4">Less than 4</option>
+                      <option value="4-6">4 to 6</option>
+                      <option value="6-8" selected>6 to 8</option>
+                      <option value="8-plus">More than 8</option>
+                    </select>
+                  </label>
+                  <label>
+                    Main Pressure
+                    <select id="wellbeingPressure">
+                      <option value="interview" selected>Upcoming interviews</option>
+                      <option value="applications">Job applications</option>
+                      <option value="deadlines">Deadlines / workload</option>
+                      <option value="direction">Unsure career direction</option>
+                      <option value="confidence">Low confidence</option>
+                    </select>
+                  </label>
+                  <label>
+                    Energy Today
+                    <select id="wellbeingEnergy">
+                      <option value="low">Low</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </label>
+                  <label>
+                    Support Level
+                    <select id="wellbeingSupport">
+                      <option value="alone">Mostly alone</option>
+                      <option value="some" selected>Some support</option>
+                      <option value="strong">Strong support system</option>
+                    </select>
+                  </label>
+                </div>
                 <div class="wellbeing-status-strip">
                   <div class="wellbeing-status-pill">
                     <span class="mini-label">Mental Check-In</span>
@@ -455,15 +492,18 @@
                     It is normal to feel this way sometimes. Take small breaks, stay
                     positive, and focus on one step at a time.
                   </p>
+                  <div class="wellbeing-summary-card">
+                    <strong>Your Current Check-In</strong>
+                    <p id="wellbeingSummary">
+                      You seem fairly balanced right now, so a calm and steady pace may help you stay productive.
+                    </p>
+                  </div>
                   <ul class="bullet-list compact" id="wellbeingTips">
                     <li>Take short breaks and breathe</li>
                     <li>Stay active and drink water</li>
                     <li>Talk to someone you trust</li>
                     <li>Focus on progress, not perfection</li>
                   </ul>
-                </div>
-                <div class="wellbeing-advice-visual">
-                  <img src="assets/wellbeing_avatar.png" alt="Wellbeing support illustration" />
                 </div>
               </div>
             </div>

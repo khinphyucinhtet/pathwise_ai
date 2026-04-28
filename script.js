@@ -559,6 +559,11 @@ const stressButtons = document.querySelectorAll(".stress-btn");
 const wellbeingMessage = document.getElementById("wellbeingMessage");
 const wellbeingTips = document.getElementById("wellbeingTips");
 const wellbeingStatusTitle = document.getElementById("wellbeingStatusTitle");
+const wellbeingSummary = document.getElementById("wellbeingSummary");
+const wellbeingSleep = document.getElementById("wellbeingSleep");
+const wellbeingPressure = document.getElementById("wellbeingPressure");
+const wellbeingEnergy = document.getElementById("wellbeingEnergy");
+const wellbeingSupport = document.getElementById("wellbeingSupport");
 
 const dashboardInterviewScore = document.getElementById("dashboardInterviewScore");
 const dashboardResumeScore = document.getElementById("dashboardResumeScore");
@@ -1749,17 +1754,67 @@ function renderCareerResults() {
 
 function updateWellbeing(level) {
   const config = wellbeingGuidance[level];
+  const sleepValue = wellbeingSleep ? wellbeingSleep.value : "6-8";
+  const pressureValue = wellbeingPressure ? wellbeingPressure.value : "interview";
+  const energyValue = wellbeingEnergy ? wellbeingEnergy.value : "medium";
+  const supportValue = wellbeingSupport ? wellbeingSupport.value : "some";
+  const dynamicTips = [...config.tips];
+  let summaryText = "You seem fairly balanced right now, so a calm and steady pace may help you stay productive.";
+  let messageText = config.message;
+  let statusText = config.status;
 
   stressButtons.forEach((button) => {
     button.classList.toggle("active", Number(button.dataset.level) === level);
   });
 
-  wellbeingMessage.textContent = config.message;
+  if (sleepValue === "less-4") {
+    statusText = level >= 4 ? "Rest First" : "Low Rest";
+    messageText = "Your check-in suggests low rest today. It may help to lower pressure, slow your pace, and focus on only one or two important tasks.";
+    dynamicTips.unshift("Protect your energy and take a short rest before high-pressure tasks");
+  } else if (sleepValue === "4-6") {
+    dynamicTips.unshift("Keep your schedule light and avoid overloading yourself");
+  }
+
+  if (pressureValue === "interview") {
+    dynamicTips.push("Practice one short interview answer instead of doing a full mock session");
+    summaryText = "Your current pressure seems linked to interviews, so small practice rounds and calmer preparation may help more than pushing too hard.";
+  } else if (pressureValue === "applications") {
+    dynamicTips.push("Set a simple application target for today, such as one or two quality submissions");
+    summaryText = "Your check-in suggests application pressure, so focusing on a few strong submissions may feel more manageable than doing too much at once.";
+  } else if (pressureValue === "direction") {
+    dynamicTips.push("List two roles you are curious about and compare them gently, without needing a perfect answer today");
+    summaryText = "You may be feeling uncertainty about career direction, so exploring options slowly and clearly could be more helpful than forcing a quick decision.";
+  } else if (pressureValue === "confidence") {
+    dynamicTips.push("Write down one recent strength or achievement before your next task");
+    summaryText = "Confidence looks like a key theme right now, so grounding yourself in small wins may help rebuild momentum.";
+  } else if (pressureValue === "deadlines") {
+    dynamicTips.push("Break your tasks into small steps and finish the easiest one first");
+    summaryText = "Your current stress may be driven by workload, so simplifying today’s tasks and reducing mental clutter can help.";
+  }
+
+  if (energyValue === "low") {
+    dynamicTips.push("Choose lighter tasks first and delay high-pressure work if possible");
+  } else if (energyValue === "high") {
+    dynamicTips.push("Use your stronger energy for one meaningful task, not everything at once");
+  }
+
+  if (supportValue === "alone") {
+    dynamicTips.push("Reach out to a friend, mentor, or teammate for a quick check-in");
+  } else if (supportValue === "strong") {
+    dynamicTips.push("Use your support system well by sharing your current goal clearly");
+  }
+
+  dynamicTips.splice(4);
+
+  wellbeingMessage.textContent = messageText;
   if (wellbeingStatusTitle) {
-    wellbeingStatusTitle.textContent = config.status;
+    wellbeingStatusTitle.textContent = statusText;
+  }
+  if (wellbeingSummary) {
+    wellbeingSummary.textContent = summaryText;
   }
   wellbeingTips.innerHTML = "";
-  config.tips.forEach((tip) => {
+  dynamicTips.forEach((tip) => {
     const item = document.createElement("li");
     item.textContent = tip;
     wellbeingTips.appendChild(item);
@@ -1876,6 +1931,15 @@ recommendCareerBtn.addEventListener("click", renderCareerResults);
 
 stressButtons.forEach((button) => {
   button.addEventListener("click", () => updateWellbeing(Number(button.dataset.level)));
+});
+
+[wellbeingSleep, wellbeingPressure, wellbeingEnergy, wellbeingSupport].forEach((field) => {
+  if (field) {
+    field.addEventListener("change", () => {
+      const activeStress = document.querySelector(".stress-btn.active");
+      updateWellbeing(activeStress ? Number(activeStress.dataset.level) : 3);
+    });
+  }
 });
 
 themeToggle.addEventListener("click", () => {
