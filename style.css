@@ -2097,8 +2097,18 @@ select:focus {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 164px;
+  min-height: 214px;
   text-align: center;
+}
+
+.person-card small,
+.mentor-card small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .person-avatar {
@@ -2131,7 +2141,7 @@ select:focus {
   justify-content: flex-start;
   gap: 14px;
   text-align: left;
-  min-height: 164px;
+  min-height: 214px;
 }
 
 .mentor-avatar {
@@ -2156,6 +2166,76 @@ select:focus {
   margin: 6px 0 8px;
   font-size: 1.05rem;
   line-height: 1.35;
+}
+
+.team-projects {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid var(--stroke);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 243, 255, 0.92));
+}
+
+.team-projects-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.team-projects-head h4 {
+  margin: 6px 0 0;
+  font-size: 1.2rem;
+}
+
+.team-project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.team-project-card {
+  min-height: 156px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--stroke);
+  background: var(--surface-strong);
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.team-project-card span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.team-project-card strong {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.team-project-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 0.9rem;
 }
 
 .auth-modal {
@@ -2510,7 +2590,8 @@ select:focus {
   .career-top-fields,
   .impact-grid,
   .dashboard-grid,
-  .team-members {
+  .team-members,
+  .team-project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2564,6 +2645,7 @@ select:focus {
   .impact-grid,
   .dashboard-grid,
   .team-members,
+  .team-project-grid,
   .sdg-grid,
   .report-grid,
   .auth-actions {
@@ -2589,6 +2671,19 @@ select:focus {
 
   .session-status {
     margin-left: 0;
+  }
+
+  .team-projects-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .footer-card {
+    text-align: center;
+  }
+
+  .footer-brand {
+    justify-content: center;
   }
 }
 
@@ -2631,6 +2726,45 @@ select:focus {
   .hero-panel h2,
   .section-title h3 {
     font-size: 1.5rem;
+  }
+
+  .team-layout,
+  .footer-card {
+    gap: 12px;
+  }
+
+  .person-card,
+  .mentor-card {
+    min-height: auto;
+  }
+
+  .mentor-card {
+    align-items: center;
+    text-align: center;
+  }
+
+  .mentor-copy strong {
+    font-size: 1rem;
+  }
+
+  .team-projects {
+    padding: 14px;
+  }
+
+  .team-project-card {
+    min-height: auto;
+  }
+
+  .footer-brand {
+    flex-direction: column;
+  }
+
+  .footer-brand p {
+    max-width: none;
+  }
+
+  .sdg-card {
+    min-height: 96px;
   }
 
   .hero-actions {

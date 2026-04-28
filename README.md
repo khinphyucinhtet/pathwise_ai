@@ -10,6 +10,7 @@ This project was created by **Team Nextara** as a polished product-style demo fo
 - **Members:** Zarul, Khin, Laku, Ryan
 - **Mentor:** Dr Hafizul Bin Othman
 - **University:** Management and Science University (MSU)
+- **GitHub Profile:** https://github.com/khinphyucinhtet
 
 ## Overview
 
@@ -96,11 +97,19 @@ The current version can display **up to 14 career suggestions** with:
 
 ### 4. Wellbeing Support
 
-The wellbeing section includes a simple stress check interaction that gives:
+The wellbeing section includes a richer check-in interaction using:
+
+- current stress level
+- sleep hours
+- main pressure source
+- energy level
+- support level
+
+Based on those inputs, the prototype gives:
 
 - supportive status messaging
 - non-clinical encouragement
-- short practical tips
+- personalized practical tips
 - a more positive, friendly user experience during career preparation
 
 ### 5. Dashboard
@@ -114,7 +123,17 @@ The dashboard presents quick product-style metrics for:
 
 This helps the demo feel like a complete product rather than a standalone tool.
 
-### 6. Local Demo Login Flow
+### 6. Team and Project Showcase
+
+The team section now includes:
+
+- member roles
+- demo email contacts
+- MSU affiliation for each member
+- mentor details
+- simple GitHub project cards linked to the team GitHub profile and PathWise AI repository
+
+### 7. Local Demo Login Flow
 
 The project includes a lightweight browser-based login/register flow for demo use only.
 
@@ -136,7 +155,7 @@ Design goals:
 - purple and white visual identity
 - soft gradients and rounded cards
 - dark premium interview workspace
-- responsive layout
+- responsive layout for laptops, tablets, and smartphones
 - product-style sectioning
 - smooth transitions and hover effects
 - clean visual hierarchy for hackathon judging
@@ -158,6 +177,8 @@ JavaScript is used for:
 - career scoring and rendering
 - wellbeing interaction
 - local demo authentication flow
+
+CSS media queries are used to keep the layout adaptive across larger laptop screens and smaller smartphone screens.
 
 ## Project Status
 
