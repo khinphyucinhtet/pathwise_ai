@@ -670,9 +670,26 @@ const fuzzyRiskMaps = {
     "career-uncertain": 0.65,
     applications: 0.75,
     deadlines: 0.6,
+    "low-urgency": 0.3,
   },
   support: { alone: 0.9, some: 0.5, parents: 0.35, friends: 0.4, mentor: 0.3, strong: 0.2 },
-  energy: { high: 0.2, medium: 0.5, low: 0.8 },
+  energy: {
+    happy: 0.2,
+    calm: 0.2,
+    relaxed: 0.2,
+    neutral: 0.4,
+    confused: 0.55,
+    worried: 0.7,
+    sad: 0.72,
+    tired: 0.75,
+    frustrated: 0.68,
+    anxious: 0.85,
+    overwhelmed: 0.9,
+    sleepy: 0.65,
+    motivated: 0.2,
+    focused: 0.2,
+    drained: 0.88
+  },
   sleep: { "less-4": 0.9, "4-6": 0.7, "6-8": 0.3, "8-plus": 0.2 }
 };
 
@@ -680,15 +697,15 @@ const fuzzyRiskProfiles = {
   low: {
     label: "LOW RISK",
     shortLabel: "LOW",
-    queue: "STANDARD ACCESS",
+    queue: "STANDARD JOB SUPPORT",
     wait: "2-3 days",
     positionRange: [12, 20],
-    action: "Continue self-guided career preparation",
+    action: "General career exploration and wellbeing guidance",
     emotionalState: "Good",
     dashboardStatus: "Good",
     dashboardBar: 35,
-    explanation: "Your current inputs show a manageable situation, so you can continue using the system through standard access.",
-    message: "Stay balanced. Your current wellbeing and career urgency signals look manageable, so continue steady preparation without rushing.",
+    explanation: "Your current inputs show a manageable job-search situation, so you can continue using standard career tools and explore opportunities at a steady pace.",
+    message: "Based on your current inputs, PathWise AI can guide you with career planning, resume improvement, interview preparation, and job-matching priority.",
     tips: [
       "Continue steady interview or resume preparation",
       "Keep a healthy routine while applying for jobs",
@@ -699,15 +716,15 @@ const fuzzyRiskProfiles = {
   medium: {
     label: "MEDIUM RISK",
     shortLabel: "MEDIUM",
-    queue: "PRIORITY SUPPORT",
+    queue: "PRIORITY JOB SUPPORT",
     wait: "12-24 hrs",
     positionRange: [5, 9],
-    action: "Guided wellbeing and career support",
+    action: "Guided resume and job application support",
     emotionalState: "Moderate Concern",
     dashboardStatus: "Moderate",
     dashboardBar: 60,
-    explanation: "Your inputs show moderate pressure. You are not in the highest priority queue, but PathWise AI will place you in priority support so you can receive guided career and wellbeing assistance soon.",
-    message: "Take breaks. The fuzzy assessment suggests moderate pressure, so use guided wellbeing and career support step by step.",
+    explanation: "Your inputs show moderate career pressure. PathWise AI places you in priority job support so you can receive guided resume, application, and interview help sooner.",
+    message: "PathWise AI recommends guided job support, resume improvement, and interview preparation so you can move forward step by step.",
     tips: [
       "Take breaks between interview or resume tasks",
       "Split urgent work into smaller actions",
@@ -719,16 +736,16 @@ const fuzzyRiskProfiles = {
   high: {
     label: "HIGH RISK",
     shortLabel: "HIGH",
-    queue: "URGENT SUPPORT",
+    queue: "URGENT JOB SUPPORT",
     wait: "Immediate",
     positionRange: [1, 3],
-    action: "Immediate advisor / counsellor recommendation",
+    action: "Immediate job-matching and interview support",
     emotionalState: "High Concern",
     urgentState: "Urgent Support Needed",
     dashboardStatus: "Needs Support",
     dashboardBar: 90,
-    explanation: "Your inputs show strong pressure and urgent career need. PathWise AI places you near the front of the queue for faster support and stronger guidance.",
-    message: "Seek support. Your current signals suggest high pressure and urgent career need, so let PathWise AI prioritize stronger guidance.",
+    explanation: "Your inputs show strong pressure and urgent career need. PathWise AI places you near the front of the job-support queue for faster resume, interview, matching, and company connection guidance.",
+    message: "PathWise AI recommends faster job-matching support, interview preparation, and company connection guidance for this priority level.",
     tips: [
       "Pause and reduce non-urgent tasks first",
       "Use immediate support or contact a trusted person",
@@ -1911,17 +1928,17 @@ function getRandomQueuePosition(categoryKey) {
 function calculateFuzzyAssessment(level = getActiveStressLevel()) {
   const sleepValue = wellbeingSleep ? wellbeingSleep.value : "6-8";
   const urgencyValue = wellbeingPressure ? wellbeingPressure.value : "interview";
-  const energyValue = wellbeingEnergy ? wellbeingEnergy.value : "medium";
+  const energyValue = wellbeingEnergy ? wellbeingEnergy.value : "neutral";
   const supportValue = wellbeingSupport ? wellbeingSupport.value : "some";
 
   const stressRisk = clamp(level / 10, 0, 1);
   const urgencyRisk = fuzzyRiskMaps.urgency[urgencyValue] || 0.6;
   const supportRisk = fuzzyRiskMaps.support[supportValue] || 0.5;
-  const energyRisk = fuzzyRiskMaps.energy[energyValue] || 0.5;
+  const energyRisk = fuzzyRiskMaps.energy[energyValue] || 0.4;
   const sleepRisk = fuzzyRiskMaps.sleep[sleepValue] || 0.3;
 
   // Fuzzy logic demo calculation: stress and job urgency use min(),
-  // then lack of support, sleep, and energy compete through max().
+  // then lack of support, sleep, and mood compete through max().
   const stressUrgencyRisk = Math.min(stressRisk, urgencyRisk);
   const risk = Number(Math.max(stressUrgencyRisk, supportRisk, sleepRisk, energyRisk).toFixed(2));
   const categoryKey = classifyFuzzyRisk(risk);
@@ -2004,7 +2021,7 @@ function renderFuzzyResult(assessment, options = {}) {
     fuzzyCategoryBadge.textContent = assessment.shortLabel;
   }
   if (wellbeingSummary) {
-    wellbeingSummary.textContent = `${assessment.label} detected from stress, job urgency, support, sleep, and energy signals. Based on this, PathWise AI recommends ${assessment.action}. ${assessment.explanation}`;
+    wellbeingSummary.textContent = `${assessment.label} detected from career urgency, stress, support, sleep, and mood signals. PathWise AI recommends ${assessment.action}. ${assessment.explanation}`;
   }
   if (fuzzyRiskScore) fuzzyRiskScore.textContent = assessment.risk.toFixed(2);
   if (fuzzyRiskCategory) fuzzyRiskCategory.textContent = assessment.label;

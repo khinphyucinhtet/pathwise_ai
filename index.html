@@ -402,12 +402,14 @@
 
           <article class="section-card wellbeing-card" id="wellbeing">
             <div class="section-title">
-              <h3>Wellbeing Support</h3>
+              <h3>AI Job Priority &amp; Support Matching</h3>
             </div>
             <p class="section-lead">
-              Career growth is not only about performance. This section keeps the
-              tone positive and safe while giving supportive advice based on the
-              user’s current stress level.
+              PathWise AI checks the user’s career urgency, stress level,
+              support level, sleep condition, and current mood to estimate who
+              needs faster job-finding support. Higher priority users can be
+              guided first for resume improvement, interview preparation, job
+              matching, and company connection support.
             </p>
 
             <div class="wellbeing-layout vertical-layout">
@@ -428,17 +430,18 @@
                   <label>
                     Job / Career Urgency
                     <select id="wellbeingPressure">
-                      <option value="interview" selected>Upcoming interviews</option>
+                      <option value="interview" selected>Upcoming interview</option>
                       <option value="internship">Internship search</option>
-                      <option value="fulltime-asap">Need full-time job ASAP</option>
+                      <option value="fulltime-asap">Need full-time job urgently</option>
                       <option value="international-student">International student securing work</option>
+                      <option value="graduation">Final semester job preparation</option>
                       <option value="part-time-student">Part-time student needing income</option>
-                      <option value="financial">Financial stress</option>
-                      <option value="family">Family expectations</option>
-                      <option value="graduation">Graduation / final semester pressure</option>
-                      <option value="career-uncertain">Unsure career direction</option>
-                      <option value="applications">Job applications</option>
+                      <option value="financial">Financial pressure to find work</option>
+                      <option value="family">Family pressure to get a job</option>
+                      <option value="applications">Many job applications but no reply</option>
+                      <option value="career-uncertain">Career direction unsure</option>
                       <option value="deadlines">Assignment / workload deadlines</option>
+                      <option value="low-urgency">Low urgency / exploring only</option>
                     </select>
                   </label>
                   <label>
@@ -462,11 +465,23 @@
                     </select>
                   </label>
                   <label>
-                    Energy Today
+                    Mood Today
                     <select id="wellbeingEnergy">
-                      <option value="low">Low</option>
-                      <option value="medium" selected>Medium</option>
-                      <option value="high">High</option>
+                      <option value="happy">😊 Happy</option>
+                      <option value="calm">🙂 Calm</option>
+                      <option value="relaxed">😌 Relaxed</option>
+                      <option value="neutral" selected>😐 Neutral</option>
+                      <option value="confused">😕 Confused</option>
+                      <option value="worried">😟 Worried</option>
+                      <option value="sad">😢 Sad</option>
+                      <option value="tired">😫 Tired</option>
+                      <option value="frustrated">😤 Frustrated</option>
+                      <option value="anxious">😰 Anxious</option>
+                      <option value="overwhelmed">😵 Overwhelmed</option>
+                      <option value="sleepy">😴 Sleepy</option>
+                      <option value="motivated">💪 Motivated</option>
+                      <option value="focused">🧠 Focused</option>
+                      <option value="drained">😶 Emotionally drained</option>
                     </select>
                   </label>
                 </div>
@@ -486,7 +501,7 @@
                     <span>&#10003; Stress level received</span>
                     <span>&#10003; Job urgency checked</span>
                     <span>&#10003; Support level reviewed</span>
-                    <span>&#10003; Sleep and energy considered</span>
+                    <span>&#10003; Sleep and mood considered</span>
                     <span>&#10003; Fuzzy logic rules applied</span>
                   </div>
                   <p>Applying fuzzy logic rules...</p>
@@ -499,10 +514,11 @@
 
               <div class="wellbeing-advice">
                 <div class="wellbeing-advice-text">
-                  <span class="mini-label">Your Wellbeing Advice</span>
+                  <span class="mini-label">Your Job Support Advice</span>
                   <p id="wellbeingMessage">
-                    It is normal to feel this way sometimes. Take small breaks, stay
-                    positive, and focus on one step at a time.
+                    Based on your current inputs, PathWise AI can guide you with
+                    career planning, resume improvement, interview preparation,
+                    and job-matching priority.
                   </p>
                   <div class="wellbeing-summary-card fuzzy-result-card is-low" id="fuzzyResultCard">
                     <div class="fuzzy-result-head">
@@ -510,7 +526,7 @@
                       <span class="risk-badge low" id="fuzzyCategoryBadge">READY</span>
                     </div>
                     <p id="wellbeingSummary">
-                      Choose your factors and run the fuzzy assessment to estimate wellbeing support priority.
+                      Choose your factors and run the fuzzy assessment to estimate job-support priority.
                     </p>
                     <div class="risk-meter">
                       <div class="risk-meter-fill" id="fuzzyRiskMeter"></div>
@@ -549,7 +565,7 @@
                       <span>Urgency: <strong id="reasonUrgency">0.9</strong></span>
                       <span>Support: <strong id="reasonSupport">0.5</strong></span>
                       <span>Sleep risk: <strong id="reasonSleep">0.3</strong></span>
-                      <span>Energy risk: <strong id="reasonEnergy">0.5</strong></span>
+                      <span>Mood risk: <strong id="reasonEnergy">0.5</strong></span>
                       <span>Rule: <strong id="reasonRule">IF stress HIGH AND urgency HIGH THEN risk HIGH</strong></span>
                       <span>Fuzzy: <strong id="reasonFuzzy">min(0.6,0.9)=0.6</strong></span>
                       <span>Final: <strong id="reasonFinal">max(0.6,0.5)=0.6</strong></span>
@@ -564,7 +580,7 @@ final_risk(Person,FinalDegree):-
     high_risk(Person,D1),
     support_risk(Person,D2),
     sleep_risk(Person,D3),
-    energy_risk(Person,D4),
+    mood_risk(Person,D4),
     FinalDegree is max(D1,max(D2,max(D3,D4))).</code></pre>
                     <small>This is a frontend demo showing how fuzzy logic reasoning can be represented in a real user interface.</small>
                   </details>
@@ -582,10 +598,10 @@ final_risk(Person,FinalDegree):-
               <div class="wellbeing-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="wellbeingModalTitle">
                 <span class="eyebrow">Assessment Complete</span>
                 <h3 id="wellbeingModalTitle">Your fuzzy risk level: <span id="modalRiskCategory">LOW</span></h3>
-                <p>Queue: <strong id="modalQueue">STANDARD ACCESS</strong></p>
+                <p>Queue: <strong id="modalQueue">STANDARD JOB SUPPORT</strong></p>
                 <p>Estimated support: <strong id="modalWait">2-3 days</strong></p>
                 <p>Position: <strong id="modalPosition">#18 in queue</strong></p>
-                <p>PathWise AI will use this priority level to guide the next career support action.</p>
+                <p>PathWise AI will use this priority level to decide how quickly the user should receive AI job-matching, resume, interview, and company connection support.</p>
                 <button class="primary-btn" id="wellbeingModalOk" type="button">OK</button>
               </div>
             </div>
