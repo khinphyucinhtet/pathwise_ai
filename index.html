@@ -441,30 +441,15 @@
                 </div>
                 <div class="wellbeing-check-grid">
                   <label>
-                    Sleep Hours
-                    <select id="wellbeingSleep">
-                      <option value="less-4">Less than 4</option>
-                      <option value="4-6">4 to 6</option>
-                      <option value="6-8" selected>6 to 8</option>
-                      <option value="8-plus">More than 8</option>
-                    </select>
-                  </label>
-                  <label>
-                    Main Pressure
+                    Job / Career Urgency
                     <select id="wellbeingPressure">
                       <option value="interview" selected>Upcoming interviews</option>
-                      <option value="applications">Job applications</option>
-                      <option value="deadlines">Deadlines / workload</option>
-                      <option value="direction">Unsure career direction</option>
-                      <option value="confidence">Low confidence</option>
-                    </select>
-                  </label>
-                  <label>
-                    Energy Today
-                    <select id="wellbeingEnergy">
-                      <option value="low">Low</option>
-                      <option value="medium" selected>Medium</option>
-                      <option value="high">High</option>
+                      <option value="internship">Internship search</option>
+                      <option value="deadlines">Assignment deadlines</option>
+                      <option value="graduation">Graduation pressure</option>
+                      <option value="direction">Career uncertainty</option>
+                      <option value="financial">Financial stress</option>
+                      <option value="family">Family expectations</option>
                     </select>
                   </label>
                   <label>
@@ -475,13 +460,48 @@
                       <option value="strong">Strong support system</option>
                     </select>
                   </label>
+                  <label>
+                    Sleep Hours
+                    <select id="wellbeingSleep">
+                      <option value="less-4">Less than 4</option>
+                      <option value="4-6">4 to 6</option>
+                      <option value="6-8" selected>6 to 8</option>
+                      <option value="8-plus">More than 8</option>
+                    </select>
+                  </label>
+                  <label>
+                    Energy Today
+                    <select id="wellbeingEnergy">
+                      <option value="low">Low</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </label>
                 </div>
+                <button class="fuzzy-submit-btn" id="runFuzzyAssessmentBtn" type="button">
+                  Run Fuzzy Risk Assessment
+                </button>
                 <div class="wellbeing-status-strip">
                   <div class="wellbeing-status-pill">
-                    <span class="mini-label">Mental Check-In</span>
-                    <strong id="wellbeingStatusTitle">Balanced Today</strong>
+                    <span class="mini-label">Current Emotional State</span>
+                    <strong id="wellbeingStatusTitle">Good</strong>
                   </div>
                   <p class="wellbeing-status-copy">A simple emotional check-in to keep career preparation manageable and supportive.</p>
+                </div>
+                <div class="fuzzy-loading-card hidden" id="fuzzyLoadingCard" aria-live="polite">
+                  <strong>Analyzing wellbeing factors...</strong>
+                  <div class="fuzzy-factor-list">
+                    <span>Stress.............&#10003;</span>
+                    <span>Support............&#10003;</span>
+                    <span>Urgency............&#10003;</span>
+                    <span>Sleep..............&#10003;</span>
+                    <span>Energy.............&#10003;</span>
+                  </div>
+                  <p>Applying fuzzy logic rules...</p>
+                  <div class="fuzzy-progress-track">
+                    <div class="fuzzy-progress-fill" id="fuzzyProgressFill"></div>
+                  </div>
+                  <small id="fuzzyProgressText">0%</small>
                 </div>
               </div>
 
@@ -492,12 +512,61 @@
                     It is normal to feel this way sometimes. Take small breaks, stay
                     positive, and focus on one step at a time.
                   </p>
-                  <div class="wellbeing-summary-card">
-                    <strong>Your Current Check-In</strong>
+                  <div class="wellbeing-summary-card fuzzy-result-card is-low" id="fuzzyResultCard">
+                    <div class="fuzzy-result-head">
+                      <strong>Fuzzy Risk Assessment Result</strong>
+                      <span class="risk-badge low" id="fuzzyCategoryBadge">READY</span>
+                    </div>
                     <p id="wellbeingSummary">
-                      You seem fairly balanced right now, so a calm and steady pace may help you stay productive.
+                      Choose your factors and run the fuzzy assessment to estimate wellbeing support priority.
                     </p>
+                    <div class="risk-meter">
+                      <div class="risk-meter-fill" id="fuzzyRiskMeter"></div>
+                    </div>
+                    <div class="fuzzy-result-grid">
+                      <div>
+                        <span>Risk Score</span>
+                        <strong id="fuzzyRiskScore">--</strong>
+                      </div>
+                      <div>
+                        <span>Category</span>
+                        <strong id="fuzzyRiskCategory">Waiting</strong>
+                      </div>
+                      <div>
+                        <span>Queue</span>
+                        <strong id="fuzzyQueue">Run assessment</strong>
+                      </div>
+                      <div>
+                        <span>Estimated response</span>
+                        <strong id="fuzzyWait">--</strong>
+                      </div>
+                      <div>
+                        <span>Position</span>
+                        <strong id="fuzzyPosition">--</strong>
+                      </div>
+                      <div>
+                        <span>Suggested action</span>
+                        <strong id="fuzzyAction">Choose factors first</strong>
+                      </div>
+                    </div>
                   </div>
+                  <details class="fuzzy-reasoning-card" id="fuzzyReasoningCard">
+                    <summary>See AI Reasoning</summary>
+                    <div class="fuzzy-reasoning-grid">
+                      <span>Stress: <strong id="reasonStress">0.6</strong></span>
+                      <span>Urgency: <strong id="reasonUrgency">0.9</strong></span>
+                      <span>Support: <strong id="reasonSupport">0.5</strong></span>
+                      <span>Rule: <strong id="reasonRule">IF stress HIGH AND urgency HIGH THEN risk HIGH</strong></span>
+                      <span>Fuzzy: <strong id="reasonFuzzy">min(0.6,0.9)=0.6</strong></span>
+                      <span>Final: <strong id="reasonFinal">max(0.6,0.5)=0.6</strong></span>
+                      <span>Category: <strong id="reasonCategory">MEDIUM</strong></span>
+                    </div>
+                    <pre><code>high_risk(Person,Degree):-
+stress(Person,S),
+urgency(Person,U),
+Degree is min(S,U).</code></pre>
+                    <small>This is demonstration only.</small>
+                  </details>
                   <ul class="bullet-list compact" id="wellbeingTips">
                     <li>Take short breaks and breathe</li>
                     <li>Stay active and drink water</li>
@@ -505,6 +574,16 @@
                     <li>Focus on progress, not perfection</li>
                   </ul>
                 </div>
+              </div>
+            </div>
+            <div class="wellbeing-modal hidden" id="wellbeingAssessmentModal" aria-hidden="true">
+              <button class="wellbeing-modal-backdrop" id="wellbeingModalBackdrop" type="button" aria-label="Close assessment result"></button>
+              <div class="wellbeing-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="wellbeingModalTitle">
+                <span class="eyebrow">Assessment Complete</span>
+                <h3 id="wellbeingModalTitle">Your wellbeing risk: <span id="modalRiskCategory">LOW</span></h3>
+                <p>Priority queue: <strong id="modalQueue">NORMAL SUPPORT</strong></p>
+                <p>Estimated support: <strong id="modalWait">2-3 days</strong></p>
+                <button class="primary-btn" id="wellbeingModalOk" type="button">OK</button>
               </div>
             </div>
           </article>

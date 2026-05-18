@@ -564,6 +564,32 @@ const wellbeingSleep = document.getElementById("wellbeingSleep");
 const wellbeingPressure = document.getElementById("wellbeingPressure");
 const wellbeingEnergy = document.getElementById("wellbeingEnergy");
 const wellbeingSupport = document.getElementById("wellbeingSupport");
+const runFuzzyAssessmentBtn = document.getElementById("runFuzzyAssessmentBtn");
+const fuzzyLoadingCard = document.getElementById("fuzzyLoadingCard");
+const fuzzyProgressFill = document.getElementById("fuzzyProgressFill");
+const fuzzyProgressText = document.getElementById("fuzzyProgressText");
+const fuzzyResultCard = document.getElementById("fuzzyResultCard");
+const fuzzyCategoryBadge = document.getElementById("fuzzyCategoryBadge");
+const fuzzyRiskMeter = document.getElementById("fuzzyRiskMeter");
+const fuzzyRiskScore = document.getElementById("fuzzyRiskScore");
+const fuzzyRiskCategory = document.getElementById("fuzzyRiskCategory");
+const fuzzyQueue = document.getElementById("fuzzyQueue");
+const fuzzyWait = document.getElementById("fuzzyWait");
+const fuzzyPosition = document.getElementById("fuzzyPosition");
+const fuzzyAction = document.getElementById("fuzzyAction");
+const reasonStress = document.getElementById("reasonStress");
+const reasonUrgency = document.getElementById("reasonUrgency");
+const reasonSupport = document.getElementById("reasonSupport");
+const reasonRule = document.getElementById("reasonRule");
+const reasonFuzzy = document.getElementById("reasonFuzzy");
+const reasonFinal = document.getElementById("reasonFinal");
+const reasonCategory = document.getElementById("reasonCategory");
+const wellbeingAssessmentModal = document.getElementById("wellbeingAssessmentModal");
+const wellbeingModalBackdrop = document.getElementById("wellbeingModalBackdrop");
+const wellbeingModalOk = document.getElementById("wellbeingModalOk");
+const modalRiskCategory = document.getElementById("modalRiskCategory");
+const modalQueue = document.getElementById("modalQueue");
+const modalWait = document.getElementById("modalWait");
 
 const dashboardInterviewScore = document.getElementById("dashboardInterviewScore");
 const dashboardResumeScore = document.getElementById("dashboardResumeScore");
@@ -625,6 +651,77 @@ const AUTH_STORAGE_KEYS = {
 const authState = {
   mode: "email"
 };
+
+const fuzzyRiskMaps = {
+  stress: { 1: 0.2, 2: 0.4, 3: 0.6, 4: 0.8, 5: 1.0 },
+  urgency: {
+    interview: 0.9,
+    internship: 0.9,
+    deadlines: 0.6,
+    graduation: 0.9,
+    direction: 0.6,
+    financial: 0.9,
+    family: 0.6
+  },
+  support: { strong: 0.2, some: 0.5, alone: 0.9 },
+  energy: { high: 0.2, medium: 0.5, low: 0.8 },
+  sleep: { "less-4": 0.9, "4-6": 0.7, "6-8": 0.3, "8-plus": 0.2 }
+};
+
+const fuzzyRiskProfiles = {
+  low: {
+    label: "LOW RISK",
+    shortLabel: "LOW",
+    queue: "NORMAL SUPPORT",
+    wait: "2-3 days",
+    position: "#18 in queue",
+    action: "Self-help resources",
+    emotionalState: "Good",
+    message: "Stay balanced. Your current wellbeing signals look manageable, so keep a steady pace and use light self-help resources.",
+    tips: [
+      "Stay balanced with short breaks",
+      "Keep a simple study or job-search routine",
+      "Use self-help resources when stress rises",
+      "Practice career tasks at a calm pace"
+    ]
+  },
+  medium: {
+    label: "MEDIUM RISK",
+    shortLabel: "MEDIUM",
+    queue: "PRIORITY SUPPORT",
+    wait: "12-24 hrs",
+    position: "#7 in queue",
+    action: "Guided wellbeing support",
+    emotionalState: "Moderate Concern",
+    message: "Take breaks. The fuzzy assessment suggests some pressure, so reduce overload and use guided wellbeing support before pushing harder.",
+    tips: [
+      "Take breaks between interview or resume tasks",
+      "Split urgent work into smaller actions",
+      "Ask a mentor or friend for a quick check-in",
+      "Use guided wellbeing support if stress continues"
+    ]
+  },
+  high: {
+    label: "HIGH RISK",
+    shortLabel: "HIGH",
+    queue: "URGENT SUPPORT",
+    wait: "Immediate",
+    position: "#2 in queue",
+    action: "Advisor / counsellor recommendation",
+    emotionalState: "High Concern",
+    urgentState: "Urgent Support Needed",
+    message: "Seek support. Your current signals suggest high pressure, so pause intense career prep and reach out to an advisor, counsellor, mentor, or trusted person.",
+    tips: [
+      "Book counsellor or advisor support",
+      "Pause interview prep if it feels too heavy",
+      "Take guided support before making big decisions",
+      "Contact someone you trust if pressure feels overwhelming"
+    ]
+  }
+};
+
+let fuzzyAssessmentHasRun = false;
+let fuzzyAnimationFrame = null;
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -1752,75 +1849,232 @@ function renderCareerResults() {
   updateCareerDashboard(topRole.score);
 }
 
-function updateWellbeing(level) {
-  const config = wellbeingGuidance[level];
+function getActiveStressLevel() {
+  const activeStress = document.querySelector(".stress-btn.active");
+  return activeStress ? Number(activeStress.dataset.level) : 3;
+}
+
+function getRiskColorClass(categoryKey) {
+  return categoryKey === "high" ? "high" : categoryKey === "medium" ? "medium" : "low";
+}
+
+function classifyFuzzyRisk(risk) {
+  if (risk < 0.4) {
+    return "low";
+  }
+  if (risk < 0.7) {
+    return "medium";
+  }
+  return "high";
+}
+
+function getFuzzyWord(value) {
+  if (value >= 0.7) {
+    return "HIGH";
+  }
+  if (value >= 0.4) {
+    return "MEDIUM";
+  }
+  return "LOW";
+}
+
+function calculateFuzzyAssessment(level = getActiveStressLevel()) {
   const sleepValue = wellbeingSleep ? wellbeingSleep.value : "6-8";
-  const pressureValue = wellbeingPressure ? wellbeingPressure.value : "interview";
+  const urgencyValue = wellbeingPressure ? wellbeingPressure.value : "interview";
   const energyValue = wellbeingEnergy ? wellbeingEnergy.value : "medium";
   const supportValue = wellbeingSupport ? wellbeingSupport.value : "some";
-  const dynamicTips = [...config.tips];
-  let summaryText = "You seem fairly balanced right now, so a calm and steady pace may help you stay productive.";
-  let messageText = config.message;
-  let statusText = config.status;
 
+  const stressRisk = fuzzyRiskMaps.stress[level] || 0.6;
+  const urgencyRisk = fuzzyRiskMaps.urgency[urgencyValue] || 0.6;
+  const supportRisk = fuzzyRiskMaps.support[supportValue] || 0.5;
+  const energyRisk = fuzzyRiskMaps.energy[energyValue] || 0.5;
+  const sleepRisk = fuzzyRiskMaps.sleep[sleepValue] || 0.3;
+
+  // Fuzzy logic demo: stress and urgency are combined with min(),
+  // then the strongest wellbeing risk signal wins through max().
+  const stressUrgencyRisk = Math.min(stressRisk, urgencyRisk);
+  const risk = Math.max(stressUrgencyRisk, supportRisk, energyRisk, sleepRisk);
+  const categoryKey = classifyFuzzyRisk(risk);
+  const profile = fuzzyRiskProfiles[categoryKey];
+  const emotionalState = categoryKey === "high" && risk >= 0.85 ? profile.urgentState : profile.emotionalState;
+
+  return {
+    level,
+    sleepValue,
+    urgencyValue,
+    energyValue,
+    supportValue,
+    stressRisk,
+    urgencyRisk,
+    supportRisk,
+    energyRisk,
+    sleepRisk,
+    stressUrgencyRisk,
+    risk,
+    categoryKey,
+    emotionalState,
+    ...profile
+  };
+}
+
+function updateAdviceForAssessment(assessment) {
+  if (wellbeingStatusTitle) {
+    wellbeingStatusTitle.textContent = assessment.emotionalState;
+  }
+  if (wellbeingMessage) {
+    wellbeingMessage.textContent = assessment.message;
+  }
+  if (wellbeingTips) {
+    wellbeingTips.innerHTML = "";
+    assessment.tips.forEach((tip) => {
+      const item = document.createElement("li");
+      item.textContent = tip;
+      wellbeingTips.appendChild(item);
+    });
+  }
+}
+
+function renderReasoning(assessment) {
+  if (!reasonStress) {
+    return;
+  }
+
+  const stressWord = getFuzzyWord(assessment.stressRisk);
+  const urgencyWord = getFuzzyWord(assessment.urgencyRisk);
+  const minText = `min(${assessment.stressRisk.toFixed(1)},${assessment.urgencyRisk.toFixed(1)})=${assessment.stressUrgencyRisk.toFixed(1)}`;
+  const maxText = `max(${assessment.stressUrgencyRisk.toFixed(1)},${assessment.supportRisk.toFixed(1)},${assessment.energyRisk.toFixed(1)},${assessment.sleepRisk.toFixed(1)})=${assessment.risk.toFixed(1)}`;
+
+  reasonStress.textContent = assessment.stressRisk.toFixed(1);
+  reasonUrgency.textContent = assessment.urgencyRisk.toFixed(1);
+  reasonSupport.textContent = assessment.supportRisk.toFixed(1);
+  reasonRule.textContent = `IF stress ${stressWord} AND urgency ${urgencyWord} THEN risk ${assessment.shortLabel}`;
+  reasonFuzzy.textContent = minText;
+  reasonFinal.textContent = maxText;
+  reasonCategory.textContent = assessment.shortLabel;
+}
+
+function renderFuzzyResult(assessment, options = {}) {
+  const colorClass = getRiskColorClass(assessment.categoryKey);
+  const riskPercent = Math.round(assessment.risk * 100);
+
+  updateAdviceForAssessment(assessment);
+  renderReasoning(assessment);
+
+  if (fuzzyResultCard) {
+    fuzzyResultCard.classList.remove("is-low", "is-medium", "is-high");
+    fuzzyResultCard.classList.add(`is-${colorClass}`);
+  }
+  if (fuzzyCategoryBadge) {
+    fuzzyCategoryBadge.classList.remove("low", "medium", "high");
+    fuzzyCategoryBadge.classList.add(colorClass);
+    fuzzyCategoryBadge.textContent = assessment.shortLabel;
+  }
+  if (wellbeingSummary) {
+    wellbeingSummary.textContent = `${assessment.label} detected from stress, urgency, support, sleep, and energy signals. Suggested action: ${assessment.action}.`;
+  }
+  if (fuzzyRiskScore) fuzzyRiskScore.textContent = assessment.risk.toFixed(2);
+  if (fuzzyRiskCategory) fuzzyRiskCategory.textContent = assessment.label;
+  if (fuzzyQueue) fuzzyQueue.textContent = assessment.queue;
+  if (fuzzyWait) fuzzyWait.textContent = assessment.wait;
+  if (fuzzyPosition) fuzzyPosition.textContent = assessment.position;
+  if (fuzzyAction) fuzzyAction.textContent = assessment.action;
+
+  if (fuzzyRiskMeter) {
+    fuzzyRiskMeter.classList.remove("medium", "high");
+    if (colorClass !== "low") {
+      fuzzyRiskMeter.classList.add(colorClass);
+    }
+    if (options.animate) {
+      fuzzyRiskMeter.style.width = "0%";
+      requestAnimationFrame(() => {
+        fuzzyRiskMeter.style.width = `${riskPercent}%`;
+      });
+    } else {
+      fuzzyRiskMeter.style.width = `${riskPercent}%`;
+    }
+  }
+}
+
+function updateWellbeing(level) {
   stressButtons.forEach((button) => {
     button.classList.toggle("active", Number(button.dataset.level) === level);
   });
 
-  if (sleepValue === "less-4") {
-    statusText = level >= 4 ? "Rest First" : "Low Rest";
-    messageText = "Your check-in suggests low rest today. It may help to lower pressure, slow your pace, and focus on only one or two important tasks.";
-    dynamicTips.unshift("Protect your energy and take a short rest before high-pressure tasks");
-  } else if (sleepValue === "4-6") {
-    dynamicTips.unshift("Keep your schedule light and avoid overloading yourself");
-  }
+  const assessment = calculateFuzzyAssessment(level);
+  updateAdviceForAssessment(assessment);
+  renderReasoning(assessment);
 
-  if (pressureValue === "interview") {
-    dynamicTips.push("Practice one short interview answer instead of doing a full mock session");
-    summaryText = "Your current pressure seems linked to interviews, so small practice rounds and calmer preparation may help more than pushing too hard.";
-  } else if (pressureValue === "applications") {
-    dynamicTips.push("Set a simple application target for today, such as one or two quality submissions");
-    summaryText = "Your check-in suggests application pressure, so focusing on a few strong submissions may feel more manageable than doing too much at once.";
-  } else if (pressureValue === "direction") {
-    dynamicTips.push("List two roles you are curious about and compare them gently, without needing a perfect answer today");
-    summaryText = "You may be feeling uncertainty about career direction, so exploring options slowly and clearly could be more helpful than forcing a quick decision.";
-  } else if (pressureValue === "confidence") {
-    dynamicTips.push("Write down one recent strength or achievement before your next task");
-    summaryText = "Confidence looks like a key theme right now, so grounding yourself in small wins may help rebuild momentum.";
-  } else if (pressureValue === "deadlines") {
-    dynamicTips.push("Break your tasks into small steps and finish the easiest one first");
-    summaryText = "Your current stress may be driven by workload, so simplifying today’s tasks and reducing mental clutter can help.";
+  if (fuzzyAssessmentHasRun) {
+    renderFuzzyResult(assessment);
   }
-
-  if (energyValue === "low") {
-    dynamicTips.push("Choose lighter tasks first and delay high-pressure work if possible");
-  } else if (energyValue === "high") {
-    dynamicTips.push("Use your stronger energy for one meaningful task, not everything at once");
-  }
-
-  if (supportValue === "alone") {
-    dynamicTips.push("Reach out to a friend, mentor, or teammate for a quick check-in");
-  } else if (supportValue === "strong") {
-    dynamicTips.push("Use your support system well by sharing your current goal clearly");
-  }
-
-  dynamicTips.splice(4);
-
-  wellbeingMessage.textContent = messageText;
-  if (wellbeingStatusTitle) {
-    wellbeingStatusTitle.textContent = statusText;
-  }
-  if (wellbeingSummary) {
-    wellbeingSummary.textContent = summaryText;
-  }
-  wellbeingTips.innerHTML = "";
-  dynamicTips.forEach((tip) => {
-    const item = document.createElement("li");
-    item.textContent = tip;
-    wellbeingTips.appendChild(item);
-  });
 
   updateWellbeingDashboard(level);
+}
+
+function showWellbeingModal(assessment) {
+  if (!wellbeingAssessmentModal) {
+    return;
+  }
+
+  modalRiskCategory.textContent = assessment.shortLabel;
+  modalQueue.textContent = assessment.queue;
+  modalWait.textContent = assessment.wait;
+  wellbeingAssessmentModal.classList.remove("hidden");
+  wellbeingAssessmentModal.setAttribute("aria-hidden", "false");
+}
+
+function closeWellbeingModal() {
+  if (!wellbeingAssessmentModal) {
+    return;
+  }
+
+  wellbeingAssessmentModal.classList.add("hidden");
+  wellbeingAssessmentModal.setAttribute("aria-hidden", "true");
+}
+
+function runFuzzyAssessment() {
+  if (!runFuzzyAssessmentBtn || !fuzzyLoadingCard || !fuzzyProgressFill) {
+    renderFuzzyResult(calculateFuzzyAssessment(), { animate: true });
+    return;
+  }
+
+  const assessment = calculateFuzzyAssessment();
+  const duration = 2600;
+  const startedAt = performance.now();
+
+  if (fuzzyAnimationFrame) {
+    cancelAnimationFrame(fuzzyAnimationFrame);
+  }
+
+  runFuzzyAssessmentBtn.disabled = true;
+  runFuzzyAssessmentBtn.textContent = "Analyzing...";
+  fuzzyLoadingCard.classList.remove("hidden");
+  fuzzyProgressFill.style.width = "0%";
+  if (fuzzyProgressText) {
+    fuzzyProgressText.textContent = "0%";
+  }
+
+  const animate = (now) => {
+    const progress = clamp(((now - startedAt) / duration) * 100, 0, 100);
+    fuzzyProgressFill.style.width = `${progress}%`;
+    if (fuzzyProgressText) {
+      fuzzyProgressText.textContent = `${Math.round(progress)}%`;
+    }
+
+    if (progress < 100) {
+      fuzzyAnimationFrame = requestAnimationFrame(animate);
+      return;
+    }
+
+    fuzzyAssessmentHasRun = true;
+    fuzzyLoadingCard.classList.add("hidden");
+    runFuzzyAssessmentBtn.disabled = false;
+    runFuzzyAssessmentBtn.textContent = "Run Fuzzy Risk Assessment";
+    renderFuzzyResult(assessment, { animate: true });
+    showWellbeingModal(assessment);
+  };
+
+  fuzzyAnimationFrame = requestAnimationFrame(animate);
 }
 
 function tickClock() {
@@ -1936,9 +2190,18 @@ stressButtons.forEach((button) => {
 [wellbeingSleep, wellbeingPressure, wellbeingEnergy, wellbeingSupport].forEach((field) => {
   if (field) {
     field.addEventListener("change", () => {
-      const activeStress = document.querySelector(".stress-btn.active");
-      updateWellbeing(activeStress ? Number(activeStress.dataset.level) : 3);
+      updateWellbeing(getActiveStressLevel());
     });
+  }
+});
+
+if (runFuzzyAssessmentBtn) {
+  runFuzzyAssessmentBtn.addEventListener("click", runFuzzyAssessment);
+}
+
+[wellbeingModalBackdrop, wellbeingModalOk].forEach((button) => {
+  if (button) {
+    button.addEventListener("click", closeWellbeingModal);
   }
 });
 
