@@ -1,0 +1,2322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PathWise AI | Nextara</title>
+    <link rel="stylesheet" href="style2.css" />
+    <script defer src="js/prolog-api.js"></script>
+    <script defer src="script2.js"></script>
+    <style>
+      .swish-demo-card {
+        margin-top: 18px;
+        overflow: hidden;
+        border: 1px solid rgba(107, 63, 242, 0.16);
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(247, 243, 255, 0.88));
+        box-shadow: 0 18px 42px rgba(36, 19, 91, 0.08);
+      }
+
+      .swish-demo-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(107, 63, 242, 0.12);
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .swish-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 900;
+        color: #090536;
+      }
+
+      .swish-brand-icon {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #6f3cf0, #48c78e);
+        color: #fff;
+      }
+
+      .swish-brand strong {
+        font-size: 1.35rem;
+        letter-spacing: -0.03em;
+      }
+
+      .swish-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 0.9rem;
+      }
+
+      .swish-status {
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(72, 199, 142, 0.12);
+        color: #128852;
+        font-size: 0.8rem;
+        font-weight: 900;
+      }
+
+      .swish-status.offline {
+        background: rgba(245, 165, 36, 0.16);
+        color: #9a5a00;
+      }
+
+      .swish-demo-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+        min-height: 720px;
+      }
+
+      .swish-editor,
+      .swish-console {
+        min-width: 0;
+      }
+
+      .swish-editor {
+        border-right: 1px solid rgba(107, 63, 242, 0.14);
+        background: #fff;
+      }
+
+      .swish-pane-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(107, 63, 242, 0.1);
+      }
+
+      .swish-pane-head span {
+        color: var(--primary-dark);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .swish-program {
+        display: block;
+        width: 100%;
+        min-height: 650px;
+        max-height: 720px;
+        margin: 0;
+        padding: 16px;
+        border: 0;
+        overflow: auto;
+        color: #0015af;
+        background:
+          linear-gradient(90deg, rgba(247, 243, 255, 0.95) 0 58px, transparent 58px),
+          #fff;
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 0.86rem;
+        line-height: 1.55;
+        white-space: pre;
+        resize: vertical;
+        box-sizing: border-box;
+      }
+
+      .swish-console {
+        display: grid;
+        grid-template-rows: auto minmax(590px, 1fr) auto;
+        background: rgba(255, 252, 248, 0.88);
+      }
+
+      .swish-report-output {
+        min-height: 590px;
+        margin: 0;
+        padding: 18px;
+        overflow: auto;
+        color: #8a3700;
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 0.92rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+
+      .swish-query-bar {
+        display: grid;
+        grid-template-columns: auto 1fr auto auto;
+        gap: 10px;
+        align-items: center;
+        padding: 14px;
+        border-top: 1px solid rgba(107, 63, 242, 0.12);
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .swish-query-bar code {
+        color: #090536;
+        font-weight: 900;
+      }
+
+      .swish-program:focus {
+        outline: none;
+        caret-color: #4b16c9;
+        box-shadow: inset 0 0 0 2px rgba(107, 63, 242, 0.18);
+      }
+
+      .swish-query-bar select,
+      .swish-query-bar input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid rgba(107, 63, 242, 0.18);
+        border-radius: 14px;
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .swish-query-bar input {
+        font-family: "Consolas", "Courier New", monospace;
+        background: #fff;
+      }
+
+      .swish-run-btn {
+        padding: 12px 18px;
+        border: 0;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #7b4bff, #4b16c9);
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 16px 30px rgba(107, 63, 242, 0.22);
+      }
+
+      .swish-run-btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .swish-download-btn {
+        padding: 12px 16px;
+        border: 1px solid rgba(107, 63, 242, 0.2);
+        border-radius: 14px;
+        background: #fff;
+        color: var(--primary-dark);
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .swish-download-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px rgba(107, 63, 242, 0.14);
+      }
+
+      @media (max-width: 900px) {
+        .swish-demo-body {
+          grid-template-columns: 1fr;
+        }
+
+        .swish-editor {
+          border-right: 0;
+          border-bottom: 1px solid rgba(107, 63, 242, 0.14);
+        }
+
+        .swish-query-bar {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient ambient-left"></div>
+    <div class="ambient ambient-right"></div>
+
+    <div class="site-shell">
+      <header class="topbar" id="home">
+        <div class="header-brand">
+          <div class="brand-cluster">
+            <div class="logo-chip logo-upm">UPM</div>
+            <div class="logo-chip logo-putra">PUTRA</div>
+            <div class="logo-chip logo-msu">MSU</div>
+          </div>
+          <div class="brand-text">
+            <strong>PathWise AI</strong>
+            <span>Hackathon demo for career guidance and wellbeing support</span>
+          </div>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav" id="mainNav">
+          <a href="#home">Home</a>
+          <a href="#interview-demo">Demo</a>
+          <a href="#resume-builder">Resume</a>
+          <a href="#career-path">Careers</a>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#team">Team</a>
+          <a href="#footer">Contact</a>
+        </nav>
+
+        <div class="topbar-actions">
+          <a class="header-pill" href="#interview-demo">Nextara Demo</a>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+            <span class="theme-icon">◐</span>
+          </button>
+          <button class="login-btn" id="loginTriggerBtn" type="button">Login</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero-grid section-anchor">
+          <div class="hero-panel">
+            <span class="eyebrow">AI-Powered Career &amp; Life Companion</span>
+            <h1>PathWise AI</h1>
+            <h2>Personalized Career &amp; Life Companion</h2>
+            <p class="hero-copy">
+              An AI-powered Career &amp; Wellbeing Companion Platform that helps
+              students and job seekers prepare for interviews, build stronger
+              resumes, discover suitable career paths, and manage stress with
+              guided support.
+            </p>
+
+            <div class="hero-actions">
+              <a class="primary-btn" href="#interview-demo">Start Interview</a>
+              <a class="secondary-btn" href="#resume-builder">Build Resume</a>
+              <a class="secondary-btn" href="#career-path">Find Career Path</a>
+            </div>
+
+            <div class="hero-meta">
+              <div class="meta-card">
+                <span class="meta-label">3</span>
+                <strong>AI Interviewers</strong>
+              </div>
+              <div class="meta-card">
+                <span class="meta-label">Live</span>
+                <strong>Real-time Feedback</strong>
+              </div>
+              <div class="meta-card">
+                <span class="meta-label">Smart</span>
+                <strong>Personalized Guidance</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <img class="hero-visual-image" src="assets/home.png" alt="PathWise AI hero illustration" />
+          </div>
+        </section>
+
+        <section class="section-card interview-demo" id="interview-demo">
+          <div class="section-title centered">
+            <h3>AI Interview Practice</h3>
+          </div>
+
+          <div class="video-stage avatar-style-friendly" id="videoStage">
+            <div class="stage-topbar">
+              <div class="stage-status-group">
+                <span class="live-pill">LIVE</span>
+                <span class="stage-clock" id="stageClock">01:24</span>
+                <span class="call-mode-pill">AI Video Call Simulation</span>
+              </div>
+              <div class="device-status-row">
+                <span class="device-pill" id="cameraStatus">Camera Off</span>
+                <span class="device-pill" id="micStatus">Mic Ready</span>
+              </div>
+            </div>
+
+            <div class="stage-toolbar">
+              <div class="interview-panel-main">
+                <span class="mini-label stage-label">Your Interview Coaches</span>
+                <div class="speaker-grid">
+                  <button class="speaker-card" type="button" data-role="hr">
+                    <div class="speaker-avatar hr-avatar">
+                      <span class="speaker-wave" aria-hidden="true">Live</span>
+                      <img class="speaker-photo" src="assets/interview_hr_new.png" alt="HR AI avatar" />
+                    </div>
+                    <div class="speaker-meta">
+                      <div class="speaker-meta-top">
+                        <span class="speaker-online" aria-hidden="true"></span>
+                        <strong>HR AI</strong>
+                      </div>
+                      <span>Behavioral Expert</span>
+                      <span class="speaker-action">About This Interviewer</span>
+                    </div>
+                  </button>
+
+                  <button class="speaker-card" type="button" data-role="technical">
+                    <div class="speaker-avatar technical-avatar">
+                      <span class="speaker-wave" aria-hidden="true">Live</span>
+                      <img class="speaker-photo" src="assets/interview_technical_new.png" alt="Technical AI avatar" />
+                    </div>
+                    <div class="speaker-meta">
+                      <div class="speaker-meta-top">
+                        <span class="speaker-online" aria-hidden="true"></span>
+                        <strong>Technical AI</strong>
+                      </div>
+                      <span>Technical Expert</span>
+                      <span class="speaker-action">About This Interviewer</span>
+                    </div>
+                  </button>
+
+                  <button class="speaker-card active" type="button" data-role="manager">
+                    <div class="speaker-avatar manager-avatar">
+                      <span class="speaker-wave" aria-hidden="true">Live</span>
+                      <img class="speaker-photo" src="assets/interview_manager_new.png" alt="Manager AI avatar" />
+                    </div>
+                    <div class="speaker-meta">
+                      <div class="speaker-meta-top">
+                        <span class="speaker-online" aria-hidden="true"></span>
+                        <strong>Manager AI</strong>
+                      </div>
+                      <span>Management Expert</span>
+                      <span class="speaker-action">About This Interviewer</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="user-stage-card">
+                <div class="user-stage-head">
+                  <span class="mini-label stage-label">Your Camera</span>
+                  <span class="camera-indicator" id="cameraIndicator">Offline</span>
+                </div>
+                <div class="user-video-wrap">
+                  <video id="userVideo" autoplay muted playsinline></video>
+                  <div class="user-video-placeholder" id="userVideoPlaceholder">
+                    <div class="user-video-avatar">You</div>
+                    <strong>Camera is off</strong>
+                    <span>Open camera for a realistic mock interview experience.</span>
+                  </div>
+                </div>
+                <div class="camera-summary-grid">
+                  <div class="camera-summary-card">
+                    <span class="mini-label stage-label">Interview Agenda</span>
+                    <ul class="agenda-list">
+                      <li class="active">Introduction &amp; Background</li>
+                      <li>Role-specific Questions</li>
+                      <li>Problem Solving</li>
+                      <li>Behavioral Questions</li>
+                      <li>Closing &amp; Feedback</li>
+                    </ul>
+                  </div>
+                  <div class="camera-summary-card">
+                    <span class="mini-label stage-label">Session Overview</span>
+                    <div class="overview-stats">
+                      <div class="overview-item">
+                        <span>Total Time</span>
+                        <strong>30:00</strong>
+                      </div>
+                      <div class="overview-item">
+                        <span>Elapsed Time</span>
+                        <strong id="elapsedClock">01:24</strong>
+                      </div>
+                      <div class="overview-item">
+                        <span>Question</span>
+                        <strong id="overviewQuestionCounter">1 of 4</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="call-config-bar">
+              <div class="avatar-style-picker">
+                <span class="mini-label stage-label">Interview Style</span>
+                <div class="style-options">
+                  <button class="style-chip" type="button" data-avatar-style="professional">Professional</button>
+                  <button class="style-chip active" type="button" data-avatar-style="friendly">Friendly</button>
+                  <button class="style-chip" type="button" data-avatar-style="executive">Executive</button>
+                </div>
+              </div>
+
+              <div class="ai-response-box">
+                <span class="mini-label stage-label">AI Response</span>
+                <p id="aiResponseText">
+                  I am ready to start. Choose an interviewer, turn on your camera if
+                  you want, and begin the mock call.
+                </p>
+              </div>
+            </div>
+
+            <div class="stage-controls">
+              <button class="control-btn" id="startInterviewBtn" type="button">Start Session</button>
+              <button class="control-btn" id="openCameraBtn" type="button">Open Camera</button>
+              <button class="control-btn" id="closeCameraBtn" type="button">Close Camera</button>
+              <button class="control-btn" id="replayQuestionBtn" type="button">Replay Question</button>
+              <button class="control-btn" id="voiceAnswerBtn" type="button">Use Microphone</button>
+              <button class="control-btn danger-control" id="finishInterviewBtn" type="button">End Interview &amp; Report</button>
+              <span class="session-status" id="sessionStatus">Ready to begin</span>
+            </div>
+          </div>
+
+          <div class="demo-panels">
+            <article class="mini-panel qa-panel">
+              <span class="mini-label">Current Question (<span id="questionRoleLabel">Manager AI</span>)</span>
+              <p id="questionText">
+                Tell me about yourself and the kind of role you want to grow
+                into.
+              </p>
+              <div class="question-footer">
+                <span id="questionCounter">Question 1 of 4</span>
+                <button class="text-action" id="nextQuestionBtn" type="button">Load another question</button>
+              </div>
+            </article>
+
+            <article class="mini-panel answer-panel">
+              <label class="mini-label" for="answerInput">Your Answer</label>
+              <textarea
+                id="answerInput"
+                rows="5"
+                placeholder="Type your response here. Mention your actions, results, and what you learned."
+              ></textarea>
+              <div class="answer-actions">
+                <span class="timer-note" id="voiceSupportNote">Voice mode works best in Chromium-based browsers.</span>
+                <button class="primary-btn full-btn" id="submitAnswerBtn" type="button">
+                  Submit Answer
+                </button>
+              </div>
+            </article>
+
+            <article class="mini-panel feedback-panel">
+              <span class="mini-label">AI Feedback</span>
+              <div class="feedback-header">
+                <strong id="feedbackHeadline">Ready when you are</strong>
+                <span id="feedbackTone" class="feedback-tone neutral">Waiting for answer</span>
+              </div>
+
+              <div class="feedback-metric">
+                <span>Confidence</span>
+                <div class="metric-line">
+                  <div class="metric-fill" id="confidenceFill"></div>
+                </div>
+                <strong id="confidenceScore">0%</strong>
+              </div>
+
+              <div class="feedback-metric">
+                <span>Clarity</span>
+                <div class="metric-line">
+                  <div class="metric-fill" id="clarityFill"></div>
+                </div>
+                <strong id="clarityScore">0%</strong>
+              </div>
+
+              <div class="feedback-metric">
+                <span>Relevance</span>
+                <div class="metric-line">
+                  <div class="metric-fill" id="relevanceFill"></div>
+                </div>
+                <strong id="relevanceScore">0%</strong>
+              </div>
+
+              <p class="tip-box" id="feedbackTip">
+                Tip: Use a specific example and explain the result you achieved.
+              </p>
+            </article>
+          </div>
+
+          <div class="stage-note-bar">
+            <span class="session-note-copy">Session updates appear in the control bar above.</span>
+            <span class="session-tip">Tip: Take your time. Think before you answer.</span>
+          </div>
+
+          <article class="mini-panel report-panel hidden" id="sessionReport">
+            <div class="report-head">
+              <div>
+                <span class="mini-label">Interview Report</span>
+                <h4 id="reportRoleTitle">Technical AI Session Summary</h4>
+                <p id="reportVerdict">
+                  Complete a short voice or text interview to unlock the final
+                  strengths and improvement report.
+                </p>
+              </div>
+              <div class="report-score">
+                <span>Overall Score</span>
+                <strong id="reportOverallScore">--</strong>
+              </div>
+            </div>
+
+            <div class="report-grid">
+              <div class="report-card">
+                <strong>Pros</strong>
+                <ul class="bullet-list compact" id="reportPros"></ul>
+              </div>
+              <div class="report-card">
+                <strong>What to Improve</strong>
+                <ul class="bullet-list compact" id="reportCons"></ul>
+              </div>
+              <div class="report-card">
+                <strong>Next Steps</strong>
+                <ul class="bullet-list compact" id="reportNextSteps"></ul>
+              </div>
+            </div>
+
+            <div class="report-breakdown" id="reportBreakdown"></div>
+            <button class="secondary-btn" id="downloadReportBtn" type="button">Download Report</button>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="section-card solution-card">
+            <div class="section-title">
+              <h3>AI Solutions</h3>
+            </div>
+            <p class="section-lead">
+              PathWise AI combines practical career development with wellbeing
+              support so users can build confidence, reduce confusion, and make
+              better career decisions.
+            </p>
+
+            <div class="solution-master-card">
+              <div class="solution-columns">
+                <div class="solution-box flat-box">
+                  <span class="solution-badge">1</span>
+                  <h4>AI Interview Coaching System</h4>
+                  <p>Role-based mock interviews with voice or text answers and instant response scoring.</p>
+                  <ul class="bullet-list compact">
+                    <li>HR AI for behavioral and personality questions</li>
+                    <li>Technical AI for skill-based and problem-solving questions</li>
+                    <li>Manager AI for decision-making and real-world questions</li>
+                    <li>Evaluates confidence, clarity, relevance, and answer quality</li>
+                  </ul>
+                  <button class="text-action jump-btn" type="button" data-jump="#interview-demo">
+                    Try Interview Coach
+                  </button>
+                </div>
+
+                <div class="solution-box flat-box">
+                  <span class="solution-badge">2</span>
+                  <h4>AI Career &amp; Resume System</h4>
+                  <p>Build a professional CV, discover suitable roles, and receive balanced guidance for growth.</p>
+                  <ul class="bullet-list compact">
+                    <li>Resume Builder AI with role-specific suggestions</li>
+                    <li>Career Recommendation based on skills, interests, and profile</li>
+                    <li>Mental Support for balanced and realistic career growth</li>
+                  </ul>
+                  <button class="text-action jump-btn" type="button" data-jump="#resume-builder">
+                    Explore Now
+                  </button>
+                </div>
+              </div>
+
+              <div class="mini-highlight-grid">
+                <div class="mini-highlight">
+                  <strong>Builds confidence</strong>
+                  <span>Structured role-based practice prepares users for interviews.</span>
+                </div>
+                <div class="mini-highlight">
+                  <strong>Reduces confusion</strong>
+                  <span>Connects user profile, wellbeing, and career direction in one flow.</span>
+                </div>
+                <div class="mini-highlight">
+                  <strong>Improves employability</strong>
+                  <span>Supports stronger resumes, interview readiness, and career discovery.</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="section-card wellbeing-card" id="wellbeing">
+            <div class="section-title">
+              <h3>AI Job Priority &amp; Support Matching</h3>
+            </div>
+            <p class="section-lead">
+              PathWise AI checks the user’s career urgency, stress level,
+              support level, sleep condition, and current mood to estimate who
+              needs faster job-finding support. Higher priority users can be
+              guided first for resume improvement, interview preparation, job
+              matching, and company connection support.
+            </p>
+
+            <div class="wellbeing-layout vertical-layout">
+              <div class="wellbeing-top-card">
+                <div class="stress-slider-card">
+                  <div>
+                    <p class="wellbeing-question">Stress Level</p>
+                    <span class="stress-helper">0 = very calm, 10 = extremely stressed</span>
+                  </div>
+                  <strong id="stressValueText">Current stress: 5 / 10</strong>
+                  <input id="stressRange" type="range" min="0" max="10" value="5" />
+                  <div class="stress-scale">
+                    <span>0 Calm</span>
+                    <span>10 Extremely Stressed</span>
+                  </div>
+                </div>
+                <div class="wellbeing-check-grid">
+                  <label>
+                    Job / Career Urgency
+                    <select id="wellbeingPressure">
+                      <option value="interview" selected>Upcoming interview</option>
+                      <option value="internship">Internship search</option>
+                      <option value="fulltime-asap">Need full-time job urgently</option>
+                      <option value="international-student">International student securing work</option>
+                      <option value="graduation">Final semester job preparation</option>
+                      <option value="part-time-student">Part-time student needing income</option>
+                      <option value="financial">Financial pressure to find work</option>
+                      <option value="family">Family pressure to get a job</option>
+                      <option value="applications">Many job applications but no reply</option>
+                      <option value="career-uncertain">Career direction unsure</option>
+                      <option value="deadlines">Assignment / workload deadlines</option>
+                      <option value="low-urgency">Low urgency / exploring only</option>
+                    </select>
+                  </label>
+                  <label>
+                    Support Level
+                    <select id="wellbeingSupport">
+                      <option value="alone">Mostly alone / no support</option>
+                      <option value="some" selected>Some support</option>
+                      <option value="parents">Parents or family support</option>
+                      <option value="friends">Friends support</option>
+                      <option value="mentor">Mentor / lecturer support</option>
+                      <option value="strong">Strong support system</option>
+                    </select>
+                  </label>
+                  <label>
+                    Social Isolation
+                    <select id="wellbeingIsolation">
+                      <option value="low">Low (friends/family available)</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="high">High (mostly alone)</option>
+                    </select>
+                  </label>
+                  <label>
+                    Sleep Hours
+                    <select id="wellbeingSleep">
+                      <option value="less-4">Less than 4</option>
+                      <option value="4-6">4 to 6</option>
+                      <option value="6-8" selected>6 to 8</option>
+                      <option value="8-plus">More than 8</option>
+                    </select>
+                  </label>
+                  <label>
+                    Mood Today
+                    <select id="wellbeingEnergy">
+                      <option value="happy">😊 Happy</option>
+                      <option value="calm">🙂 Calm</option>
+                      <option value="relaxed">😌 Relaxed</option>
+                      <option value="neutral" selected>😐 Neutral</option>
+                      <option value="confused">😕 Confused</option>
+                      <option value="worried">😟 Worried</option>
+                      <option value="sad">😢 Sad</option>
+                      <option value="tired">😫 Tired</option>
+                      <option value="frustrated">😤 Frustrated</option>
+                      <option value="anxious">😰 Anxious</option>
+                      <option value="overwhelmed">😵 Overwhelmed</option>
+                      <option value="sleepy">😴 Sleepy</option>
+                      <option value="motivated">💪 Motivated</option>
+                      <option value="focused">🧠 Focused</option>
+                      <option value="drained">😶 Emotionally drained</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="scenario-actions" aria-label="Demo scenarios">
+                  <button class="scenario-btn" type="button" data-scenario="ryan">Scenario 1: Ryan</button>
+                  <button class="scenario-btn" type="button" data-scenario="pinky">Scenario 2: Pinky</button>
+                  <button class="scenario-btn" type="button" data-scenario="zarul">Scenario 3: Zarul</button>
+                </div>
+                <button class="fuzzy-submit-btn" id="runFuzzyAssessmentBtn" type="button">
+                  Run Fuzzy Risk Assessment
+                </button>
+                <span class="reasoning-mode-badge" id="reasoningModeBadge">Reasoning Mode: Prolog Backend (Local)</span>
+                <div class="wellbeing-status-strip">
+                  <div class="wellbeing-status-pill">
+                    <span class="mini-label">Current Emotional State</span>
+                    <strong id="wellbeingStatusTitle">Good</strong>
+                  </div>
+                  <p class="wellbeing-status-copy">A simple emotional check-in to keep career preparation manageable and supportive.</p>
+                </div>
+                <div class="fuzzy-loading-card hidden" id="fuzzyLoadingCard" aria-live="polite">
+                  <strong>Analyzing your wellbeing and career urgency signals...</strong>
+                  <div class="fuzzy-factor-list">
+                    <span>&#10003; Stress level received</span>
+                    <span>&#10003; Job urgency checked</span>
+                    <span>&#10003; Support level reviewed</span>
+                    <span>&#10003; Social isolation reviewed</span>
+                    <span>&#10003; Sleep and mood considered</span>
+                    <span>&#10003; IoT signal simulated</span>
+                    <span>&#10003; Fuzzy logic rules applied</span>
+                  </div>
+                  <p>Applying fuzzy logic rules...</p>
+                  <div class="fuzzy-progress-track">
+                    <div class="fuzzy-progress-fill" id="fuzzyProgressFill"></div>
+                  </div>
+                  <small id="fuzzyProgressText">0%</small>
+                </div>
+              </div>
+
+              <div class="wellbeing-advice">
+                <div class="wellbeing-advice-text">
+                  <span class="mini-label">Your Job Support Advice</span>
+                  <p id="wellbeingMessage">
+                    Based on your current inputs, PathWise AI can guide you with
+                    career planning, resume improvement, interview preparation,
+                    and job-matching priority.
+                  </p>
+                  <div class="wellbeing-summary-card fuzzy-result-card is-low" id="fuzzyResultCard">
+                    <div class="fuzzy-result-head">
+                      <strong>Fuzzy Risk Assessment Result</strong>
+                      <span class="risk-badge low" id="fuzzyCategoryBadge">READY</span>
+                    </div>
+                    <p id="wellbeingSummary">
+                      Choose your factors and run the fuzzy assessment to estimate job-support priority.
+                    </p>
+                    <div class="risk-meter">
+                      <div class="risk-meter-fill" id="fuzzyRiskMeter"></div>
+                    </div>
+                    <div class="fuzzy-result-grid">
+                      <div>
+                        <span>Risk Score</span>
+                        <strong id="fuzzyRiskScore">--</strong>
+                      </div>
+                      <div>
+                        <span>Category</span>
+                        <strong id="fuzzyRiskCategory">Waiting</strong>
+                      </div>
+                      <div>
+                        <span>Queue</span>
+                        <strong id="fuzzyQueue">Run assessment</strong>
+                      </div>
+                      <div>
+                        <span>Estimated response</span>
+                        <strong id="fuzzyWait">--</strong>
+                      </div>
+                      <div>
+                        <span>Position</span>
+                        <strong id="fuzzyPosition">--</strong>
+                      </div>
+                      <div>
+                        <span>Suggested action</span>
+                        <strong id="fuzzyAction">Choose factors first</strong>
+                      </div>
+                    </div>
+                  </div>
+                  <details class="fuzzy-reasoning-card" id="fuzzyReasoningCard">
+                    <summary>See AI Reasoning</summary>
+                    <div class="fuzzy-reasoning-grid">
+                      <span>Stress: <strong id="reasonStress">0.6</strong></span>
+                      <span>Urgency: <strong id="reasonUrgency">0.9</strong></span>
+                      <span>Support: <strong id="reasonSupport">0.5</strong></span>
+                      <span>Social Isolation: <strong id="reasonIsolation">0.5</strong></span>
+                      <span>Sleep risk: <strong id="reasonSleep">0.3</strong></span>
+                      <span>Mood risk: <strong id="reasonEnergy">0.5</strong></span>
+                      <span>IoT Risk: <strong id="reasonIotRisk">0.3</strong></span>
+                      <span>Rule: <strong id="reasonRule">IF stress HIGH AND urgency HIGH THEN risk HIGH</strong></span>
+                      <span>Fuzzy: <strong id="reasonFuzzy">min(0.6,0.9)=0.6</strong></span>
+                      <span>Final: <strong id="reasonFinal">max(0.6,0.5)=0.6</strong></span>
+                      <span>Category: <strong id="reasonCategory">MEDIUM</strong></span>
+                      <span>Queue: <strong id="reasonQueue">PRIORITY SUPPORT</strong></span>
+                      <span>Estimated Response: <strong id="reasonWait">12-24 hrs</strong></span>
+                      <span>Suggested Action: <strong id="reasonAction">Guided support</strong></span>
+                    </div>
+                    <p class="reason-explain" id="reasonExplain">
+                      Based on the given stress, urgency, support, social isolation,
+                      sleep, mood, and IoT signals, the system explains why this queue
+                      was selected.
+                    </p>
+                    <pre><code>high_risk(Person,Degree):-
+stress(Person,S),
+urgency(Person,U),
+Degree is min(S,U).
+
+final_risk(Person,FinalDegree):-
+    high_risk(Person,D1),
+    support_risk(Person,D2),
+    isolation_risk(Person,D3),
+    sleep_risk(Person,D4),
+    mood_risk(Person,D5),
+    FinalDegree is max(D1,max(D2,max(D3,max(D4,D5)))).</code></pre>
+                    <small>This is a frontend demo showing how fuzzy logic reasoning can be represented in a real user interface.</small>
+                  </details>
+                  <ul class="bullet-list compact" id="wellbeingTips">
+                    <li>Take short breaks and breathe</li>
+                    <li>Stay active and drink water</li>
+                    <li>Talk to someone you trust</li>
+                    <li>Focus on progress, not perfection</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="intelligent-showcase" id="logic-showcase">
+              <div class="section-title">
+                <h3>Intelligent System Logic Showcase</h3>
+              </div>
+              <p class="section-lead">
+                CAI20103 demo flow: fuzzy reasoning, multi-agent decision making,
+                game strategy, explainable AI, IoT simulation, and responsible AI
+                are visualized from the same job-support priority assessment.
+              </p>
+
+              <div class="intelligent-showcase-grid">
+                <div class="logic-card agent-card">
+                  <span class="mini-label">Chapter 10: Multi-Agent System</span>
+                  <h4>Agent Flow</h4>
+                  <div class="agent-flow">
+                    <div>
+                      <strong>Detection Agent</strong>
+                      <span id="agentDetection">Risk detected = --</span>
+                    </div>
+                    <div>
+                      <strong>Decision Agent</strong>
+                      <span id="agentDecision">Category = Waiting</span>
+                    </div>
+                    <div>
+                      <strong>Planning Agent</strong>
+                      <span id="agentPlanning">Plan = Run assessment</span>
+                    </div>
+                    <div>
+                      <strong>Support Agent</strong>
+                      <span id="agentSupport">Queue = --</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="logic-card pipeline-card">
+                  <span class="mini-label">Final Pipeline Requirement</span>
+                  <h4>Decision Pipeline</h4>
+                  <div class="pipeline-steps">
+                    <span data-pipeline-step="text">Text Input</span>
+                    <span data-pipeline-step="fuzzy">Fuzzy Logic</span>
+                    <span data-pipeline-step="agent">Agent Reasoning</span>
+                    <span data-pipeline-step="planning">Planning</span>
+                    <span data-pipeline-step="minimax">Game Strategy</span>
+                    <span data-pipeline-step="iot">IoT</span>
+                    <span data-pipeline-step="xai">Explainable AI</span>
+                  </div>
+                </div>
+
+                <div class="logic-card iot-card">
+                  <span class="mini-label">Chapter 13: IoT Simulation</span>
+                  <h4>Sensor Signals</h4>
+                  <div class="iot-grid">
+                    <div><span>Heart Rate</span><strong id="iotHeartRate">82 bpm</strong></div>
+                    <div><span>Sleep Hours</span><strong id="iotSleepHours">7 hrs</strong></div>
+                    <div><span>Activity Level</span><strong id="iotActivity">Medium</strong></div>
+                    <div><span>Status</span><strong id="iotStatus">Normal</strong></div>
+                    <div><span>IoT Risk</span><strong id="iotRisk">0.30</strong></div>
+                  </div>
+                </div>
+
+                <div class="logic-card minimax-card">
+                  <span class="mini-label">Chapter 11: Minimax / Game Strategy</span>
+                  <h4>Support Strategy</h4>
+                  <div class="utility-list">
+                    <div><span>Immediate Support</span><strong>90 utility</strong></div>
+                    <div><span>Guided Support</span><strong>70 utility</strong></div>
+                    <div><span>General Support</span><strong>40 utility</strong></div>
+                  </div>
+                  <p><strong id="minimaxStrategy">Selected strategy: Waiting</strong></p>
+                  <small id="minimaxReason">Selected after the fuzzy risk score is calculated.</small>
+                </div>
+
+                <div class="logic-card ethics-card">
+                  <span class="mini-label">Chapter 14: Responsible / Ethical AI</span>
+                  <h4>Responsible AI Principles</h4>
+                  <div class="ethics-list">
+                    <span>&#10003; Privacy</span>
+                    <span>&#10003; Fairness</span>
+                    <span>&#10003; Transparency</span>
+                    <span>&#10003; Human Control</span>
+                    <span>&#10003; System Limitations</span>
+                  </div>
+                  <p>This prototype supports decision-making only. Serious wellbeing decisions should still involve a human advisor.</p>
+                </div>
+              </div>
+            </div>
+            <div class="swish-demo-card" id="prolog-swish-demo">
+              <div class="swish-demo-topbar">
+                <div class="swish-brand">
+                  <span class="swish-brand-icon">⚙</span>
+                  <strong>SWISH</strong>
+                  <span>PathWise Prolog Logic Demo</span>
+                </div>
+                <div class="swish-menu">
+                  <span>File</span>
+                  <span>Edit</span>
+                  <span>Examples</span>
+                  <span>Help</span>
+                </div>
+                <span class="swish-status offline" id="swishBackendStatus">Prolog backend waiting</span>
+              </div>
+
+              <div class="swish-demo-body">
+                <div class="swish-editor">
+                  <div class="swish-pane-head">
+                    <span>Program</span>
+                    <small>CAI20103 fuzzy logic, agents, minimax, IoT, XAI, ethics</small>
+                  </div>
+                  <textarea class="swish-program" id="swishProgramCode" spellcheck="false">% Fuzzy Logic Simple Example: Youth Risk Level
+
+% ------------------------------
+% FINAL SYSTEM PIPELINE
+% call: system_pipeline.
+% ------------------------------
+
+system_pipeline :-
+    nl,
+    write('Final System Pipeline'), nl,
+    write('Text Input -&gt; Fuzzy Risk Assessment -&gt; Multi-Agent Decision -&gt; Planning -&gt; Game Strategy (Minimax) -&gt; IoT Integration -&gt; Final Explainable Decision'), nl.
+
+% ------------------------------
+% TEST SCENARIOS (3 predefined cases)
+% ------------------------------
+
+stress(ryan, 0.9).
+stress(pinky, 0.6).
+stress(zarul, 0.5).
+
+urgency(ryan, 0.8).
+urgency(pinky, 0.7).
+urgency(zarul, 0.4).
+
+no_support(ryan, 0.9).
+no_support(pinky, 0.2).
+no_support(zarul, 0.8).
+
+social_isolation(ryan, 0.8).
+social_isolation(pinky, 0.3).
+social_isolation(zarul, 0.7).
+
+% ------------------------------
+% PART A: FUZZY LOGIC &amp; UNCERTAINTY
+% ------------------------------
+
+fuzzy_and(A, B, Result) :-
+    Result is min(A, B).
+
+fuzzy_or(A, B, Result) :-
+    Result is max(A, B).
+
+high_risk(Person, Degree) :-
+    stress(Person, StressDegree),
+    urgency(Person, UrgencyDegree),
+    fuzzy_and(StressDegree, UrgencyDegree, Degree).
+
+support_risk(Person, Degree) :-
+    no_support(Person, Degree).
+
+isolation_risk(Person, Degree) :-
+    social_isolation(Person, Degree).
+
+final_risk(Person, FinalDegree) :-
+    high_risk(Person, D1),
+    support_risk(Person, D2),
+    isolation_risk(Person, D3),
+    fuzzy_or(D1, D2, Temp1),
+    fuzzy_or(Temp1, D3, FinalDegree).
+
+risk_category(Person, high) :-
+    final_risk(Person, Degree),
+    Degree &gt;= 0.7.
+
+risk_category(Person, medium) :-
+    final_risk(Person, Degree),
+    Degree &gt;= 0.4,
+    Degree &lt; 0.7.
+
+risk_category(Person, low) :-
+    final_risk(Person, Degree),
+    Degree &lt; 0.4.
+
+queue_priority(Person, 'URGENT SUPPORT', '0-2 hrs', '#1 in queue', 'Immediate wellbeing and career support') :-
+    final_risk(Person, Degree),
+    Degree &gt;= 0.8.
+
+queue_priority(Person, 'PRIORITY SUPPORT', '12-24 hrs', '#7 in queue', 'Guided wellbeing support') :-
+    final_risk(Person, Degree),
+    Degree &gt;= 0.4,
+    Degree &lt; 0.8.
+
+queue_priority(Person, 'STANDARD SUPPORT', '2-3 days', '#18 in queue', 'General career and wellbeing guidance') :-
+    final_risk(Person, Degree),
+    Degree &lt; 0.4.
+
+% ------------------------------
+% PART B: MULTI-AGENT SYSTEM
+% ------------------------------
+
+agent(detection_agent).
+agent(decision_agent).
+agent(planning_agent).
+agent(support_agent).
+
+detection_agent(Person, Score) :-
+    final_risk(Person, Score).
+
+decision_agent(Person, Category) :-
+    risk_category(Person, Category).
+
+planning_agent(Person, 'Immediate counselling, job support, and mentor contact') :-
+    risk_category(Person, high).
+
+planning_agent(Person, 'Guided wellbeing support, resume review, and interview preparation') :-
+    risk_category(Person, medium).
+
+planning_agent(Person, 'General career guidance and self-care tips') :-
+    risk_category(Person, low).
+
+support_agent(Person, Queue, WaitTime, Position, Action) :-
+    queue_priority(Person, Queue, WaitTime, Position, Action).
+
+% ------------------------------
+% PART C: STRATEGIC DECISION / MINIMAX STYLE
+% ------------------------------
+
+resource_option(immediate_support, 90).
+resource_option(guided_support, 70).
+resource_option(general_support, 40).
+
+best_strategy(Person, immediate_support) :-
+    final_risk(Person, Score),
+    Score &gt;= 0.8.
+
+best_strategy(Person, guided_support) :-
+    final_risk(Person, Score),
+    Score &gt;= 0.4,
+    Score &lt; 0.8.
+
+best_strategy(Person, general_support) :-
+    final_risk(Person, Score),
+    Score &lt; 0.4.
+
+% ------------------------------
+% PART E: IOT-BASED SIMULATION
+% ------------------------------
+
+heart_rate(ryan, 105).
+heart_rate(pinky, 88).
+heart_rate(zarul, 76).
+
+sleep_hours(ryan, 4).
+sleep_hours(pinky, 6).
+sleep_hours(zarul, 7).
+
+activity_level(ryan, low).
+activity_level(pinky, medium).
+activity_level(zarul, medium).
+
+iot_risk(Person, 0.8) :-
+    heart_rate(Person, HR),
+    sleep_hours(Person, Sleep),
+    HR &gt;= 100,
+    Sleep &lt; 5.
+
+iot_risk(Person, 0.5) :-
+    heart_rate(Person, HR),
+    sleep_hours(Person, Sleep),
+    HR &gt;= 85,
+    Sleep &gt;= 5,
+    Sleep &lt; 7.
+
+iot_risk(Person, 0.2) :-
+    heart_rate(Person, HR),
+    sleep_hours(Person, Sleep),
+    HR &lt; 85,
+    Sleep &gt;= 7.
+
+final_risk_with_iot(Person, FinalScore) :-
+    final_risk(Person, FuzzyScore),
+    iot_risk(Person, IotScore),
+    fuzzy_or(FuzzyScore, IotScore, FinalScore).
+
+% ------------------------------
+% PART D: EXPLAINABLE AI
+% ------------------------------
+
+xai_report(Person) :-
+    stress(Person, Stress),
+    urgency(Person, Urgency),
+    no_support(Person, Support),
+    social_isolation(Person, Isolation),
+    final_risk(Person, Score),
+    risk_category(Person, Category),
+    queue_priority(Person, Queue, WaitTime, Position, Action).
+
+% ------------------------------
+% PART F: ETHICAL AI PRINCIPLES
+% ------------------------------
+
+ethical_principle(privacy, 'Only necessary wellbeing and career data should be collected.').
+ethical_principle(fairness, 'Support priority should not discriminate against users.').
+ethical_principle(transparency, 'The system must explain why each decision was made.').
+ethical_principle(human_control, 'Final serious decisions should involve a human advisor.').
+ethical_principle(limitation, 'This is a support tool, not a medical diagnosis system.').
+
+% ------------------------------
+% FINAL CLEAN SYSTEM OUTPUT
+% ------------------------------
+
+run_full_system(Person) :-
+    final_risk(Person, Score),
+    risk_category(Person, Category),
+    queue_priority(Person, Queue, WaitTime, Position, Action),
+    multi_agent_report(Person),
+    strategy_report(Person),
+    iot_report(Person),
+    xai_report(Person).</textarea>
+                </div>
+
+                <div class="swish-console">
+                  <div class="swish-pane-head">
+                    <span>Output</span>
+                    <small>Result returned from local SWI-Prolog backend</small>
+                  </div>
+                  <pre class="swish-report-output" id="swishReportOutput">Type a Prolog query and press Run.
+
+Expected local flow:
+1. Start backend: swipl backend/pathwise_server.pl
+2. Open index2.html with Live Server or python -m http.server 5500
+3. Run query here: run_full_system(Person), ethical_principle., or show_ethics.</pre>
+                  <div class="swish-query-bar">
+                    <code>?-</code>
+                    <input id="swishQueryInput" type="text" value="run_full_system(zarul)." aria-label="Type Prolog query" />
+                    <button class="swish-run-btn" id="swishRunBtn" type="button">Run!</button>
+                    <button class="swish-download-btn" id="swishDownloadBtn" type="button">Download .pl</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="wellbeing-modal hidden" id="wellbeingAssessmentModal" aria-hidden="true">
+              <button class="wellbeing-modal-backdrop" id="wellbeingModalBackdrop" type="button" aria-label="Close assessment result"></button>
+              <div class="wellbeing-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="wellbeingModalTitle">
+                <span class="eyebrow">Assessment Complete</span>
+                <h3 id="wellbeingModalTitle">Your fuzzy risk level: <span id="modalRiskCategory">LOW</span></h3>
+                <p>Queue: <strong id="modalQueue">STANDARD SUPPORT</strong></p>
+                <p>Estimated support: <strong id="modalWait">2-3 days</strong></p>
+                <p>Position: <strong id="modalPosition">#18 in queue</strong></p>
+                <p>PathWise AI will use this priority level to decide how quickly the user should receive AI job-matching, resume, interview, and company connection support.</p>
+                <button class="primary-btn" id="wellbeingModalOk" type="button">OK</button>
+              </div>
+            </div>
+          </article>
+
+            <article class="section-card resume-card section-anchor" id="resume-builder">
+              <div class="section-title">
+                <h3>AI Resume Builder</h3>
+              </div>
+              <p class="section-lead">
+                Enter academic, personal, and career details to generate a
+                polished CV preview that can be printed or saved as a PDF-style
+                resume.
+              </p>
+
+              <div class="resume-layout">
+                <form class="resume-form" id="resumeForm">
+                  <div class="form-grid-two">
+                    <label>
+                      Full Name
+                      <input id="resumeName" type="text" value="Zarul H." />
+                    </label>
+                    <label>
+                      Target Role
+                      <input id="resumeTargetRole" type="text" value="Front End Developer" />
+                    </label>
+                  </div>
+
+                  <div class="form-grid-two">
+                    <label>
+                      Email
+                      <input id="resumeEmail" type="email" value="zarul@example.com" />
+                    </label>
+                    <label>
+                      Phone
+                      <input id="resumePhone" type="text" value="+60 12-345 6789" />
+                    </label>
+                  </div>
+
+                  <div class="form-grid-two">
+                    <label>
+                      Location
+                      <input id="resumeLocation" type="text" value="Kuala Lumpur, Malaysia" />
+                    </label>
+                    <label>
+                      LinkedIn / Portfolio
+                      <input id="resumePortfolio" type="text" value="linkedin.com/in/zarulh" />
+                    </label>
+                  </div>
+
+                  <div class="form-grid-two">
+                    <label>
+                      University / Institution
+                      <input id="resumeUniversity" type="text" value="Management and Science University (MSU)" />
+                    </label>
+                    <label>
+                      Education
+                      <input id="resumeEducation" type="text" value="BS in Computer Science" />
+                    </label>
+                  </div>
+
+                  <label>
+                    Professional Summary
+                    <textarea id="resumeSummary" rows="3">Motivated front-end developer with strong foundations in HTML, CSS, JavaScript, and user-focused product design.</textarea>
+                  </label>
+
+                  <label>
+                    Skills (comma separated)
+                    <input id="resumeSkills" type="text" value="JavaScript, HTML, CSS, Python, SQL, UI Design, Git" />
+                  </label>
+
+                  <label>
+                    Work Experience
+                    <textarea id="resumeExperience" rows="4">Intern Web Developer at XYZ Tech
+- Built responsive landing pages
+- Collaborated with designers and QA
+- Improved page load speed and UI consistency</textarea>
+                  </label>
+
+                  <label>
+                    Projects
+                    <textarea id="resumeProjects" rows="4">PathWise AI - Career companion hackathon demo
+Personal Portfolio Website
+Task Management App</textarea>
+                  </label>
+
+                  <div class="form-grid-two">
+                    <label>
+                      Certifications / Courses
+                      <textarea id="resumeCertifications" rows="3">Google UX Design
+Responsive Web Design Certificate</textarea>
+                    </label>
+                    <label>
+                      Achievements / Leadership
+                      <textarea id="resumeAchievements" rows="3">Hackathon participant
+Led class project presentation
+Active university tech club member</textarea>
+                    </label>
+                  </div>
+
+                </form>
+
+                <div class="resume-preview" id="resumePreview">
+                  <div class="resume-preview-header">
+                    <strong id="previewName">Zarul H.</strong>
+                    <span id="previewRole">Front End Developer</span>
+                  </div>
+                  <div class="resume-preview-contact" id="previewContact">
+                    zarul@example.com • +60 12-345 6789 • Kuala Lumpur, Malaysia • linkedin.com/in/zarulh
+                  </div>
+                  <div class="resume-preview-body">
+                    <div>
+                      <h4>Professional Summary</h4>
+                      <p id="previewSummary">Motivated front-end developer with strong foundations in HTML, CSS, JavaScript, and user-focused product design.</p>
+                    </div>
+                    <div>
+                      <h4>Education</h4>
+                      <p id="previewEducation">BS in Computer Science</p>
+                      <p class="preview-subtext" id="previewUniversity">Management and Science University (MSU)</p>
+                    </div>
+                    <div>
+                      <h4>Skills</h4>
+                      <div class="tag-list" id="previewSkills"></div>
+                    </div>
+                    <div>
+                      <h4>Work Experience</h4>
+                      <p id="previewExperience">Intern Web Developer at XYZ Tech</p>
+                    </div>
+                    <div>
+                      <h4>Projects</h4>
+                      <p id="previewProjects">PathWise AI - Career companion hackathon demo</p>
+                    </div>
+                    <div>
+                      <h4>Certifications</h4>
+                      <p id="previewCertifications">Google UX Design</p>
+                    </div>
+                    <div>
+                      <h4>Achievements</h4>
+                      <p id="previewAchievements">Hackathon participant</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="resume-actions">
+                <button class="primary-btn full-btn" id="generateResumeBtn" type="button">
+                  Generate Resume
+                </button>
+                <button class="secondary-btn full-btn" id="downloadResumePdfBtn" type="button">
+                  Print / Download PDF CV
+                </button>
+              </div>
+            </article>
+
+            <article class="section-card career-card section-anchor" id="career-path">
+              <div class="section-title">
+                <h3>Career Recommendation</h3>
+              </div>
+              <p class="section-lead">
+                This recommender goes beyond technical skills by also checking
+                interests, university background, personality, stress tolerance,
+                work style, communication, creativity, leadership, and comfort
+                with data.
+              </p>
+
+              <form class="career-form" id="careerForm">
+                <div class="career-top-fields expanded-career-fields">
+                  <label>
+                    Skills
+                    <input id="careerSkills" type="text" value="JavaScript, HTML, CSS, UI design" />
+                  </label>
+                  <label>
+                    Interests
+                    <input id="careerInterests" type="text" value="Building websites, Design, Problem solving" />
+                  </label>
+                  <label>
+                    University / Institution
+                    <input id="careerUniversity" type="text" value="Management and Science University (MSU)" />
+                  </label>
+                  <label>
+                    Field of Study
+                    <input id="careerFieldOfStudy" type="text" value="Computer Science" />
+                  </label>
+                  <label>
+                    Personality Style
+                    <select id="careerPersonality">
+                      <option value="analytical">Analytical</option>
+                      <option value="creative" selected>Creative</option>
+                      <option value="supportive">Supportive</option>
+                      <option value="leader">Leadership-Oriented</option>
+                    </select>
+                  </label>
+                  <label>
+                    Stress Tolerance
+                    <select id="stressTolerance">
+                      <option value="low">Low</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </label>
+                  <label>
+                    Preferred Work Style
+                    <select id="workStyle">
+                      <option value="solo">Focused / Solo</option>
+                      <option value="balanced" selected>Balanced</option>
+                      <option value="collaborative">Highly Collaborative</option>
+                    </select>
+                  </label>
+                  <label>
+                    Preferred Work Environment
+                    <select id="careerEnvironment">
+                      <option value="remote">Remote</option>
+                      <option value="hybrid" selected>Hybrid</option>
+                      <option value="office">Office</option>
+                      <option value="field">Hands-on / Field Work</option>
+                    </select>
+                  </label>
+                  <label>
+                    Leadership Preference
+                    <select id="careerLeadership">
+                      <option value="low">Low</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </label>
+                  <label>
+                    Communication Strength
+                    <select id="careerCommunication">
+                      <option value="developing">Developing</option>
+                      <option value="good" selected>Good</option>
+                      <option value="strong">Strong</option>
+                    </select>
+                  </label>
+                  <label>
+                    Creativity Level
+                    <select id="careerCreativity">
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high" selected>High</option>
+                    </select>
+                  </label>
+                  <label>
+                    Data / Numbers Comfort
+                    <select id="careerDataComfort">
+                      <option value="low">Low</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="career-results">
+                  <div class="career-list">
+                    <div class="career-list-head">
+                    <strong>Top 14 Matching Careers</strong>
+                    <button class="text-action" id="recommendCareerBtn" type="button">
+                      Refresh Match
+                    </button>
+                    </div>
+                    <div id="careerResults"></div>
+                  </div>
+                </div>
+            </form>
+            </article>
+
+          <article class="section-card uses-card">
+            <div class="section-title">
+              <h3>Uses and Applications</h3>
+            </div>
+            <ul class="bullet-list compact">
+              <li>Students practice early, explore career options, and build confidence.</li>
+              <li>Job seekers improve resumes, interview readiness, and application quality.</li>
+              <li>Graduates discover roles that fit their strengths and growth direction.</li>
+              <li>Universities can use it as an employability support prototype.</li>
+            </ul>
+          </article>
+
+          <article class="section-card implementation-card">
+            <div class="section-title">
+              <h3>Implementation Level</h3>
+            </div>
+            <div class="detail-stack">
+              <div>
+                <span class="mini-label">Prototype Includes</span>
+                <ul class="bullet-list compact">
+                  <li>Multi-role interview interface with live scoring feedback.</li>
+                  <li>Mock interview flow with text, voice, and session-end reporting.</li>
+                  <li>Live resume builder with print-ready CV preview.</li>
+                  <li>Profile-based career recommendation engine.</li>
+                </ul>
+              </div>
+              <div>
+                <span class="mini-label">Future Improvements</span>
+                <ul class="bullet-list compact">
+                  <li>Real-time job and internship integration.</li>
+                  <li>Voice and video analysis for deeper communication insights.</li>
+                  <li>Smarter stress detection and adaptive wellbeing guidance.</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="section-card novelty-card">
+            <div class="section-title">
+              <h3>Novelty and Inventiveness</h3>
+            </div>
+            <ul class="bullet-list compact">
+              <li>Combines career development with positive wellbeing support.</li>
+              <li>Uses HR, Technical, and Manager perspectives in one simulation.</li>
+              <li>Gives instant feedback with repeatable practice and summary reports.</li>
+              <li>Matches users through broader profile fit, not skills alone.</li>
+            </ul>
+          </article>
+
+          <article class="section-card impact-card section-anchor" id="impact">
+            <div class="section-title">
+              <h3>Innovation and Project Impact</h3>
+            </div>
+            <p class="section-lead">
+              This platform combines career development and mental wellbeing in a
+              way that is not commonly integrated in existing student support
+              systems.
+            </p>
+
+            <div class="impact-grid">
+              <div class="impact-item">
+                <span>🧠</span>
+                <div>
+                  <strong>Reduces stress in career preparation</strong>
+                  <p>Users get guided support instead of facing interview pressure alone.</p>
+                </div>
+              </div>
+              <div class="impact-item">
+                <span>⚡</span>
+                <div>
+                  <strong>Improves employability</strong>
+                  <p>Interview practice, resume quality, and career direction improve together.</p>
+                </div>
+              </div>
+              <div class="impact-item">
+                <span>📄</span>
+                <div>
+                  <strong>Builds confidence through simulation</strong>
+                  <p>Role-based practice helps users prepare for real-world scenarios.</p>
+                </div>
+              </div>
+              <div class="impact-item">
+                <span>🎯</span>
+                <div>
+                  <strong>Gives personalized direction</strong>
+                  <p>Recommendations match skills, interests, profile fit, and wellbeing needs.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="section-card dashboard-card section-anchor" id="dashboard">
+            <div class="section-title">
+              <h3>Your Progress Dashboard</h3>
+            </div>
+
+            <div class="dashboard-grid">
+              <div class="dashboard-metric">
+                <div class="metric-head">
+                  <span>Interview Score</span>
+                  <span>🎤</span>
+                </div>
+                <strong class="metric-number" id="dashboardInterviewScore" data-target="78">78%</strong>
+                <div class="metric-line large">
+                  <div class="metric-fill purple-fill" id="dashboardInterviewBar"></div>
+                </div>
+              </div>
+
+              <div class="dashboard-metric">
+                <div class="metric-head">
+                  <span>Resume Completion</span>
+                  <span>📄</span>
+                </div>
+                <strong class="metric-number" id="dashboardResumeScore" data-target="98">98%</strong>
+                <div class="metric-line large">
+                  <div class="metric-fill green-fill" id="dashboardResumeBar"></div>
+                </div>
+              </div>
+
+              <div class="dashboard-metric">
+                <div class="metric-head">
+                  <span>Career Match</span>
+                  <span>💙</span>
+                </div>
+                <strong class="metric-number" id="dashboardCareerScore" data-target="97">97%</strong>
+                <div class="metric-line large">
+                  <div class="metric-fill blue-fill" id="dashboardCareerBar"></div>
+                </div>
+              </div>
+
+              <div class="dashboard-metric">
+                <div class="metric-head">
+                  <span>Wellbeing Status</span>
+                  <span>💜</span>
+                </div>
+                <strong class="status-number" id="dashboardWellbeingStatus">Good</strong>
+                <div class="metric-line large">
+                  <div class="metric-fill purple-fill" id="dashboardWellbeingBar"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="section-card team-card section-anchor" id="team">
+            <div class="section-title">
+              <h3>Meet Team Nextara</h3>
+            </div>
+
+            <div class="team-layout">
+              <div class="team-members">
+                <div class="person-card">
+                  <div class="person-avatar"><img src="assets/avatar_set_2_tech.png" alt="Zarul avatar" /></div>
+                  <strong>Zarul</strong>
+                  <span>Developer</span>
+                  <small>zarul@gmail.com</small>
+                  <small>Management and Science University (MSU)</small>
+                </div>
+                <div class="person-card">
+                  <div class="person-avatar"><img src="assets/avatar_set_4_female.png" alt="Khin avatar" /></div>
+                  <strong>Khin</strong>
+                  <span>Designer</span>
+                  <small>khin@gmail.com</small>
+                  <small>Management and Science University (MSU)</small>
+                </div>
+                <div class="person-card">
+                  <div class="person-avatar"><img src="assets/avatar_set_5_mentor.png" alt="Laku avatar" /></div>
+                  <strong>Laku</strong>
+                  <span>Researcher</span>
+                  <small>laku@gmail.com</small>
+                  <small>Management and Science University (MSU)</small>
+                </div>
+                <div class="person-card">
+                  <div class="person-avatar"><img src="assets/avatar_set_3_manager.png" alt="Ryan avatar" /></div>
+                  <strong>Ryan</strong>
+                  <span>Tester</span>
+                  <small>ryan@gmail.com</small>
+                  <small>Management and Science University (MSU)</small>
+                </div>
+              </div>
+
+              <div class="mentor-card">
+                <div class="person-avatar mentor-avatar"><img src="assets/interview_manager_new.png" alt="Mentor avatar" /></div>
+                <div class="mentor-copy">
+                  <span class="mini-label">Mentor</span>
+                  <strong>Dr Hafizul Bin Othman</strong>
+                  <small>drhafizul@gmail.com</small>
+                  <p>Management and Science University (MSU)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="team-projects">
+              <div class="team-projects-head">
+                <div>
+                  <span class="mini-label">GitHub Work</span>
+                  <h4>Team Projects and Contributions</h4>
+                </div>
+                <a class="text-action" href="https://github.com/khinphyucinhtet" target="_blank" rel="noreferrer">
+                  View GitHub Profile
+                </a>
+              </div>
+
+              <div class="team-project-grid">
+                <a class="team-project-card" href="https://github.com/khinphyucinhtet/pathwise_ai" target="_blank" rel="noreferrer">
+                  <span>01</span>
+                  <strong>PathWise AI Website</strong>
+                  <p>Complete front-end hackathon demo with interview practice, resume builder, career matching, and wellbeing support.</p>
+                </a>
+
+                <a class="team-project-card" href="https://github.com/khinphyucinhtet/pathwise_ai" target="_blank" rel="noreferrer">
+                  <span>02</span>
+                  <strong>AI Interview Practice Module</strong>
+                  <p>Role-based interview simulation using HR, Technical, and Manager perspectives with feedback and report generation.</p>
+                </a>
+
+                <a class="team-project-card" href="https://github.com/khinphyucinhtet/pathwise_ai" target="_blank" rel="noreferrer">
+                  <span>03</span>
+                  <strong>Resume and Career Matcher</strong>
+                  <p>Interactive resume preview and career recommendation flow based on skills, interests, study background, and wellbeing inputs.</p>
+                </a>
+              </div>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <footer class="footer-card" id="footer">
+        <div class="footer-brand">
+          <div class="footer-icon">🧠</div>
+          <div>
+            <h3>PathWise AI</h3>
+            <p>
+              AI-powered support for career growth, confidence building, and mental wellbeing.
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-motto">
+          <span>Innovating Solutions</span>
+          <strong>With Knowledge We Serve</strong>
+        </div>
+
+        <div class="sdg-grid">
+          <div class="sdg-card sdg-3">
+            <strong>3</strong>
+            <span>Good Health and Well-being</span>
+          </div>
+          <div class="sdg-card sdg-4">
+            <strong>4</strong>
+            <span>Quality Education</span>
+          </div>
+          <div class="sdg-card sdg-8">
+            <strong>8</strong>
+            <span>Decent Work and Economic Growth</span>
+          </div>
+        </div>
+      </footer>
+
+      <div class="auth-modal hidden" id="authModal" aria-hidden="true">
+        <button class="auth-backdrop" id="authBackdrop" type="button" aria-label="Close login dialog"></button>
+        <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+          <a class="auth-close" id="authCloseBtn" href="#home" aria-label="Close login dialog">×</a>
+
+          <div class="auth-header">
+            <span class="eyebrow">PathWise AI Access</span>
+            <h3 id="authTitle">Continue to Login</h3>
+            <p id="authSubtitle">
+              Enter your email first. If the account exists, you can sign in. If not, you can register a new local demo account.
+            </p>
+          </div>
+
+          <form class="auth-form" id="authForm">
+            <label>
+              Email
+              <input id="authEmail" type="email" placeholder="Enter your email" required />
+            </label>
+
+            <label class="hidden" id="authFullnameField">
+              Full Name
+              <input id="authFullName" type="text" placeholder="Enter your full name" />
+            </label>
+
+            <label class="hidden" id="authPasswordField">
+              Password
+              <input id="authPassword" type="password" placeholder="Enter your password" />
+            </label>
+
+            <label class="hidden" id="authConfirmField">
+              Confirm Password
+              <input id="authConfirmPassword" type="password" placeholder="Confirm your password" />
+            </label>
+
+            <p class="auth-message hidden" id="authMessage"></p>
+
+            <div class="auth-actions">
+              <button class="secondary-btn full-btn" id="authBackBtn" type="button">Cancel</button>
+              <button class="primary-btn full-btn" id="authSubmitBtn" type="submit">OK</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const swishRunBtn = document.getElementById("swishRunBtn");
+        const swishDownloadBtn = document.getElementById("swishDownloadBtn");
+        const swishQueryInput = document.getElementById("swishQueryInput");
+        const swishProgramCode = document.getElementById("swishProgramCode");
+        const swishReportOutput = document.getElementById("swishReportOutput");
+        const swishBackendStatus = document.getElementById("swishBackendStatus");
+
+        const swishScenarioPayloads = {
+          ryan: {
+            person: "ryan",
+            stress: 0.9,
+            urgency: 0.8,
+            support: 0.9,
+            isolation: 0.8,
+            heartRate: 105,
+            sleepHours: 4,
+            activity: "low"
+          },
+          pinky: {
+            person: "pinky",
+            stress: 0.6,
+            urgency: 0.7,
+            support: 0.2,
+            isolation: 0.3,
+            heartRate: 88,
+            sleepHours: 6,
+            activity: "medium"
+          },
+          zarul: {
+            person: "zarul",
+            stress: 0.5,
+            urgency: 0.4,
+            support: 0.8,
+            isolation: 0.7,
+            heartRate: 76,
+            sleepHours: 7,
+            activity: "medium"
+          }
+        };
+
+        function setSwishStatus(text, isOnline) {
+          if (!swishBackendStatus) return;
+          swishBackendStatus.textContent = text;
+          swishBackendStatus.classList.toggle("offline", !isOnline);
+        }
+
+        function cleanSwishQuery(value) {
+          const withoutPrompt = String(value || "")
+            .replace(/^\s*\?-\s*/, "")
+            .trim();
+          return withoutPrompt.endsWith(".") ? withoutPrompt : `${withoutPrompt}.`;
+        }
+
+        function extractPersonFromQuery(query) {
+          const knownMatch = query.match(/\b(ryan|pinky|zarul)\b/i);
+          if (knownMatch) return knownMatch[1].toLowerCase();
+
+          const argumentMatch = query.match(/\(\s*([a-z][a-z0-9_]*)/i);
+          return argumentMatch ? argumentMatch[1].toLowerCase() : "zarul";
+        }
+
+        function getSwishProgramText() {
+          if (!swishProgramCode) return "";
+          return "value" in swishProgramCode ? swishProgramCode.value : swishProgramCode.innerText;
+        }
+
+        function readNumberFact(predicate, person, fallback) {
+          const programText = getSwishProgramText();
+          const escapedPerson = person.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          const regex = new RegExp(`${predicate}\\s*\\(\\s*${escapedPerson}\\s*,\\s*([0-9]*\\.?[0-9]+)\\s*\\)\\s*\\.`, "i");
+          const match = programText.match(regex);
+          return match ? Number(match[1]) : fallback;
+        }
+
+        function readAtomFact(predicate, person, fallback) {
+          const programText = getSwishProgramText();
+          const escapedPerson = person.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          const regex = new RegExp(`${predicate}\\s*\\(\\s*${escapedPerson}\\s*,\\s*([a-z][a-z0-9_]*)\\s*\\)\\s*\\.`, "i");
+          const match = programText.match(regex);
+          return match ? match[1].toLowerCase() : fallback;
+        }
+
+        function buildPayloadFromProgram(person) {
+          const fallback = swishScenarioPayloads[person] || {
+            person,
+            stress: 0.5,
+            urgency: 0.5,
+            support: 0.5,
+            isolation: 0.5,
+            heartRate: 82,
+            sleepHours: 7,
+            activity: "medium"
+          };
+
+          return {
+            person,
+            stress: readNumberFact("stress", person, fallback.stress),
+            urgency: readNumberFact("urgency", person, fallback.urgency),
+            support: readNumberFact("no_support", person, fallback.support),
+            isolation: readNumberFact("social_isolation", person, fallback.isolation),
+            heartRate: readNumberFact("heart_rate", person, fallback.heartRate),
+            sleepHours: readNumberFact("sleep_hours", person, fallback.sleepHours),
+            activity: readAtomFact("activity_level", person, fallback.activity)
+          };
+        }
+
+        function parseEthicalPrinciples() {
+          const facts = [];
+          const regex = /ethical_principle\s*\(\s*([a-z][a-z0-9_]*)\s*,\s*'([^']*)'\s*\)\s*\./gi;
+          let match;
+
+          while ((match = regex.exec(getSwishProgramText())) !== null) {
+            facts.push({
+              type: match[1],
+              description: match[2]
+            });
+          }
+
+          return facts;
+        }
+
+        async function requestSwishBackend(payload) {
+          const endpoints = [
+            "http://127.0.0.1:8080/api/assess",
+            "http://localhost:8080/api/assess"
+          ];
+          let lastError = null;
+
+          for (const endpoint of endpoints) {
+            try {
+              const response = await fetch(endpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+                cache: "no-store"
+              });
+
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+              }
+
+              return {
+                endpoint,
+                data: await response.json()
+              };
+            } catch (error) {
+              lastError = error;
+            }
+          }
+
+          console.warn("SWISH panel could not connect to local Prolog backend:", lastError);
+          return null;
+        }
+
+        function formatPipelineQuery(query) {
+          return `?- ${query}
+
+Final System Pipeline
+Text Input -> Fuzzy Risk Assessment -> Multi-Agent Decision -> Planning -> Game Strategy (Minimax) -> IoT Integration -> Final Explainable Decision
+
+true`;
+        }
+
+        function formatEthicsQuery(query) {
+          const principles = parseEthicalPrinciples();
+          const normalized = query.toLowerCase();
+          const argsMatch = query.match(/ethical_principle\s*\((.*)\)\s*\./i);
+
+          if (!principles.length) {
+            return `?- ${query}
+
+false`;
+          }
+
+          if (normalized.startsWith("show_ethics") || normalized === "ethical_principle.") {
+            return `?- ${query}
+
+Ethical AI Principles
+${principles.map((item) => `${item.type}: ${item.description}`).join("\n")}
+
+true`;
+          }
+
+          if (!argsMatch) {
+            return `?- ${query}
+
+Use ethical_principle. to list all ethics facts, or ethical_principle(Type, Description). for Prolog-style bindings.
+
+false`;
+          }
+
+          const args = argsMatch[1].split(",").map((item) => item.trim());
+          const typeArg = args[0] || "Type";
+          const descArg = args.slice(1).join(",").trim() || "Description";
+          const typeIsVariable = /^[A-Z_]/.test(typeArg);
+          const descIsVariable = /^[A-Z_]/.test(descArg);
+          const requestedType = typeArg.replace(/^'|'$/g, "").toLowerCase();
+          const requestedDescription = descArg.replace(/^'|'$/g, "");
+          const matches = principles.filter((item) => {
+            const typeMatches = typeIsVariable || item.type.toLowerCase() === requestedType;
+            const descMatches = descIsVariable || item.description === requestedDescription;
+            return typeMatches && descMatches;
+          });
+
+          if (!matches.length) {
+            return `?- ${query}
+
+false`;
+          }
+
+          if (!typeIsVariable && !descIsVariable) {
+            return `?- ${query}
+
+true`;
+          }
+
+          const bindings = matches.map((item) => {
+            const lines = [];
+            if (typeIsVariable) lines.push(`${typeArg} = ${item.type}`);
+            if (descIsVariable) lines.push(`${descArg} = '${item.description}'`);
+            return lines.join(",\n");
+          });
+
+          return `?- ${query}
+
+${bindings.join(" ;\n\n")}
+
+true`;
+        }
+
+        function formatSwishReport(person, payload, result) {
+          const fuzzy = result.fuzzy || {};
+          const agents = result.agents || {};
+          const strategy = result.strategy || {};
+          const iot = result.iot || {};
+          const xai = result.xai || {};
+          const ethics = Array.isArray(result.ethics) ? result.ethics : [];
+          const category = String(fuzzy.category || "unknown");
+          const categoryUpper = category.toUpperCase();
+
+          return `?- run_full_system(${person}).
+
+Final System Pipeline
+Text Input -> Fuzzy Risk Assessment -> Multi-Agent Decision -> Planning -> Game Strategy (Minimax) -> IoT Integration -> Final Explainable Decision
+
+Fuzzy Risk Assessment Result
+Person: ${person}
+Risk Score: ${Number(fuzzy.riskScore || 0).toFixed(2)}
+Category: ${category}
+${categoryUpper} RISK detected from stress, urgency, support, and social isolation signals.
+Queue: ${fuzzy.queue || "--"}
+Estimated response: ${fuzzy.waitTime || "--"}
+Position: ${fuzzy.position || "--"}
+Suggested action: ${fuzzy.action || "--"}
+
+Multi-Agent Decision Making Report
+Detection Agent: ${agents.detectionAgent || "Detected risk score is --"}
+Decision Agent: ${agents.decisionAgent || "Classified the user as waiting"}
+Planning Agent: Suggested plan is ${agents.planningAgent || "--"}
+Support Agent: ${agents.supportAgent || "--"}
+Final Support Action: ${fuzzy.action || "--"}
+
+Strategic Decision-Making Report
+Selected strategy: ${strategy.selected || "--"}
+Strategy utility score: ${strategy.utility || "--"}
+Reason: ${strategy.reason || "The strategy was selected based on the current risk level and support priority."}
+
+IoT-Based Simulation Report
+Heart rate: ${iot.heartRate || payload.heartRate} bpm
+Sleep hours: ${iot.sleepHours || payload.sleepHours} hrs
+Activity level: ${iot.activity || payload.activity}
+IoT risk score: ${Number(iot.iotRisk || 0).toFixed(2)}
+Final risk after IoT integration: ${Number(iot.finalRiskWithIot || fuzzy.riskScore || 0).toFixed(2)}
+
+Explainable AI (XAI) Report
+Input factors: stress=${payload.stress}, urgency=${payload.urgency}, no_support=${payload.support}, social_isolation=${payload.isolation}
+Final fuzzy risk score: ${Number(fuzzy.riskScore || 0).toFixed(2)}
+Risk category: ${category}
+Queue decision: ${fuzzy.queue || "--"} (${fuzzy.position || "--"}, ${fuzzy.waitTime || "--"})
+Explanation: ${xai.explanation || "The user was assigned this priority based on stress, urgency, support, and social isolation signals."}
+Recommended action: ${fuzzy.action || "--"}
+
+Ethical AI Principles
+${ethics.map((item) => "- " + item).join("\n")}
+
+true`;
+        }
+
+        function localSwishResult(person, payloadOverride) {
+          const payload = payloadOverride || buildPayloadFromProgram(person);
+          const highRisk = Math.min(payload.stress, payload.urgency);
+          const riskScore = Math.max(highRisk, payload.support, payload.isolation);
+          const category = riskScore >= 0.7 ? "high" : riskScore >= 0.4 ? "medium" : "low";
+          const queue = riskScore >= 0.8 ? "URGENT SUPPORT" : riskScore >= 0.4 ? "PRIORITY SUPPORT" : "STANDARD SUPPORT";
+          const waitTime = riskScore >= 0.8 ? "0-2 hrs" : riskScore >= 0.4 ? "12-24 hrs" : "2-3 days";
+          const position = riskScore >= 0.8 ? "#1 in queue" : riskScore >= 0.4 ? "#7 in queue" : "#18 in queue";
+          const action = riskScore >= 0.8 ? "Immediate wellbeing and career support" : riskScore >= 0.4 ? "Guided wellbeing support" : "General career and wellbeing guidance";
+          const strategySelected = riskScore >= 0.8 ? "immediate_support" : riskScore >= 0.4 ? "guided_support" : "general_support";
+          const strategyUtility = riskScore >= 0.8 ? 90 : riskScore >= 0.4 ? 70 : 40;
+          const planningAgent = category === "high"
+            ? "Immediate counselling, job support, and mentor contact"
+            : category === "medium"
+              ? "Guided wellbeing support, resume review, and interview preparation"
+              : "General career guidance and self-care tips";
+          const iotRisk = payload.heartRate >= 100 && payload.sleepHours < 5
+            ? 0.8
+            : payload.heartRate >= 85 && payload.sleepHours >= 5 && payload.sleepHours < 7
+              ? 0.5
+              : 0.2;
+
+          return {
+            fuzzy: {
+              riskScore,
+              category,
+              queue,
+              waitTime,
+              position,
+              action
+            },
+            agents: {
+              detectionAgent: `Detected risk score is ${riskScore.toFixed(2)}`,
+              decisionAgent: `Classified the user as ${category} risk`,
+              planningAgent,
+              supportAgent: `Assigned ${queue}, ${position}, response time ${waitTime}`
+            },
+            strategy: {
+              selected: strategySelected,
+              utility: strategyUtility,
+              reason: "The strategy was selected based on the current risk level and support priority."
+            },
+            iot: {
+              heartRate: payload.heartRate,
+              sleepHours: payload.sleepHours,
+              activity: payload.activity,
+              iotRisk,
+              finalRiskWithIot: Math.max(riskScore, iotRisk)
+            },
+            xai: {
+              explanation: `The user was assigned this priority because the combined fuzzy risk score is ${riskScore.toFixed(2)}, based on stress, urgency, support, and social isolation signals.`
+            },
+            ethics: parseEthicalPrinciples().map((item) => `${item.type}: ${item.description}`)
+          };
+        }
+
+        function formatQueryResult(query, person, payload, result) {
+          const fuzzy = result.fuzzy || {};
+          const agents = result.agents || {};
+          const strategy = result.strategy || {};
+          const iot = result.iot || {};
+          const xai = result.xai || {};
+          const normalized = query.toLowerCase();
+
+          if (normalized.startsWith("multi_agent_report")) {
+            return `?- ${query}
+
+Multi-Agent Decision Making Report
+Detection Agent: ${agents.detectionAgent || "Detected risk score is --"}
+Decision Agent: ${agents.decisionAgent || "Classified the user as waiting"}
+Planning Agent: Suggested plan is ${agents.planningAgent || "--"}
+Support Agent: ${agents.supportAgent || "--"}
+Final Support Action: ${fuzzy.action || "--"}
+
+true`;
+          }
+
+          if (normalized.startsWith("strategy_report")) {
+            return `?- ${query}
+
+Strategic Decision-Making Report
+Selected strategy: ${strategy.selected || "--"}
+Strategy utility score: ${strategy.utility || "--"}
+Reason: ${strategy.reason || "The strategy was selected based on the current risk level and support priority."}
+
+true`;
+          }
+
+          if (normalized.startsWith("iot_report")) {
+            return `?- ${query}
+
+IoT-Based Simulation Report
+Heart rate: ${iot.heartRate || payload.heartRate} bpm
+Sleep hours: ${iot.sleepHours || payload.sleepHours} hrs
+Activity level: ${iot.activity || payload.activity}
+IoT risk score: ${Number(iot.iotRisk || 0).toFixed(2)}
+Final risk after IoT integration: ${Number(iot.finalRiskWithIot || fuzzy.riskScore || 0).toFixed(2)}
+
+true`;
+          }
+
+          if (normalized.startsWith("xai_report")) {
+            return `?- ${query}
+
+Explainable AI (XAI) Report
+Input factors: stress=${payload.stress}, urgency=${payload.urgency}, no_support=${payload.support}, social_isolation=${payload.isolation}
+Final fuzzy risk score: ${Number(fuzzy.riskScore || 0).toFixed(2)}
+Risk category: ${fuzzy.category || "--"}
+Queue decision: ${fuzzy.queue || "--"} (${fuzzy.position || "--"}, ${fuzzy.waitTime || "--"})
+Explanation: ${xai.explanation || "The user was assigned this priority based on stress, urgency, support, and social isolation signals."}
+Recommended action: ${fuzzy.action || "--"}
+
+true`;
+          }
+
+          if (normalized.startsWith("final_risk")) {
+            return `?- ${query}
+
+Score = ${Number(fuzzy.riskScore || 0).toFixed(2)}
+
+true`;
+          }
+
+          if (normalized.startsWith("risk_category")) {
+            return `?- ${query}
+
+Category = ${fuzzy.category || "--"}
+
+true`;
+          }
+
+          if (normalized.startsWith("queue_priority")) {
+            return `?- ${query}
+
+Queue = ${fuzzy.queue || "--"}
+WaitTime = ${fuzzy.waitTime || "--"}
+Position = ${fuzzy.position || "--"}
+Action = ${fuzzy.action || "--"}
+
+true`;
+          }
+
+          if (normalized.startsWith("high_risk")) {
+            return `?- ${query}
+
+Degree = ${Math.min(payload.stress, payload.urgency).toFixed(2)}
+
+true`;
+          }
+
+          if (normalized.startsWith("support_risk")) {
+            return `?- ${query}
+
+Degree = ${payload.support.toFixed(2)}
+
+true`;
+          }
+
+          if (normalized.startsWith("isolation_risk")) {
+            return `?- ${query}
+
+Degree = ${payload.isolation.toFixed(2)}
+
+true`;
+          }
+
+          if (normalized.startsWith("best_strategy")) {
+            return `?- ${query}
+
+Strategy = ${strategy.selected || "--"}
+
+true`;
+          }
+
+          if (!normalized.startsWith("run_full_system")) {
+            return `?- ${query}
+
+This local demo supports common PathWise queries:
+system_pipeline.
+show_ethics.
+ethical_principle.
+ethical_principle(Type, Description).
+run_full_system(Person).
+multi_agent_report(Person).
+strategy_report(Person).
+iot_report(Person).
+xai_report(Person).
+final_risk(Person, Score).
+risk_category(Person, Category).
+queue_priority(Person, Queue, WaitTime, Position, Action).
+
+Tip: use Person as ryan, pinky, zarul, or add matching facts in the program editor.
+
+false`;
+          }
+
+          return formatSwishReport(person, payload, result);
+        }
+
+        async function runSwishPrologDemo() {
+          const query = cleanSwishQuery(swishQueryInput ? swishQueryInput.value : "run_full_system(zarul).");
+          const normalized = query.toLowerCase();
+
+          if (swishQueryInput) {
+            swishQueryInput.value = query;
+          }
+
+          if (normalized.startsWith("system_pipeline")) {
+            setSwishStatus("Local Prolog-style query rendered", true);
+            if (swishReportOutput) {
+              swishReportOutput.textContent = formatPipelineQuery(query);
+            }
+            return;
+          }
+
+          if (normalized.startsWith("show_ethics") || normalized.startsWith("ethical_principle")) {
+            setSwishStatus("Local Prolog-style query rendered", true);
+            if (swishReportOutput) {
+              swishReportOutput.textContent = formatEthicsQuery(query);
+            }
+            return;
+          }
+
+          const person = extractPersonFromQuery(query);
+          const payload = buildPayloadFromProgram(person);
+
+          setSwishStatus("Running Prolog query...", true);
+          if (swishReportOutput) {
+            swishReportOutput.textContent = `?- ${query}\n\nRunning local SWI-Prolog backend query...`;
+          }
+
+          const backend = await requestSwishBackend(payload);
+          if (!backend) {
+            setSwishStatus("Prolog-style local fallback", true);
+            if (swishReportOutput) {
+              swishReportOutput.textContent = formatQueryResult(query, person, payload, localSwishResult(person, payload));
+            }
+            return;
+          }
+
+          setSwishStatus(`Prolog connected: ${backend.endpoint}`, true);
+          if (swishReportOutput) {
+            swishReportOutput.textContent = formatQueryResult(query, person, payload, backend.data);
+          }
+        }
+
+        if (swishRunBtn) {
+          swishRunBtn.addEventListener("click", runSwishPrologDemo);
+        }
+
+        if (swishDownloadBtn) {
+          swishDownloadBtn.addEventListener("click", () => {
+            const code = getSwishProgramText();
+            const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "pathwise_prolog_logic.pl";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(link.href);
+          });
+        }
+
+        if (swishQueryInput) {
+          swishQueryInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              runSwishPrologDemo();
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
