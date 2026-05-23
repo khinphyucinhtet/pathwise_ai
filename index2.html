@@ -350,8 +350,16 @@
       .job-priority-grid,
       .job-priority-result-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 14px;
+      }
+
+      .job-priority-field-split {
+        grid-column: span 2;
+      }
+
+      .job-priority-field-full {
+        grid-column: 1 / -1;
       }
 
       .job-priority-field,
@@ -541,7 +549,10 @@
           grid-template-columns: 1fr;
         }
 
+        .job-priority-field-split,
+        .job-priority-field-full,
         .job-priority-field-wide {
+          grid-column: auto;
           max-width: none;
           justify-self: stretch;
         }
@@ -888,7 +899,7 @@
             <div class="wellbeing-layout vertical-layout">
               <div class="wellbeing-top-card job-priority-panel">
                 <div class="job-priority-grid">
-                  <div class="job-priority-field">
+                  <div class="job-priority-field job-priority-field-split">
                     <h4>Stress Level</h4>
                     <span class="job-priority-helper">0 = very calm, 10 = extremely stressed</span>
                     <strong class="job-priority-value" id="stressValueText">Stress level: 5 / 10</strong>
@@ -899,7 +910,7 @@
                     </div>
                   </div>
 
-                  <div class="job-priority-field">
+                  <div class="job-priority-field job-priority-field-split">
                     <h4>Job / Career Urgency</h4>
                     <span class="job-priority-helper">0 = not urgent, 10 = urgently needs job support</span>
                     <strong class="job-priority-value" id="jobUrgencyValueText">Urgency: 6 / 10</strong>
@@ -910,7 +921,7 @@
                     </div>
                   </div>
 
-                  <div class="job-priority-field">
+                  <div class="job-priority-field job-priority-field-full">
                     <h4>Support Level</h4>
                     <span class="job-priority-helper">0 = strong support, 10 = no support. This reflects no family, university, mentor, or friend support.</span>
                     <strong class="job-priority-value" id="supportLevelValueText">Support risk: 4 / 10</strong>
@@ -953,7 +964,7 @@
                     </div>
                   </div>
 
-                  <div class="job-priority-field job-priority-field-wide">
+                  <div class="job-priority-field">
                     <h4>Activity Level</h4>
                     <span class="job-priority-helper">Low activity can indicate higher stress or wellbeing risk.</span>
                     <select id="activityLevelSelect" aria-label="Activity level">
@@ -1033,9 +1044,6 @@ Support priority: <span id="reasonQueue">PRIORITY SUPPORT</span>
 Recommended strategy: <span id="reasonAction">guided_support</span>
 Updated risk with IoT: <span id="reasonUpdatedRisk">0.5</span>
 Decision explained using XAI principles.</pre>
-                    <p class="reason-explain" id="reasonExplain">
-                      Your inputs were converted into fuzzy values, combined with IoT-style stress signals, and matched to the support queue rules.
-                    </p>
                   </details>
                 </div>
               </div>
@@ -2951,7 +2959,9 @@ final_summary(Person) :-
           reasonQueue.textContent = assessment.supportDecision.queue;
           reasonAction.textContent = assessment.supportDecision.strategyCode;
           reasonUpdatedRisk.textContent = formatDecimal(assessment.updatedRiskWithIot);
-          reasonExplain.textContent = "Your inputs were converted into fuzzy values, combined with IoT-style stress signals, and matched to the support queue rules.";
+          if (reasonExplain) {
+            reasonExplain.textContent = "";
+          }
         }
 
         function handleStressInput(event) {
@@ -3125,7 +3135,7 @@ final_summary(Person) :-
             if (reasonQueue) reasonQueue.textContent = supportDecision.queue;
             if (reasonAction) reasonAction.textContent = supportDecision.strategyCode;
             if (reasonUpdatedRisk) reasonUpdatedRisk.textContent = formatDecimal(updatedRiskWithIot);
-            if (reasonExplain) reasonExplain.textContent = "Your inputs were converted into fuzzy values, combined with IoT-style stress signals, and matched to the support queue rules.";
+            if (reasonExplain) reasonExplain.textContent = "";
           }
 
           updateLabels();
