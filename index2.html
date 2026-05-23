@@ -261,6 +261,131 @@
         transform: translateY(-1px);
       }
 
+      .job-priority-panel {
+        display: grid;
+        gap: 20px;
+        padding: 20px;
+        border: 1px solid rgba(111, 60, 240, 0.14);
+        border-radius: 28px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(241, 252, 247, 0.74));
+      }
+
+      .job-priority-grid,
+      .job-priority-result-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .job-priority-field,
+      .job-priority-result-grid > div {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+        border: 1px solid rgba(111, 60, 240, 0.12);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 12px 28px rgba(36, 19, 91, 0.04);
+      }
+
+      .job-priority-field h4,
+      .job-priority-result-grid span {
+        margin: 0;
+        color: var(--primary-dark);
+        font-size: 1rem;
+        font-weight: 900;
+      }
+
+      .job-priority-helper {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+      }
+
+      .job-priority-value {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        padding: 9px 16px;
+        border-radius: 999px;
+        background: rgba(111, 60, 240, 0.1);
+        color: #4b16c9;
+        font-size: 0.96rem;
+        font-weight: 900;
+      }
+
+      .job-priority-range {
+        width: 100%;
+        accent-color: #6f3cf0;
+      }
+
+      .job-priority-scale {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .job-priority-field select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid rgba(111, 60, 240, 0.16);
+        border-radius: 16px;
+        background: #fff;
+        color: var(--text);
+        font: inherit;
+        font-weight: 800;
+      }
+
+      .job-priority-field-wide {
+        grid-column: 1 / -1;
+        max-width: 520px;
+        justify-self: center;
+        width: 100%;
+      }
+
+      .job-priority-actions {
+        display: flex;
+        justify-content: center;
+      }
+
+      .job-priority-actions .fuzzy-submit-btn {
+        width: min(100%, 420px);
+      }
+
+      .job-priority-result-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .job-priority-result-grid > div strong {
+        color: var(--primary-dark);
+        font-size: 1.15rem;
+      }
+
+      .job-priority-response {
+        margin: 16px 0 0;
+        color: var(--muted);
+      }
+
+      .job-priority-message {
+        margin: 14px 0 0;
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: rgba(72, 199, 142, 0.1);
+        color: var(--primary-dark);
+        line-height: 1.6;
+      }
+
+      .job-priority-reasoning-list {
+        margin: 16px 0 0;
+      }
+
+      .job-priority-reasoning-list li {
+        margin-bottom: 8px;
+      }
+
       @media (min-width: 901px) {
         .topbar {
           display: flex;
@@ -332,6 +457,16 @@
 
         .swish-query-bar {
           grid-template-columns: 1fr;
+        }
+
+        .job-priority-grid,
+        .job-priority-result-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .job-priority-field-wide {
+          max-width: none;
+          justify-self: stretch;
         }
       }
     </style>
@@ -675,118 +810,88 @@
             </p>
 
             <div class="wellbeing-layout vertical-layout">
-              <div class="wellbeing-top-card">
-                <div class="stress-slider-card">
-                  <div>
-                    <p class="wellbeing-question">Stress Level</p>
-                    <span class="stress-helper">0 = very calm, 10 = extremely stressed</span>
+              <div class="wellbeing-top-card job-priority-panel">
+                <div class="job-priority-grid">
+                  <div class="job-priority-field">
+                    <h4>Stress Level</h4>
+                    <span class="job-priority-helper">0 = very calm, 10 = extremely stressed</span>
+                    <strong class="job-priority-value" id="stressValueText">Stress level: 5 / 10</strong>
+                    <input class="job-priority-range" id="stressRange" type="range" min="0" max="10" value="5" />
+                    <div class="job-priority-scale">
+                      <span>0 Calm</span>
+                      <span>10 Extremely stressed</span>
+                    </div>
                   </div>
-                  <strong id="stressValueText">Current stress: 5 / 10</strong>
-                  <input id="stressRange" type="range" min="0" max="10" value="5" />
-                  <div class="stress-scale">
-                    <span>0 Calm</span>
-                    <span>10 Extremely Stressed</span>
+
+                  <div class="job-priority-field">
+                    <h4>Job / Career Urgency</h4>
+                    <span class="job-priority-helper">0 = not urgent, 10 = urgently needs job support</span>
+                    <strong class="job-priority-value" id="jobUrgencyValueText">Urgency: 6 / 10</strong>
+                    <input class="job-priority-range" id="jobUrgencyRange" type="range" min="0" max="10" value="6" />
+                    <div class="job-priority-scale">
+                      <span>0 Not urgent</span>
+                      <span>10 Urgent support</span>
+                    </div>
                   </div>
-                </div>
-                <div class="wellbeing-check-grid">
-                  <label>
-                    Job / Career Urgency
-                    <select id="wellbeingPressure">
-                      <option value="interview" selected>Upcoming interview</option>
-                      <option value="internship">Internship search</option>
-                      <option value="fulltime-asap">Need full-time job urgently</option>
-                      <option value="international-student">International student securing work</option>
-                      <option value="graduation">Final semester job preparation</option>
-                      <option value="part-time-student">Part-time student needing income</option>
-                      <option value="financial">Financial pressure to find work</option>
-                      <option value="family">Family pressure to get a job</option>
-                      <option value="applications">Many job applications but no reply</option>
-                      <option value="career-uncertain">Career direction unsure</option>
-                      <option value="deadlines">Assignment / workload deadlines</option>
-                      <option value="low-urgency">Low urgency / exploring only</option>
+
+                  <div class="job-priority-field">
+                    <h4>Support Level</h4>
+                    <span class="job-priority-helper">0 = strong support, 10 = no support. This reflects no family, university, mentor, or friend support.</span>
+                    <strong class="job-priority-value" id="supportLevelValueText">Support risk: 4 / 10</strong>
+                    <input class="job-priority-range" id="supportLevelRange" type="range" min="0" max="10" value="4" />
+                    <div class="job-priority-scale">
+                      <span>0 Strong support</span>
+                      <span>10 No support</span>
+                    </div>
+                  </div>
+
+                  <div class="job-priority-field">
+                    <h4>Social Isolation</h4>
+                    <span class="job-priority-helper">0 = connected with others, 10 = very isolated</span>
+                    <strong class="job-priority-value" id="socialIsolationValueText">Isolation: 4 / 10</strong>
+                    <input class="job-priority-range" id="socialIsolationRange" type="range" min="0" max="10" value="4" />
+                    <div class="job-priority-scale">
+                      <span>0 Connected</span>
+                      <span>10 Very isolated</span>
+                    </div>
+                  </div>
+
+                  <div class="job-priority-field">
+                    <h4>Heart Rate</h4>
+                    <span class="job-priority-helper">Used as an IoT-style stress signal together with sleep and activity.</span>
+                    <select id="heartRateSelect" aria-label="Heart rate">
+                      <option value="76" selected>Normal: below 85 bpm</option>
+                      <option value="92">Slightly high: 85-99 bpm</option>
+                      <option value="105">High: 100 bpm and above</option>
                     </select>
-                  </label>
-                  <label>
-                    Support Level
-                    <select id="wellbeingSupport">
-                      <option value="alone">Mostly alone / no support</option>
-                      <option value="some" selected>Some support</option>
-                      <option value="parents">Parents or family support</option>
-                      <option value="friends">Friends support</option>
-                      <option value="mentor">Mentor / lecturer support</option>
-                      <option value="strong">Strong support system</option>
-                    </select>
-                  </label>
-                  <label>
-                    Social Isolation
-                    <select id="wellbeingIsolation">
-                      <option value="low">Low (friends/family available)</option>
+                  </div>
+
+                  <div class="job-priority-field">
+                    <h4>Sleep Hours</h4>
+                    <span class="job-priority-helper">Lower sleep may increase stress impact</span>
+                    <strong class="job-priority-value" id="sleepHoursValueText">Sleep: 6 hours</strong>
+                    <input class="job-priority-range" id="sleepHoursRange" type="range" min="0" max="10" value="6" />
+                    <div class="job-priority-scale">
+                      <span>0 hours</span>
+                      <span>10 hours</span>
+                    </div>
+                  </div>
+
+                  <div class="job-priority-field job-priority-field-wide">
+                    <h4>Activity Level</h4>
+                    <span class="job-priority-helper">Low activity can indicate higher stress or wellbeing risk.</span>
+                    <select id="activityLevelSelect" aria-label="Activity level">
+                      <option value="low">Low</option>
                       <option value="medium" selected>Medium</option>
-                      <option value="high">High (mostly alone)</option>
+                      <option value="high">High</option>
                     </select>
-                  </label>
-                  <label>
-                    Sleep Hours
-                    <select id="wellbeingSleep">
-                      <option value="less-4">Less than 4</option>
-                      <option value="4-6">4 to 6</option>
-                      <option value="6-8" selected>6 to 8</option>
-                      <option value="8-plus">More than 8</option>
-                    </select>
-                  </label>
-                  <label>
-                    Mood Today
-                    <select id="wellbeingEnergy">
-                      <option value="happy">😊 Happy</option>
-                      <option value="calm">🙂 Calm</option>
-                      <option value="relaxed">😌 Relaxed</option>
-                      <option value="neutral" selected>😐 Neutral</option>
-                      <option value="confused">😕 Confused</option>
-                      <option value="worried">😟 Worried</option>
-                      <option value="sad">😢 Sad</option>
-                      <option value="tired">😫 Tired</option>
-                      <option value="frustrated">😤 Frustrated</option>
-                      <option value="anxious">😰 Anxious</option>
-                      <option value="overwhelmed">😵 Overwhelmed</option>
-                      <option value="sleepy">😴 Sleepy</option>
-                      <option value="motivated">💪 Motivated</option>
-                      <option value="focused">🧠 Focused</option>
-                      <option value="drained">😶 Emotionally drained</option>
-                    </select>
-                  </label>
-                </div>
-                <div class="scenario-actions" aria-label="Demo scenarios">
-                  <button class="scenario-btn" type="button" data-scenario="ryan">Scenario 1: Ryan</button>
-                  <button class="scenario-btn" type="button" data-scenario="pinky">Scenario 2: Pinky</button>
-                  <button class="scenario-btn" type="button" data-scenario="zarul">Scenario 3: Zarul</button>
-                </div>
-                <button class="fuzzy-submit-btn" id="runFuzzyAssessmentBtn" type="button">
-                  Run Fuzzy Risk Assessment
-                </button>
-                <span class="reasoning-mode-badge" id="reasoningModeBadge">Reasoning Mode: Prolog Backend (Local)</span>
-                <div class="wellbeing-status-strip">
-                  <div class="wellbeing-status-pill">
-                    <span class="mini-label">Current Emotional State</span>
-                    <strong id="wellbeingStatusTitle">Good</strong>
                   </div>
-                  <p class="wellbeing-status-copy">A simple emotional check-in to keep career preparation manageable and supportive.</p>
                 </div>
-                <div class="fuzzy-loading-card hidden" id="fuzzyLoadingCard" aria-live="polite">
-                  <strong>Analyzing your wellbeing and career urgency signals...</strong>
-                  <div class="fuzzy-factor-list">
-                    <span>&#10003; Stress level received</span>
-                    <span>&#10003; Job urgency checked</span>
-                    <span>&#10003; Support level reviewed</span>
-                    <span>&#10003; Social isolation reviewed</span>
-                    <span>&#10003; Sleep and mood considered</span>
-                    <span>&#10003; IoT signal simulated</span>
-                    <span>&#10003; Fuzzy logic rules applied</span>
-                  </div>
-                  <p>Applying fuzzy logic rules...</p>
-                  <div class="fuzzy-progress-track">
-                    <div class="fuzzy-progress-fill" id="fuzzyProgressFill"></div>
-                  </div>
-                  <small id="fuzzyProgressText">0%</small>
+
+                <div class="job-priority-actions">
+                  <button class="fuzzy-submit-btn" id="runFuzzyAssessmentBtn" type="button">
+                    Find My Job Support Priority
+                  </button>
                 </div>
               </div>
 
@@ -800,85 +905,68 @@
                   </p>
                   <div class="wellbeing-summary-card fuzzy-result-card is-low" id="fuzzyResultCard">
                     <div class="fuzzy-result-head">
-                      <strong>Fuzzy Risk Assessment Result</strong>
+                      <strong>Final AI Support Summary</strong>
                       <span class="risk-badge low" id="fuzzyCategoryBadge">READY</span>
                     </div>
                     <p id="wellbeingSummary">
-                      Choose your factors and run the fuzzy assessment to estimate job-support priority.
+                      Adjust the inputs and select Find My Job Support Priority to get a simple support decision.
                     </p>
                     <div class="risk-meter">
                       <div class="risk-meter-fill" id="fuzzyRiskMeter"></div>
                     </div>
-                    <div class="fuzzy-result-grid">
+                    <div class="job-priority-result-grid">
                       <div>
                         <span>Risk Score</span>
                         <strong id="fuzzyRiskScore">--</strong>
                       </div>
                       <div>
-                        <span>Category</span>
+                        <span>Risk Category</span>
                         <strong id="fuzzyRiskCategory">Waiting</strong>
                       </div>
                       <div>
-                        <span>Queue</span>
+                        <span>Support Priority</span>
                         <strong id="fuzzyQueue">Run assessment</strong>
                       </div>
                       <div>
-                        <span>Estimated response</span>
-                        <strong id="fuzzyWait">--</strong>
-                      </div>
-                      <div>
-                        <span>Position</span>
+                        <span>Queue / Position</span>
                         <strong id="fuzzyPosition">--</strong>
                       </div>
                       <div>
-                        <span>Suggested action</span>
+                        <span>Recommended Strategy</span>
                         <strong id="fuzzyAction">Choose factors first</strong>
                       </div>
+                      <div>
+                        <span>Updated Risk with IoT</span>
+                        <strong id="jobPriorityUpdatedRisk">--</strong>
+                      </div>
                     </div>
+                    <p class="job-priority-response">Estimated response: <strong id="fuzzyWait">--</strong></p>
+                    <p class="job-priority-message" id="jobPriorityMessage">
+                      Your final job-support message will appear here after you run the assessment.
+                    </p>
                   </div>
                   <details class="fuzzy-reasoning-card" id="fuzzyReasoningCard">
                     <summary>See AI Reasoning</summary>
-                    <div class="fuzzy-reasoning-grid">
-                      <span>Stress: <strong id="reasonStress">0.6</strong></span>
-                      <span>Urgency: <strong id="reasonUrgency">0.9</strong></span>
-                      <span>Support: <strong id="reasonSupport">0.5</strong></span>
-                      <span>Social Isolation: <strong id="reasonIsolation">0.5</strong></span>
-                      <span>Sleep risk: <strong id="reasonSleep">0.3</strong></span>
-                      <span>Mood risk: <strong id="reasonEnergy">0.5</strong></span>
-                      <span>IoT Risk: <strong id="reasonIotRisk">0.3</strong></span>
-                      <span>Rule: <strong id="reasonRule">IF stress HIGH AND urgency HIGH THEN risk HIGH</strong></span>
-                      <span>Fuzzy: <strong id="reasonFuzzy">min(0.6,0.9)=0.6</strong></span>
-                      <span>Final: <strong id="reasonFinal">max(0.6,0.5)=0.6</strong></span>
-                      <span>Category: <strong id="reasonCategory">MEDIUM</strong></span>
-                      <span>Queue: <strong id="reasonQueue">PRIORITY SUPPORT</strong></span>
-                      <span>Estimated Response: <strong id="reasonWait">12-24 hrs</strong></span>
-                      <span>Suggested Action: <strong id="reasonAction">Guided support</strong></span>
-                    </div>
+                    <ul class="bullet-list compact job-priority-reasoning-list">
+                      <li>Stress fuzzy value: <strong id="reasonStress">0.5</strong></li>
+                      <li>Urgency fuzzy value: <strong id="reasonUrgency">0.6</strong></li>
+                      <li>Support risk fuzzy value: <strong id="reasonSupport">0.4</strong></li>
+                      <li>Social isolation fuzzy value: <strong id="reasonIsolation">0.4</strong></li>
+                      <li>Heart rate and sleep input: <strong id="reasonSleep">76 bpm, 6 hours</strong></li>
+                      <li>Activity level: <strong id="reasonEnergy">medium</strong></li>
+                      <li>IoT risk: <strong id="reasonIotRisk">0.2</strong></li>
+                      <li>Rule used: <strong id="reasonRule">high_risk = min(stress, urgency)</strong></li>
+                      <li>Fuzzy AND result: <strong id="reasonFuzzy">min(0.5, 0.6) = 0.5</strong></li>
+                      <li>Final fuzzy risk: <strong id="reasonFinal">max(0.5, 0.4, 0.4) = 0.5</strong></li>
+                      <li>Risk category: <strong id="reasonCategory">Medium</strong></li>
+                      <li>Assigned queue: <strong id="reasonQueue">PRIORITY SUPPORT</strong></li>
+                      <li>Estimated response: <strong id="reasonWait">12-24 hrs</strong></li>
+                      <li>Recommended strategy: <strong id="reasonAction">Guided support</strong></li>
+                    </ul>
                     <p class="reason-explain" id="reasonExplain">
-                      Based on the given stress, urgency, support, social isolation,
-                      sleep, mood, and IoT signals, the system explains why this queue
-                      was selected.
+                      Stress, urgency, support, and isolation were converted into fuzzy values. The system used fuzzy AND and OR logic to calculate risk, then combined heart rate, sleep hours, and activity level to update the final priority.
                     </p>
-                    <pre><code>high_risk(Person,Degree):-
-stress(Person,S),
-urgency(Person,U),
-Degree is min(S,U).
-
-final_risk(Person,FinalDegree):-
-    high_risk(Person,D1),
-    support_risk(Person,D2),
-    isolation_risk(Person,D3),
-    sleep_risk(Person,D4),
-    mood_risk(Person,D5),
-    FinalDegree is max(D1,max(D2,max(D3,max(D4,D5)))).</code></pre>
-                    <small>This is a frontend demo showing how fuzzy logic reasoning can be represented in a real user interface.</small>
                   </details>
-                  <ul class="bullet-list compact" id="wellbeingTips">
-                    <li>Take short breaks and breathe</li>
-                    <li>Stay active and drink water</li>
-                    <li>Talk to someone you trust</li>
-                    <li>Focus on progress, not perfection</li>
-                  </ul>
                 </div>
               </div>
             </div>
@@ -934,18 +1022,6 @@ Use File -> Save to keep your latest code in this browser.</pre>
                     <button class="swish-run-btn" id="swishRunBtn" type="button">Run!</button>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="wellbeing-modal hidden" id="wellbeingAssessmentModal" aria-hidden="true">
-              <button class="wellbeing-modal-backdrop" id="wellbeingModalBackdrop" type="button" aria-label="Close assessment result"></button>
-              <div class="wellbeing-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="wellbeingModalTitle">
-                <span class="eyebrow">Assessment Complete</span>
-                <h3 id="wellbeingModalTitle">Your fuzzy risk level: <span id="modalRiskCategory">LOW</span></h3>
-                <p>Queue: <strong id="modalQueue">STANDARD SUPPORT</strong></p>
-                <p>Estimated support: <strong id="modalWait">2-3 days</strong></p>
-                <p>Position: <strong id="modalPosition">#18 in queue</strong></p>
-                <p>PathWise AI will use this priority level to decide how quickly the user should receive AI job-matching, resume, interview, and company connection support.</p>
-                <button class="primary-btn" id="wellbeingModalOk" type="button">OK</button>
               </div>
             </div>
           </article>
@@ -2473,6 +2549,210 @@ false`;
             }
           });
         }
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const runBtn = document.getElementById("runFuzzyAssessmentBtn");
+        const stressRange = document.getElementById("stressRange");
+        const jobUrgencyRange = document.getElementById("jobUrgencyRange");
+        const supportLevelRange = document.getElementById("supportLevelRange");
+        const socialIsolationRange = document.getElementById("socialIsolationRange");
+        const sleepHoursRange = document.getElementById("sleepHoursRange");
+        const heartRateSelect = document.getElementById("heartRateSelect");
+        const activityLevelSelect = document.getElementById("activityLevelSelect");
+        const stressValueText = document.getElementById("stressValueText");
+        const jobUrgencyValueText = document.getElementById("jobUrgencyValueText");
+        const supportLevelValueText = document.getElementById("supportLevelValueText");
+        const socialIsolationValueText = document.getElementById("socialIsolationValueText");
+        const sleepHoursValueText = document.getElementById("sleepHoursValueText");
+        const fuzzyResultCard = document.getElementById("fuzzyResultCard");
+        const fuzzyCategoryBadge = document.getElementById("fuzzyCategoryBadge");
+        const fuzzyRiskMeter = document.getElementById("fuzzyRiskMeter");
+        const fuzzyRiskScore = document.getElementById("fuzzyRiskScore");
+        const fuzzyRiskCategory = document.getElementById("fuzzyRiskCategory");
+        const fuzzyQueue = document.getElementById("fuzzyQueue");
+        const fuzzyPosition = document.getElementById("fuzzyPosition");
+        const fuzzyAction = document.getElementById("fuzzyAction");
+        const fuzzyWait = document.getElementById("fuzzyWait");
+        const wellbeingMessage = document.getElementById("wellbeingMessage");
+        const wellbeingSummary = document.getElementById("wellbeingSummary");
+        const jobPriorityUpdatedRisk = document.getElementById("jobPriorityUpdatedRisk");
+        const jobPriorityMessage = document.getElementById("jobPriorityMessage");
+        const reasonStress = document.getElementById("reasonStress");
+        const reasonUrgency = document.getElementById("reasonUrgency");
+        const reasonSupport = document.getElementById("reasonSupport");
+        const reasonIsolation = document.getElementById("reasonIsolation");
+        const reasonSleep = document.getElementById("reasonSleep");
+        const reasonEnergy = document.getElementById("reasonEnergy");
+        const reasonIotRisk = document.getElementById("reasonIotRisk");
+        const reasonRule = document.getElementById("reasonRule");
+        const reasonFuzzy = document.getElementById("reasonFuzzy");
+        const reasonFinal = document.getElementById("reasonFinal");
+        const reasonCategory = document.getElementById("reasonCategory");
+        const reasonQueue = document.getElementById("reasonQueue");
+        const reasonWait = document.getElementById("reasonWait");
+        const reasonAction = document.getElementById("reasonAction");
+        const reasonExplain = document.getElementById("reasonExplain");
+        let hasCalculated = false;
+
+        if (!runBtn || !stressRange || !jobUrgencyRange || !supportLevelRange || !socialIsolationRange || !sleepHoursRange || !heartRateSelect || !activityLevelSelect) {
+          return;
+        }
+
+        function formatDecimal(value) {
+          return Number(value).toFixed(2).replace(/\.?0+$/, "");
+        }
+
+        function toFuzzy(value) {
+          return Number(value) / 10;
+        }
+
+        function updateValueLabels() {
+          stressValueText.textContent = `Stress level: ${stressRange.value} / 10`;
+          jobUrgencyValueText.textContent = `Urgency: ${jobUrgencyRange.value} / 10`;
+          supportLevelValueText.textContent = `Support risk: ${supportLevelRange.value} / 10`;
+          socialIsolationValueText.textContent = `Isolation: ${socialIsolationRange.value} / 10`;
+          sleepHoursValueText.textContent = `Sleep: ${sleepHoursRange.value} hours`;
+        }
+
+        function getSupportDecision(finalRisk) {
+          if (finalRisk >= 0.8) {
+            return {
+              queue: "URGENT SUPPORT",
+              position: "#1 in queue",
+              wait: "0-2 hrs",
+              strategy: "Immediate support",
+              message: "You are placed in urgent job-support priority. Our team will guide you first for resume improvement, interview preparation, job matching, and company connection support. We will contact you shortly when suitable job support is available."
+            };
+          }
+
+          if (finalRisk >= 0.4) {
+            return {
+              queue: "PRIORITY SUPPORT",
+              position: "#7 in queue",
+              wait: "12-24 hrs",
+              strategy: "Guided support",
+              message: "You are placed in priority job-support matching. PathWise AI recommends guided help for resume improvement, interview preparation, and targeted job applications while you wait for the next available support slot."
+            };
+          }
+
+          return {
+            queue: "STANDARD SUPPORT",
+            position: "#18 in queue",
+            wait: "2-3 days",
+            strategy: "General support",
+            message: "You are currently in standard job-support matching. We recommend continuing your resume updates, interview practice, and job search preparation while we connect you with general guidance and matching support."
+          };
+        }
+
+        function calculateAssessment() {
+          const stress = toFuzzy(stressRange.value);
+          const urgency = toFuzzy(jobUrgencyRange.value);
+          const supportRisk = toFuzzy(supportLevelRange.value);
+          const isolationRisk = toFuzzy(socialIsolationRange.value);
+          const sleepHours = Number(sleepHoursRange.value);
+          const heartRate = Number(heartRateSelect.value);
+          const activity = activityLevelSelect.value;
+          const highRisk = Math.min(stress, urgency);
+          const finalRisk = Math.max(highRisk, supportRisk, isolationRisk);
+          const category = finalRisk >= 0.7 ? "High" : finalRisk >= 0.4 ? "Medium" : "Low";
+          const supportDecision = getSupportDecision(finalRisk);
+          const iotRisk = heartRate >= 100 && sleepHours < 5 && activity === "low"
+            ? 0.8
+            : heartRate >= 85 && sleepHours >= 5 && sleepHours < 7
+              ? 0.5
+              : 0.2;
+          const updatedRiskWithIot = Math.max(finalRisk, iotRisk);
+
+          return {
+            stress,
+            urgency,
+            supportRisk,
+            isolationRisk,
+            sleepHours,
+            heartRate,
+            activity,
+            highRisk,
+            finalRisk,
+            category,
+            supportDecision,
+            iotRisk,
+            updatedRiskWithIot
+          };
+        }
+
+        function renderAssessment() {
+          const assessment = calculateAssessment();
+          const colorClass = assessment.category.toLowerCase();
+
+          hasCalculated = true;
+          updateValueLabels();
+
+          fuzzyResultCard.classList.remove("is-low", "is-medium", "is-high");
+          fuzzyResultCard.classList.add(`is-${colorClass}`);
+          fuzzyCategoryBadge.classList.remove("low", "medium", "high");
+          fuzzyCategoryBadge.classList.add(colorClass);
+          fuzzyCategoryBadge.textContent = assessment.category.toUpperCase();
+          fuzzyRiskMeter.style.width = `${assessment.updatedRiskWithIot * 100}%`;
+          fuzzyRiskScore.textContent = formatDecimal(assessment.finalRisk);
+          fuzzyRiskCategory.textContent = assessment.category;
+          fuzzyQueue.textContent = assessment.supportDecision.queue;
+          fuzzyPosition.textContent = assessment.supportDecision.position;
+          fuzzyAction.textContent = assessment.supportDecision.strategy;
+          fuzzyWait.textContent = assessment.supportDecision.wait;
+          jobPriorityUpdatedRisk.textContent = formatDecimal(assessment.updatedRiskWithIot);
+          wellbeingMessage.textContent = "PathWise AI uses your current risk and IoT-style wellbeing signals to decide how quickly you should receive job and career support.";
+          wellbeingSummary.textContent = `Estimated response: ${assessment.supportDecision.wait}. Your current profile has been matched to ${assessment.supportDecision.queue}.`;
+          jobPriorityMessage.textContent = assessment.supportDecision.message;
+          reasonStress.textContent = formatDecimal(assessment.stress);
+          reasonUrgency.textContent = formatDecimal(assessment.urgency);
+          reasonSupport.textContent = formatDecimal(assessment.supportRisk);
+          reasonIsolation.textContent = formatDecimal(assessment.isolationRisk);
+          reasonSleep.textContent = `${assessment.heartRate} bpm, ${assessment.sleepHours} hours`;
+          reasonEnergy.textContent = assessment.activity.charAt(0).toUpperCase() + assessment.activity.slice(1);
+          reasonIotRisk.textContent = formatDecimal(assessment.iotRisk);
+          reasonRule.textContent = "high_risk = min(stress, urgency), final_risk = max(high_risk, no_support, social_isolation)";
+          reasonFuzzy.textContent = `min(${formatDecimal(assessment.stress)}, ${formatDecimal(assessment.urgency)}) = ${formatDecimal(assessment.highRisk)}`;
+          reasonFinal.textContent = `max(${formatDecimal(assessment.highRisk)}, ${formatDecimal(assessment.supportRisk)}, ${formatDecimal(assessment.isolationRisk)}) = ${formatDecimal(assessment.finalRisk)}`;
+          reasonCategory.textContent = assessment.category;
+          reasonQueue.textContent = assessment.supportDecision.queue;
+          reasonWait.textContent = assessment.supportDecision.wait;
+          reasonAction.textContent = assessment.supportDecision.strategy;
+          reasonExplain.textContent = "Stress, urgency, support, and isolation were converted into fuzzy values. The system used fuzzy AND and OR logic to calculate risk. IoT indicators such as heart rate, sleep hours, and activity level were used to update the risk score. The final priority is assigned based on the risk category and queue rules.";
+        }
+
+        function handleStressInput(event) {
+          event.stopImmediatePropagation();
+          updateValueLabels();
+          if (hasCalculated) {
+            renderAssessment();
+          }
+        }
+
+        function handleInputRefresh() {
+          updateValueLabels();
+          if (hasCalculated) {
+            renderAssessment();
+          }
+        }
+
+        updateValueLabels();
+        fuzzyRiskMeter.style.width = "0%";
+
+        stressRange.addEventListener("input", handleStressInput, true);
+        [jobUrgencyRange, supportLevelRange, socialIsolationRange, sleepHoursRange].forEach((field) => {
+          field.addEventListener("input", handleInputRefresh);
+        });
+        [heartRateSelect, activityLevelSelect].forEach((field) => {
+          field.addEventListener("change", handleInputRefresh);
+        });
+
+        runBtn.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          renderAssessment();
+        }, true);
       });
     </script>
   </body>
