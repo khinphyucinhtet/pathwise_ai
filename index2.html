@@ -19,8 +19,8 @@
 
       .swish-demo-topbar {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
         gap: 14px;
         padding: 14px 18px;
         border-bottom: 1px solid rgba(107, 63, 242, 0.12);
@@ -33,6 +33,10 @@
         gap: 10px;
         font-weight: 900;
         color: #090536;
+      }
+
+      .swish-menu-group {
+        position: relative;
       }
 
       .swish-brand-icon {
@@ -54,9 +58,66 @@
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+        align-items: center;
+      }
+
+      .swish-menu-item,
+      .swish-menu-action {
+        padding: 8px 12px;
+        border: 1px solid rgba(107, 63, 242, 0.16);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.92);
         color: var(--muted);
         font-weight: 800;
         font-size: 0.9rem;
+        line-height: 1;
+      }
+
+      .swish-menu-item {
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      button.swish-menu-item,
+      .swish-menu-action {
+        cursor: pointer;
+      }
+
+      button.swish-menu-item {
+        font: inherit;
+      }
+
+      .swish-menu-action {
+        width: 100%;
+        justify-content: flex-start;
+        text-align: left;
+        font: inherit;
+      }
+
+      .swish-menu-item:hover,
+      .swish-menu-action:hover {
+        color: var(--primary-dark);
+        box-shadow: 0 12px 24px rgba(107, 63, 242, 0.12);
+      }
+
+      .swish-menu-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        z-index: 20;
+        display: grid;
+        gap: 6px;
+        min-width: 170px;
+        padding: 10px;
+        border: 1px solid rgba(107, 63, 242, 0.16);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 18px 42px rgba(36, 19, 91, 0.12);
+      }
+
+      .swish-menu-panel[hidden] {
+        display: none;
       }
 
       .swish-status {
@@ -151,7 +212,7 @@
 
       .swish-query-bar {
         display: grid;
-        grid-template-columns: auto 1fr auto auto;
+        grid-template-columns: auto 1fr auto;
         gap: 10px;
         align-items: center;
         padding: 14px;
@@ -198,21 +259,6 @@
 
       .swish-run-btn:hover {
         transform: translateY(-1px);
-      }
-
-      .swish-download-btn {
-        padding: 12px 16px;
-        border: 1px solid rgba(107, 63, 242, 0.2);
-        border-radius: 14px;
-        background: #fff;
-        color: var(--primary-dark);
-        font-weight: 900;
-        cursor: pointer;
-      }
-
-      .swish-download-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 12px 24px rgba(107, 63, 242, 0.14);
       }
 
       @media (min-width: 901px) {
@@ -841,15 +887,21 @@ final_risk(Person,FinalDegree):-
                 <div class="swish-brand">
                   <span class="swish-brand-icon">⚙</span>
                   <strong>SWISH</strong>
-                  <span>PathWise Prolog Logic Demo</span>
                 </div>
-                <div class="swish-menu">
-                  <span>File</span>
-                  <span>Edit</span>
-                  <span>Examples</span>
-                  <span>Help</span>
+                <div class="swish-menu" aria-label="SWISH menu">
+                  <div class="swish-menu-group">
+                    <button class="swish-menu-item" id="swishFileMenuButton" type="button" aria-haspopup="true" aria-expanded="false">
+                      File
+                    </button>
+                    <div class="swish-menu-panel" id="swishFileDropdown" hidden>
+                      <button class="swish-menu-action" id="swishFileSaveBtn" type="button">Save</button>
+                      <button class="swish-menu-action" id="swishDownloadBtn" type="button">Download .pl</button>
+                    </div>
+                  </div>
+                  <span class="swish-menu-item">Edit</span>
+                  <span class="swish-menu-item">Examples</span>
+                  <span class="swish-menu-item">Help</span>
                 </div>
-                <span class="swish-status offline" id="swishBackendStatus">Prolog backend waiting</span>
               </div>
 
               <div class="swish-demo-body">
@@ -858,233 +910,28 @@ final_risk(Person,FinalDegree):-
                     <span>Program</span>
                     <small>CAI20103 fuzzy logic, agents, minimax, IoT, XAI, ethics</small>
                   </div>
-                  <textarea class="swish-program" id="swishProgramCode" spellcheck="false">% Fuzzy Logic Simple Example: Youth Risk Level
-
-% ------------------------------
-% FINAL SYSTEM PIPELINE
-% call: system_pipeline.
-% ------------------------------
-
-system_pipeline :-
-    nl,
-    write('Final System Pipeline'), nl,
-    write('Text Input -&gt; Fuzzy Risk Assessment -&gt; Multi-Agent Decision -&gt; Planning -&gt; Game Strategy (Minimax) -&gt; IoT Integration -&gt; Final Explainable Decision'), nl.
-
-% ------------------------------
-% TEST SCENARIOS (3 predefined cases)
-% ------------------------------
-
-stress(ryan, 0.9).
-stress(pinky, 0.6).
-stress(zarul, 0.5).
-
-urgency(ryan, 0.8).
-urgency(pinky, 0.7).
-urgency(zarul, 0.4).
-
-no_support(ryan, 0.9).
-no_support(pinky, 0.2).
-no_support(zarul, 0.8).
-
-social_isolation(ryan, 0.8).
-social_isolation(pinky, 0.3).
-social_isolation(zarul, 0.7).
-
-% ------------------------------
-% PART A: FUZZY LOGIC &amp; UNCERTAINTY
-% ------------------------------
-
-fuzzy_and(A, B, Result) :-
-    Result is min(A, B).
-
-fuzzy_or(A, B, Result) :-
-    Result is max(A, B).
-
-high_risk(Person, Degree) :-
-    stress(Person, StressDegree),
-    urgency(Person, UrgencyDegree),
-    fuzzy_and(StressDegree, UrgencyDegree, Degree).
-
-support_risk(Person, Degree) :-
-    no_support(Person, Degree).
-
-isolation_risk(Person, Degree) :-
-    social_isolation(Person, Degree).
-
-final_risk(Person, FinalDegree) :-
-    high_risk(Person, D1),
-    support_risk(Person, D2),
-    isolation_risk(Person, D3),
-    fuzzy_or(D1, D2, Temp1),
-    fuzzy_or(Temp1, D3, FinalDegree).
-
-risk_category(Person, high) :-
-    final_risk(Person, Degree),
-    Degree &gt;= 0.7.
-
-risk_category(Person, medium) :-
-    final_risk(Person, Degree),
-    Degree &gt;= 0.4,
-    Degree &lt; 0.7.
-
-risk_category(Person, low) :-
-    final_risk(Person, Degree),
-    Degree &lt; 0.4.
-
-queue_priority(Person, 'URGENT SUPPORT', '0-2 hrs', '#1 in queue', 'Immediate wellbeing and career support') :-
-    final_risk(Person, Degree),
-    Degree &gt;= 0.8.
-
-queue_priority(Person, 'PRIORITY SUPPORT', '12-24 hrs', '#7 in queue', 'Guided wellbeing support') :-
-    final_risk(Person, Degree),
-    Degree &gt;= 0.4,
-    Degree &lt; 0.8.
-
-queue_priority(Person, 'STANDARD SUPPORT', '2-3 days', '#18 in queue', 'General career and wellbeing guidance') :-
-    final_risk(Person, Degree),
-    Degree &lt; 0.4.
-
-% ------------------------------
-% PART B: MULTI-AGENT SYSTEM
-% ------------------------------
-
-agent(detection_agent).
-agent(decision_agent).
-agent(planning_agent).
-agent(support_agent).
-
-detection_agent(Person, Score) :-
-    final_risk(Person, Score).
-
-decision_agent(Person, Category) :-
-    risk_category(Person, Category).
-
-planning_agent(Person, 'Immediate counselling, job support, and mentor contact') :-
-    risk_category(Person, high).
-
-planning_agent(Person, 'Guided wellbeing support, resume review, and interview preparation') :-
-    risk_category(Person, medium).
-
-planning_agent(Person, 'General career guidance and self-care tips') :-
-    risk_category(Person, low).
-
-support_agent(Person, Queue, WaitTime, Position, Action) :-
-    queue_priority(Person, Queue, WaitTime, Position, Action).
-
-% ------------------------------
-% PART C: STRATEGIC DECISION / MINIMAX STYLE
-% ------------------------------
-
-resource_option(immediate_support, 90).
-resource_option(guided_support, 70).
-resource_option(general_support, 40).
-
-best_strategy(Person, immediate_support) :-
-    final_risk(Person, Score),
-    Score &gt;= 0.8.
-
-best_strategy(Person, guided_support) :-
-    final_risk(Person, Score),
-    Score &gt;= 0.4,
-    Score &lt; 0.8.
-
-best_strategy(Person, general_support) :-
-    final_risk(Person, Score),
-    Score &lt; 0.4.
-
-% ------------------------------
-% PART E: IOT-BASED SIMULATION
-% ------------------------------
-
-heart_rate(ryan, 105).
-heart_rate(pinky, 88).
-heart_rate(zarul, 76).
-
-sleep_hours(ryan, 4).
-sleep_hours(pinky, 6).
-sleep_hours(zarul, 7).
-
-activity_level(ryan, low).
-activity_level(pinky, medium).
-activity_level(zarul, medium).
-
-iot_risk(Person, 0.8) :-
-    heart_rate(Person, HR),
-    sleep_hours(Person, Sleep),
-    HR &gt;= 100,
-    Sleep &lt; 5.
-
-iot_risk(Person, 0.5) :-
-    heart_rate(Person, HR),
-    sleep_hours(Person, Sleep),
-    HR &gt;= 85,
-    Sleep &gt;= 5,
-    Sleep &lt; 7.
-
-iot_risk(Person, 0.2) :-
-    heart_rate(Person, HR),
-    sleep_hours(Person, Sleep),
-    HR &lt; 85,
-    Sleep &gt;= 7.
-
-final_risk_with_iot(Person, FinalScore) :-
-    final_risk(Person, FuzzyScore),
-    iot_risk(Person, IotScore),
-    fuzzy_or(FuzzyScore, IotScore, FinalScore).
-
-% ------------------------------
-% PART D: EXPLAINABLE AI
-% ------------------------------
-
-xai_report(Person) :-
-    stress(Person, Stress),
-    urgency(Person, Urgency),
-    no_support(Person, Support),
-    social_isolation(Person, Isolation),
-    final_risk(Person, Score),
-    risk_category(Person, Category),
-    queue_priority(Person, Queue, WaitTime, Position, Action).
-
-% ------------------------------
-% PART F: ETHICAL AI PRINCIPLES
-% ------------------------------
-
-ethical_principle(privacy, 'Only necessary wellbeing and career data should be collected.').
-ethical_principle(fairness, 'Support priority should not discriminate against users.').
-ethical_principle(transparency, 'The system must explain why each decision was made.').
-ethical_principle(human_control, 'Final serious decisions should involve a human advisor.').
-ethical_principle(limitation, 'This is a support tool, not a medical diagnosis system.').
-
-% ------------------------------
-% FINAL CLEAN SYSTEM OUTPUT
-% ------------------------------
-
-run_full_system(Person) :-
-    final_risk(Person, Score),
-    risk_category(Person, Category),
-    queue_priority(Person, Queue, WaitTime, Position, Action),
-    multi_agent_report(Person),
-    strategy_report(Person),
-    iot_report(Person),
-    xai_report(Person).</textarea>
+                  <textarea class="swish-program" id="swishProgramCode" spellcheck="false"></textarea>
                 </div>
 
                 <div class="swish-console">
                   <div class="swish-pane-head">
                     <span>Output</span>
-                    <small>Result returned from local SWI-Prolog backend</small>
+                    <small>Editable SWISH-style Prolog output with local save support</small>
                   </div>
                   <pre class="swish-report-output" id="swishReportOutput">Type a Prolog query and press Run.
 
-Expected local flow:
-1. Start backend: swipl backend/pathwise_server.pl
-2. Open index2.html with Live Server or python -m http.server 5500
-3. Run query here: run_full_system(Person), ethical_principle., or show_ethics.</pre>
+Suggested report queries:
+- multi_agent_report(zarul).
+- strategy_report(pinky).
+- explain_decision(ryan).
+- iot_report(ryan).
+- final_summary(ryan).
+
+Use File -> Save to keep your latest code in this browser.</pre>
                   <div class="swish-query-bar">
                     <code>?-</code>
-                    <input id="swishQueryInput" type="text" value="run_full_system(zarul)." aria-label="Type Prolog query" />
+                    <input id="swishQueryInput" type="text" value="final_summary(zarul)." aria-label="Type Prolog query" />
                     <button class="swish-run-btn" id="swishRunBtn" type="button">Run!</button>
-                    <button class="swish-download-btn" id="swishDownloadBtn" type="button">Download .pl</button>
                   </div>
                 </div>
               </div>
@@ -1672,6 +1519,275 @@ Active university tech club member</textarea>
         const swishProgramCode = document.getElementById("swishProgramCode");
         const swishReportOutput = document.getElementById("swishReportOutput");
         const swishBackendStatus = document.getElementById("swishBackendStatus");
+        const swishFileMenuButton = document.getElementById("swishFileMenuButton");
+        const swishFileDropdown = document.getElementById("swishFileDropdown");
+        const swishFileSaveBtn = document.getElementById("swishFileSaveBtn");
+
+        const swishProgramStorageKey = "pathwise-swish-program-v2";
+        const defaultSwishProgram = String.raw`% PART A: FUZZY LOGIC & UNCERTAINTY
+
+% Fuzzy input values / membership degrees
+stress(ryan, 0.9).
+stress(pinky, 0.6).
+stress(zarul, 0.5).
+
+urgency(ryan, 0.8).
+urgency(pinky, 0.7).
+urgency(zarul, 0.4).
+
+no_support(ryan, 0.9).
+no_support(pinky, 0.2).
+no_support(zarul, 0.8).
+
+social_isolation(ryan, 0.8).
+social_isolation(pinky, 0.3).
+social_isolation(zarul, 0.7).
+
+% Fuzzy AND: takes the lower degree
+fuzzy_and(FirstDegree, SecondDegree, Result) :-
+    Result is min(FirstDegree, SecondDegree).
+
+% Fuzzy OR: takes the higher degree
+fuzzy_or(FirstDegree, SecondDegree, Result) :-
+    Result is max(FirstDegree, SecondDegree).
+
+% High stress + high urgency risk
+high_risk(Person, Degree) :-
+    stress(Person, StressDegree),
+    urgency(Person, UrgencyDegree),
+    fuzzy_and(StressDegree, UrgencyDegree, Degree).
+
+% Lack of support risk
+support_risk(Person, Degree) :-
+    no_support(Person, Degree).
+
+% Social isolation risk
+isolation_risk(Person, Degree) :-
+    social_isolation(Person, Degree).
+
+% Final fuzzy risk combines stress+urgency, support, and isolation
+final_risk(Person, FinalDegree) :-
+    high_risk(Person, StressUrgencyRisk),
+    support_risk(Person, SupportRisk),
+    isolation_risk(Person, IsolationRisk),
+    fuzzy_or(StressUrgencyRisk, SupportRisk, TempRisk),
+    fuzzy_or(TempRisk, IsolationRisk, FinalDegree).
+
+% Risk category based on final fuzzy score
+risk_category(Person, high) :-
+    final_risk(Person, Degree),
+    Degree >= 0.7.
+
+risk_category(Person, medium) :-
+    final_risk(Person, Degree),
+    Degree >= 0.4,
+    Degree < 0.7.
+
+risk_category(Person, low) :-
+    final_risk(Person, Degree),
+    Degree < 0.4.
+
+% Queue priority based on fuzzy risk
+queue_priority(Person, 'URGENT SUPPORT', '0-2 hrs', '#1 in queue', 'Immediate wellbeing and career support') :-
+    final_risk(Person, Degree),
+    Degree >= 0.8.
+
+queue_priority(Person, 'PRIORITY SUPPORT', '12-24 hrs', '#7 in queue', 'Guided wellbeing support') :-
+    final_risk(Person, Degree),
+    Degree >= 0.4,
+    Degree < 0.8.
+
+queue_priority(Person, 'STANDARD SUPPORT', '2-3 days', '#18 in queue', 'General career and wellbeing guidance') :-
+    final_risk(Person, Degree),
+    Degree < 0.4.
+
+% PART B: INTELLIGENT AGENTS & MULTI-AGENT SYSTEMS
+
+% Agent list
+agent(detection_agent).
+agent(decision_agent).
+agent(planning_agent).
+agent(support_agent).
+
+% Detection Agent: detects risk score from fuzzy logic
+detection_agent(Person, Score) :-
+    final_risk(Person, Score).
+
+% Decision Agent: classifies the detected risk
+decision_agent(Person, Category) :-
+    risk_category(Person, Category).
+
+% Planning Agent: generates suitable action plan
+planning_agent(Person, 'Immediate counselling, job support, mentor contact, and AI interview preparation') :-
+    risk_category(Person, high).
+
+planning_agent(Person, 'Guided wellbeing support, resume review, and interview preparation') :-
+    risk_category(Person, medium).
+
+planning_agent(Person, 'General career guidance, resume tips, and self-care advice') :-
+    risk_category(Person, low).
+
+% Support Agent: assigns queue and intervention support
+support_agent(Person, Queue, WaitTime, Position, Action) :-
+    queue_priority(Person, Queue, WaitTime, Position, Action).
+
+% Complete multi-agent report
+multi_agent_report(Person) :-
+    detection_agent(Person, Score),
+    decision_agent(Person, Category),
+    planning_agent(Person, Plan),
+    support_agent(Person, Queue, WaitTime, Position, Action),
+    nl,
+    write('Multi-Agent Decision Making Report'), nl,
+    write('User: '), write(Person), nl,
+    write('Detection Agent: Detected fuzzy risk score is '), write(Score), nl,
+    write('Decision Agent: Classified the user as '), write(Category), write(' risk'), nl,
+    write('Planning Agent: Suggested action plan is '), write(Plan), nl,
+    write('Support Agent: Assigned '), write(Queue), write(', '), write(Position), write(', response time '), write(WaitTime), nl,
+    write('Final Support Action: '), write(Action), nl.
+
+% PART C: STRATEGIC DECISION / MINIMAX STYLE
+% Available support strategies and utility scores
+resource_option(immediate_support, 90).
+resource_option(guided_support, 70).
+resource_option(general_support, 40).
+
+% Possible resource conflict / worst-case conditions
+constraint(high_demand, 20).
+constraint(limited_mentor, 15).
+constraint(normal_capacity, 0).
+
+% Minimax-style utility calculation
+% Final utility = support strategy utility - resource constraint penalty
+strategy_utility(Strategy, Constraint, FinalUtility) :-
+    resource_option(Strategy, BaseUtility),
+    constraint(Constraint, Penalty),
+    FinalUtility is BaseUtility - Penalty.
+
+% Strategy candidates based on fuzzy risk score
+candidate_strategy(Person, immediate_support) :-
+    final_risk(Person, Score),
+    Score >= 0.8.
+
+candidate_strategy(Person, guided_support) :-
+    final_risk(Person, Score),
+    Score >= 0.4,
+    Score < 0.8.
+
+candidate_strategy(Person, general_support) :-
+    final_risk(Person, Score),
+    Score < 0.4.
+
+% Minimax decision:
+% choose the best strategy that still gives the highest useful outcome
+best_strategy(Person, Strategy, Constraint, FinalUtility) :-
+    candidate_strategy(Person, Strategy),
+    strategy_utility(Strategy, Constraint, FinalUtility).
+
+% Strategic decision report
+strategy_report(Person) :-
+    best_strategy(Person, Strategy, Constraint, FinalUtility),
+    nl,
+    write('Strategic Decision-Making Report'), nl,
+    write('User: '), write(Person), nl,
+    write('Selected strategy: '), write(Strategy), nl,
+    write('Resource condition: '), write(Constraint), nl,
+    write('Final utility score: '), write(FinalUtility), nl,
+    write('Reason: The strategy was selected by comparing risk level, support priority, and resource constraint.'), nl.
+% ------------------------------
+% PART D: EXPLAINABLE AI
+% ------------------------------
+
+explain_decision(Person) :-
+    final_risk(Person, Score),
+    risk_category(Person, Category),
+    queue_priority(Person, Queue, _, _, _),
+
+    write('User: '), write(Person), nl,
+    write('Risk score: '), write(Score), nl,
+    write('Risk category: '), write(Category), nl,
+    write('Assigned queue: '), write(Queue), nl,
+    write('Reason: Decision based on stress, urgency, support level, and social isolation.'), nl.
+
+
+% PART E: IOT INTEGRATION
+
+% Simulated IoT sensor inputs
+heart_rate(ryan, 105).
+heart_rate(pinky, 88).
+heart_rate(zarul, 76).
+
+sleep_hours(ryan, 4).
+sleep_hours(pinky, 6).
+sleep_hours(zarul, 7).
+
+activity_level(ryan, low).
+activity_level(pinky, medium).
+activity_level(zarul, medium).
+
+% IoT risk based on sensor-like data
+iot_risk(Person, 0.8) :-
+    heart_rate(Person, HR),
+    sleep_hours(Person, Sleep),
+    activity_level(Person, low),
+    HR >= 100,
+    Sleep < 5.
+
+iot_risk(Person, 0.5) :-
+    heart_rate(Person, HR),
+    sleep_hours(Person, Sleep),
+    HR >= 85,
+    Sleep >= 5,
+    Sleep < 7.
+
+iot_risk(Person, 0.2) :-
+    heart_rate(Person, HR),
+    sleep_hours(Person, Sleep),
+    HR < 85,
+    Sleep >= 7.
+
+% Combine fuzzy risk and IoT risk
+final_risk_with_iot(Person, FinalScore) :-
+    final_risk(Person, FuzzyScore),
+    iot_risk(Person, IotScore),
+    fuzzy_or(FuzzyScore, IotScore, FinalScore).
+
+% IoT-based report
+iot_report(Person) :-
+    sleep_hours(Person, Sleep),
+    heart_rate(Person, HR),
+    iot_risk(Person, IotScore),
+    final_risk_with_iot(Person, FinalScore),
+
+    nl,
+    write('IoT Integration Report'), nl,
+    write('User: '), write(Person), nl,
+    write('Sleep hours: '), write(Sleep), nl,
+    write('Heart rate: '), write(HR), nl,
+    write('Estimated stress impact: '), write(IotScore), nl,
+    write('Updated final risk score: '), write(FinalScore), nl,
+    write('Reason: Poor sleep and abnormal heart rate may increase stress and support priority.'), nl.
+
+
+% FINAL SYSTEM SUMMARY
+
+final_summary(Person) :-
+
+    final_risk(Person, Score),
+    risk_category(Person, Category),
+    queue_priority(Person, Queue, _, _, _),
+    best_strategy(Person, Strategy, _, _),
+    final_risk_with_iot(Person, IoTScore),
+
+    nl,
+    write('Final AI Support Summary'), nl,
+    write('User: '), write(Person), nl,
+    write('Risk score: '), write(Score), nl,
+    write('Risk category: '), write(Category), nl,
+    write('Support priority: '), write(Queue), nl,
+    write('Recommended strategy: '), write(Strategy), nl,
+    write('Updated risk with IoT: '), write(IoTScore), nl,
+    write('Decision explained using XAI principles.'), nl.`;
 
         const swishScenarioPayloads = {
           ryan: {
@@ -1712,11 +1828,161 @@ Active university tech club member</textarea>
           swishBackendStatus.classList.toggle("offline", !isOnline);
         }
 
+        function toggleSwishFileDropdown(force) {
+          if (!swishFileDropdown || !swishFileMenuButton) return;
+          const shouldOpen = typeof force === "boolean" ? force : swishFileDropdown.hidden;
+          swishFileDropdown.hidden = !shouldOpen;
+          swishFileMenuButton.setAttribute("aria-expanded", shouldOpen ? "true" : "false");
+        }
+
+        function setSwishProgramText(text) {
+          if (!swishProgramCode) return;
+          swishProgramCode.value = text;
+        }
+
+        function getSwishProgramText() {
+          return swishProgramCode ? swishProgramCode.value : "";
+        }
+
         function cleanSwishQuery(value) {
           const withoutPrompt = String(value || "")
             .replace(/^\s*\?-\s*/, "")
             .trim();
           return withoutPrompt.endsWith(".") ? withoutPrompt : `${withoutPrompt}.`;
+        }
+
+        function isVariable(token) {
+          return /^[A-Z_]/.test(String(token || "").trim());
+        }
+
+        function normalizeToken(token) {
+          return String(token || "").trim().replace(/^'|'$/g, "");
+        }
+
+        function formatAtomValue(value) {
+          return /^[a-z][a-z0-9_]*$/i.test(value) ? value : `'${value}'`;
+        }
+
+        function formatValue(value) {
+          if (typeof value === "number") {
+            return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(3))).replace(/\.0+$/, "");
+          }
+
+          return formatAtomValue(String(value));
+        }
+
+        function formatBindingOutput(query, rows) {
+          if (!rows.length) {
+            return `?- ${query}\n\nfalse`;
+          }
+
+          return `?- ${query}\n\n${rows.map((row) => row.join(",\n")).join(" ;\n\n")}\n\ntrue`;
+        }
+
+        function parseQueryArgs(query, predicate) {
+          const match = query.match(new RegExp(`^${predicate}\\s*\\((.*)\\)\\.$`, "i"));
+          return match ? match[1].split(",").map((item) => item.trim()) : null;
+        }
+
+        function parseNumericFacts(predicate) {
+          const regex = new RegExp(`${predicate}\\s*\\(\\s*([a-z][a-z0-9_]*)\\s*,\\s*([0-9]*\\.?[0-9]+)\\s*\\)\\s*\\.`, "gi");
+          const facts = [];
+          let match;
+
+          while ((match = regex.exec(getSwishProgramText())) !== null) {
+            facts.push({
+              key: match[1].toLowerCase(),
+              value: Number(match[2])
+            });
+          }
+
+          return facts;
+        }
+
+        function parseAtomFacts(predicate) {
+          const regex = new RegExp(`${predicate}\\s*\\(\\s*([a-z][a-z0-9_]*)\\s*,\\s*([a-z][a-z0-9_]*)\\s*\\)\\s*\\.`, "gi");
+          const facts = [];
+          let match;
+
+          while ((match = regex.exec(getSwishProgramText())) !== null) {
+            facts.push({
+              key: match[1].toLowerCase(),
+              value: match[2].toLowerCase()
+            });
+          }
+
+          return facts;
+        }
+
+        function parseSingleArgFacts(predicate) {
+          const regex = new RegExp(`${predicate}\\s*\\(\\s*([a-z][a-z0-9_]*)\\s*\\)\\s*\\.`, "gi");
+          const values = [];
+          let match;
+
+          while ((match = regex.exec(getSwishProgramText())) !== null) {
+            values.push(match[1].toLowerCase());
+          }
+
+          return values;
+        }
+
+        function parseNamedNumberFacts(predicate) {
+          const regex = new RegExp(`${predicate}\\s*\\(\\s*([a-z][a-z0-9_]*)\\s*,\\s*([0-9]*\\.?[0-9]+)\\s*\\)\\s*\\.`, "gi");
+          const values = [];
+          let match;
+
+          while ((match = regex.exec(getSwishProgramText())) !== null) {
+            values.push({
+              name: match[1].toLowerCase(),
+              value: Number(match[2])
+            });
+          }
+
+          return values;
+        }
+
+        function readFactValue(predicate, person, fallback, kind = "number") {
+          const source = kind === "number" ? parseNumericFacts(predicate) : parseAtomFacts(predicate);
+          const match = source.find((item) => item.key === person);
+          return match ? match.value : fallback;
+        }
+
+        function getResourceOptions() {
+          const parsed = parseNamedNumberFacts("resource_option");
+          return parsed.length
+            ? parsed
+            : [
+              { name: "immediate_support", value: 90 },
+              { name: "guided_support", value: 70 },
+              { name: "general_support", value: 40 }
+            ];
+        }
+
+        function getConstraintList() {
+          const parsed = parseNamedNumberFacts("constraint");
+          return parsed.length
+            ? parsed
+            : [
+              { name: "high_demand", value: 20 },
+              { name: "limited_mentor", value: 15 },
+              { name: "normal_capacity", value: 0 }
+            ];
+        }
+
+        function getAgentList() {
+          const parsed = parseSingleArgFacts("agent");
+          return parsed.length ? parsed : ["detection_agent", "decision_agent", "planning_agent", "support_agent"];
+        }
+
+        function getAllPersons() {
+          const people = new Set(Object.keys(swishScenarioPayloads));
+
+          ["stress", "urgency", "no_support", "social_isolation", "heart_rate", "sleep_hours"].forEach((predicate) => {
+            parseNumericFacts(predicate).forEach((item) => people.add(item.key));
+          });
+
+          parseAtomFacts("activity_level").forEach((item) => people.add(item.key));
+          return Array.from(people);
         }
 
         function extractPersonFromQuery(query) {
@@ -1725,27 +1991,6 @@ Active university tech club member</textarea>
 
           const argumentMatch = query.match(/\(\s*([a-z][a-z0-9_]*)/i);
           return argumentMatch ? argumentMatch[1].toLowerCase() : "zarul";
-        }
-
-        function getSwishProgramText() {
-          if (!swishProgramCode) return "";
-          return "value" in swishProgramCode ? swishProgramCode.value : swishProgramCode.innerText;
-        }
-
-        function readNumberFact(predicate, person, fallback) {
-          const programText = getSwishProgramText();
-          const escapedPerson = person.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-          const regex = new RegExp(`${predicate}\\s*\\(\\s*${escapedPerson}\\s*,\\s*([0-9]*\\.?[0-9]+)\\s*\\)\\s*\\.`, "i");
-          const match = programText.match(regex);
-          return match ? Number(match[1]) : fallback;
-        }
-
-        function readAtomFact(predicate, person, fallback) {
-          const programText = getSwishProgramText();
-          const escapedPerson = person.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-          const regex = new RegExp(`${predicate}\\s*\\(\\s*${escapedPerson}\\s*,\\s*([a-z][a-z0-9_]*)\\s*\\)\\s*\\.`, "i");
-          const match = programText.match(regex);
-          return match ? match[1].toLowerCase() : fallback;
         }
 
         function buildPayloadFromProgram(person) {
@@ -1762,461 +2007,463 @@ Active university tech club member</textarea>
 
           return {
             person,
-            stress: readNumberFact("stress", person, fallback.stress),
-            urgency: readNumberFact("urgency", person, fallback.urgency),
-            support: readNumberFact("no_support", person, fallback.support),
-            isolation: readNumberFact("social_isolation", person, fallback.isolation),
-            heartRate: readNumberFact("heart_rate", person, fallback.heartRate),
-            sleepHours: readNumberFact("sleep_hours", person, fallback.sleepHours),
-            activity: readAtomFact("activity_level", person, fallback.activity)
+            stress: readFactValue("stress", person, fallback.stress),
+            urgency: readFactValue("urgency", person, fallback.urgency),
+            support: readFactValue("no_support", person, fallback.support),
+            isolation: readFactValue("social_isolation", person, fallback.isolation),
+            heartRate: readFactValue("heart_rate", person, fallback.heartRate),
+            sleepHours: readFactValue("sleep_hours", person, fallback.sleepHours),
+            activity: readFactValue("activity_level", person, fallback.activity, "atom")
           };
         }
 
-        function parseEthicalPrinciples() {
-          const facts = [];
-          const regex = /ethical_principle\s*\(\s*([a-z][a-z0-9_]*)\s*,\s*'([^']*)'\s*\)\s*\./gi;
-          let match;
-
-          while ((match = regex.exec(getSwishProgramText())) !== null) {
-            facts.push({
-              type: match[1],
-              description: match[2]
-            });
-          }
-
-          return facts;
-        }
-
-        async function requestSwishBackend(payload) {
-          const endpoints = [
-            "http://127.0.0.1:8080/api/assess",
-            "http://localhost:8080/api/assess"
-          ];
-          let lastError = null;
-
-          for (const endpoint of endpoints) {
-            try {
-              const response = await fetch(endpoint, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-                cache: "no-store"
-              });
-
-              if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-              }
-
-              return {
-                endpoint,
-                data: await response.json()
-              };
-            } catch (error) {
-              lastError = error;
-            }
-          }
-
-          console.warn("SWISH panel could not connect to local Prolog backend:", lastError);
-          return null;
-        }
-
-        function formatPipelineQuery(query) {
-          return `?- ${query}
-
-Final System Pipeline
-Text Input -> Fuzzy Risk Assessment -> Multi-Agent Decision -> Planning -> Game Strategy (Minimax) -> IoT Integration -> Final Explainable Decision
-
-true`;
-        }
-
-        function formatEthicsQuery(query) {
-          const principles = parseEthicalPrinciples();
-          const normalized = query.toLowerCase();
-          const argsMatch = query.match(/ethical_principle\s*\((.*)\)\s*\./i);
-
-          if (!principles.length) {
-            return `?- ${query}
-
-false`;
-          }
-
-          if (normalized.startsWith("show_ethics") || normalized === "ethical_principle.") {
-            return `?- ${query}
-
-Ethical AI Principles
-${principles.map((item) => `${item.type}: ${item.description}`).join("\n")}
-
-true`;
-          }
-
-          if (!argsMatch) {
-            return `?- ${query}
-
-Use ethical_principle. to list all ethics facts, or ethical_principle(Type, Description). for Prolog-style bindings.
-
-false`;
-          }
-
-          const args = argsMatch[1].split(",").map((item) => item.trim());
-          const typeArg = args[0] || "Type";
-          const descArg = args.slice(1).join(",").trim() || "Description";
-          const typeIsVariable = /^[A-Z_]/.test(typeArg);
-          const descIsVariable = /^[A-Z_]/.test(descArg);
-          const requestedType = typeArg.replace(/^'|'$/g, "").toLowerCase();
-          const requestedDescription = descArg.replace(/^'|'$/g, "");
-          const matches = principles.filter((item) => {
-            const typeMatches = typeIsVariable || item.type.toLowerCase() === requestedType;
-            const descMatches = descIsVariable || item.description === requestedDescription;
-            return typeMatches && descMatches;
-          });
-
-          if (!matches.length) {
-            return `?- ${query}
-
-false`;
-          }
-
-          if (!typeIsVariable && !descIsVariable) {
-            return `?- ${query}
-
-true`;
-          }
-
-          const bindings = matches.map((item) => {
-            const lines = [];
-            if (typeIsVariable) lines.push(`${typeArg} = ${item.type}`);
-            if (descIsVariable) lines.push(`${descArg} = '${item.description}'`);
-            return lines.join(",\n");
-          });
-
-          return `?- ${query}
-
-${bindings.join(" ;\n\n")}
-
-true`;
-        }
-
-        function formatSwishReport(person, payload, result) {
-          const fuzzy = result.fuzzy || {};
-          const agents = result.agents || {};
-          const strategy = result.strategy || {};
-          const iot = result.iot || {};
-          const xai = result.xai || {};
-          const ethics = Array.isArray(result.ethics) ? result.ethics : [];
-          const category = String(fuzzy.category || "unknown");
-          const categoryUpper = category.toUpperCase();
-
-          return `?- run_full_system(${person}).
-
-Final System Pipeline
-Text Input -> Fuzzy Risk Assessment -> Multi-Agent Decision -> Planning -> Game Strategy (Minimax) -> IoT Integration -> Final Explainable Decision
-
-Fuzzy Risk Assessment Result
-Person: ${person}
-Risk Score: ${Number(fuzzy.riskScore || 0).toFixed(2)}
-Category: ${category}
-${categoryUpper} RISK detected from stress, urgency, support, and social isolation signals.
-Queue: ${fuzzy.queue || "--"}
-Estimated response: ${fuzzy.waitTime || "--"}
-Position: ${fuzzy.position || "--"}
-Suggested action: ${fuzzy.action || "--"}
-
-Multi-Agent Decision Making Report
-Detection Agent: ${agents.detectionAgent || "Detected risk score is --"}
-Decision Agent: ${agents.decisionAgent || "Classified the user as waiting"}
-Planning Agent: Suggested plan is ${agents.planningAgent || "--"}
-Support Agent: ${agents.supportAgent || "--"}
-Final Support Action: ${fuzzy.action || "--"}
-
-Strategic Decision-Making Report
-Selected strategy: ${strategy.selected || "--"}
-Strategy utility score: ${strategy.utility || "--"}
-Reason: ${strategy.reason || "The strategy was selected based on the current risk level and support priority."}
-
-IoT-Based Simulation Report
-Heart rate: ${iot.heartRate || payload.heartRate} bpm
-Sleep hours: ${iot.sleepHours || payload.sleepHours} hrs
-Activity level: ${iot.activity || payload.activity}
-IoT risk score: ${Number(iot.iotRisk || 0).toFixed(2)}
-Final risk after IoT integration: ${Number(iot.finalRiskWithIot || fuzzy.riskScore || 0).toFixed(2)}
-
-Explainable AI (XAI) Report
-Input factors: stress=${payload.stress}, urgency=${payload.urgency}, no_support=${payload.support}, social_isolation=${payload.isolation}
-Final fuzzy risk score: ${Number(fuzzy.riskScore || 0).toFixed(2)}
-Risk category: ${category}
-Queue decision: ${fuzzy.queue || "--"} (${fuzzy.position || "--"}, ${fuzzy.waitTime || "--"})
-Explanation: ${xai.explanation || "The user was assigned this priority based on stress, urgency, support, and social isolation signals."}
-Recommended action: ${fuzzy.action || "--"}
-
-Ethical AI Principles
-${ethics.map((item) => "- " + item).join("\n")}
-
-true`;
-        }
-
-        function localSwishResult(person, payloadOverride) {
+        function getComputedState(person, payloadOverride) {
           const payload = payloadOverride || buildPayloadFromProgram(person);
           const highRisk = Math.min(payload.stress, payload.urgency);
-          const riskScore = Math.max(highRisk, payload.support, payload.isolation);
-          const category = riskScore >= 0.7 ? "high" : riskScore >= 0.4 ? "medium" : "low";
-          const queue = riskScore >= 0.8 ? "URGENT SUPPORT" : riskScore >= 0.4 ? "PRIORITY SUPPORT" : "STANDARD SUPPORT";
-          const waitTime = riskScore >= 0.8 ? "0-2 hrs" : riskScore >= 0.4 ? "12-24 hrs" : "2-3 days";
-          const position = riskScore >= 0.8 ? "#1 in queue" : riskScore >= 0.4 ? "#7 in queue" : "#18 in queue";
-          const action = riskScore >= 0.8 ? "Immediate wellbeing and career support" : riskScore >= 0.4 ? "Guided wellbeing support" : "General career and wellbeing guidance";
-          const strategySelected = riskScore >= 0.8 ? "immediate_support" : riskScore >= 0.4 ? "guided_support" : "general_support";
-          const strategyUtility = riskScore >= 0.8 ? 90 : riskScore >= 0.4 ? 70 : 40;
-          const planningAgent = category === "high"
-            ? "Immediate counselling, job support, and mentor contact"
+          const finalRisk = Math.max(highRisk, payload.support, payload.isolation);
+          const category = finalRisk >= 0.7 ? "high" : finalRisk >= 0.4 ? "medium" : "low";
+          const queueAssignment = finalRisk >= 0.8
+            ? {
+              queue: "URGENT SUPPORT",
+              waitTime: "0-2 hrs",
+              position: "#1 in queue",
+              action: "Immediate wellbeing and career support"
+            }
+            : finalRisk >= 0.4
+              ? {
+                queue: "PRIORITY SUPPORT",
+                waitTime: "12-24 hrs",
+                position: "#7 in queue",
+                action: "Guided wellbeing support"
+              }
+              : {
+                queue: "STANDARD SUPPORT",
+                waitTime: "2-3 days",
+                position: "#18 in queue",
+                action: "General career and wellbeing guidance"
+              };
+          const planningPlan = category === "high"
+            ? "Immediate counselling, job support, mentor contact, and AI interview preparation"
             : category === "medium"
               ? "Guided wellbeing support, resume review, and interview preparation"
-              : "General career guidance and self-care tips";
-          const iotRisk = payload.heartRate >= 100 && payload.sleepHours < 5
+              : "General career guidance, resume tips, and self-care advice";
+          const candidateStrategy = finalRisk >= 0.8 ? "immediate_support" : finalRisk >= 0.4 ? "guided_support" : "general_support";
+          const resourceOptions = getResourceOptions();
+          const constraints = getConstraintList();
+          const baseUtility = resourceOptions.find((item) => item.name === candidateStrategy)?.value ?? 0;
+          const bestStrategies = constraints.map((item) => ({
+            strategy: candidateStrategy,
+            constraint: item.name,
+            utility: baseUtility - item.value
+          }));
+          const iotRisk = payload.heartRate >= 100 && payload.sleepHours < 5 && payload.activity === "low"
             ? 0.8
             : payload.heartRate >= 85 && payload.sleepHours >= 5 && payload.sleepHours < 7
               ? 0.5
               : 0.2;
+          const finalRiskWithIot = Math.max(finalRisk, iotRisk);
 
           return {
-            fuzzy: {
-              riskScore,
-              category,
-              queue,
-              waitTime,
-              position,
-              action
-            },
-            agents: {
-              detectionAgent: `Detected risk score is ${riskScore.toFixed(2)}`,
-              decisionAgent: `Classified the user as ${category} risk`,
-              planningAgent,
-              supportAgent: `Assigned ${queue}, ${position}, response time ${waitTime}`
-            },
-            strategy: {
-              selected: strategySelected,
-              utility: strategyUtility,
-              reason: "The strategy was selected based on the current risk level and support priority."
-            },
-            iot: {
-              heartRate: payload.heartRate,
-              sleepHours: payload.sleepHours,
-              activity: payload.activity,
-              iotRisk,
-              finalRiskWithIot: Math.max(riskScore, iotRisk)
-            },
-            xai: {
-              explanation: `The user was assigned this priority because the combined fuzzy risk score is ${riskScore.toFixed(2)}, based on stress, urgency, support, and social isolation signals.`
-            },
-            ethics: parseEthicalPrinciples().map((item) => `${item.type}: ${item.description}`)
+            person,
+            payload,
+            highRisk,
+            finalRisk,
+            category,
+            queueAssignment,
+            planningPlan,
+            candidateStrategy,
+            resourceOptions,
+            constraints,
+            bestStrategies,
+            iotRisk,
+            finalRiskWithIot
           };
         }
 
-        function formatQueryResult(query, person, payload, result) {
-          const fuzzy = result.fuzzy || {};
-          const agents = result.agents || {};
-          const strategy = result.strategy || {};
-          const iot = result.iot || {};
-          const xai = result.xai || {};
-          const normalized = query.toLowerCase();
+        function localSwishResult(person, payloadOverride) {
+          const state = getComputedState(person, payloadOverride);
+          const primaryStrategy = state.bestStrategies[0] || {
+            strategy: state.candidateStrategy,
+            constraint: "high_demand",
+            utility: 0
+          };
 
-          if (normalized.startsWith("multi_agent_report")) {
-            return `?- ${query}
+          return {
+            fuzzy: {
+              riskScore: state.finalRisk,
+              category: state.category,
+              queue: state.queueAssignment.queue,
+              waitTime: state.queueAssignment.waitTime,
+              position: state.queueAssignment.position,
+              action: state.queueAssignment.action
+            },
+            agents: {
+              detectionAgent: `Detected fuzzy risk score is ${formatValue(state.finalRisk)}`,
+              decisionAgent: `Classified the user as ${state.category} risk`,
+              planningAgent: state.planningPlan,
+              supportAgent: `Assigned ${state.queueAssignment.queue}, ${state.queueAssignment.position}, response time ${state.queueAssignment.waitTime}`
+            },
+            strategy: {
+              selected: primaryStrategy.strategy,
+              constraint: primaryStrategy.constraint,
+              utility: primaryStrategy.utility,
+              reason: "The strategy was selected by comparing risk level, support priority, and resource constraint."
+            },
+            iot: {
+              heartRate: state.payload.heartRate,
+              sleepHours: state.payload.sleepHours,
+              activity: state.payload.activity,
+              iotRisk: state.iotRisk,
+              finalRiskWithIot: state.finalRiskWithIot
+            },
+            xai: {
+              explanation: "Decision based on stress, urgency, support level, and social isolation."
+            },
+            resourceOptions: state.resourceOptions,
+            constraints: state.constraints,
+            bestStrategies: state.bestStrategies
+          };
+        }
+
+        function formatMultiAgentReport(query, state) {
+          return `?- ${query}
 
 Multi-Agent Decision Making Report
-Detection Agent: ${agents.detectionAgent || "Detected risk score is --"}
-Decision Agent: ${agents.decisionAgent || "Classified the user as waiting"}
-Planning Agent: Suggested plan is ${agents.planningAgent || "--"}
-Support Agent: ${agents.supportAgent || "--"}
-Final Support Action: ${fuzzy.action || "--"}
+User: ${state.person}
+Detection Agent: Detected fuzzy risk score is ${formatValue(state.finalRisk)}
+Decision Agent: Classified the user as ${state.category} risk
+Planning Agent: Suggested action plan is ${state.planningPlan}
+Support Agent: Assigned ${state.queueAssignment.queue}, ${state.queueAssignment.position}, response time ${state.queueAssignment.waitTime}
+Final Support Action: ${state.queueAssignment.action}
 
 true`;
-          }
+        }
 
-          if (normalized.startsWith("strategy_report")) {
-            return `?- ${query}
+        function formatStrategyReport(query, state) {
+          const selected = state.bestStrategies[0];
+          return `?- ${query}
 
 Strategic Decision-Making Report
-Selected strategy: ${strategy.selected || "--"}
-Strategy utility score: ${strategy.utility || "--"}
-Reason: ${strategy.reason || "The strategy was selected based on the current risk level and support priority."}
+User: ${state.person}
+Selected strategy: ${selected.strategy}
+Resource condition: ${selected.constraint}
+Final utility score: ${formatValue(selected.utility)}
+Reason: The strategy was selected by comparing risk level, support priority, and resource constraint.
 
 true`;
-          }
+        }
 
-          if (normalized.startsWith("iot_report")) {
-            return `?- ${query}
+        function formatExplainDecision(query, state) {
+          return `?- ${query}
 
-IoT-Based Simulation Report
-Heart rate: ${iot.heartRate || payload.heartRate} bpm
-Sleep hours: ${iot.sleepHours || payload.sleepHours} hrs
-Activity level: ${iot.activity || payload.activity}
-IoT risk score: ${Number(iot.iotRisk || 0).toFixed(2)}
-Final risk after IoT integration: ${Number(iot.finalRiskWithIot || fuzzy.riskScore || 0).toFixed(2)}
-
-true`;
-          }
-
-          if (normalized.startsWith("xai_report")) {
-            return `?- ${query}
-
-Explainable AI (XAI) Report
-Input factors: stress=${payload.stress}, urgency=${payload.urgency}, no_support=${payload.support}, social_isolation=${payload.isolation}
-Final fuzzy risk score: ${Number(fuzzy.riskScore || 0).toFixed(2)}
-Risk category: ${fuzzy.category || "--"}
-Queue decision: ${fuzzy.queue || "--"} (${fuzzy.position || "--"}, ${fuzzy.waitTime || "--"})
-Explanation: ${xai.explanation || "The user was assigned this priority based on stress, urgency, support, and social isolation signals."}
-Recommended action: ${fuzzy.action || "--"}
+User: ${state.person}
+Risk score: ${formatValue(state.finalRisk)}
+Risk category: ${state.category}
+Assigned queue: '${state.queueAssignment.queue}'
+Reason: Decision based on stress, urgency, support level, and social isolation.
 
 true`;
-          }
+        }
 
-          if (normalized.startsWith("final_risk")) {
-            return `?- ${query}
+        function formatIotReport(query, state) {
+          return `?- ${query}
 
-Score = ${Number(fuzzy.riskScore || 0).toFixed(2)}
-
-true`;
-          }
-
-          if (normalized.startsWith("risk_category")) {
-            return `?- ${query}
-
-Category = ${fuzzy.category || "--"}
+IoT Integration Report
+User: ${state.person}
+Sleep hours: ${formatValue(state.payload.sleepHours)}
+Heart rate: ${formatValue(state.payload.heartRate)}
+Estimated stress impact: ${formatValue(state.iotRisk)}
+Updated final risk score: ${formatValue(state.finalRiskWithIot)}
+Reason: Poor sleep and abnormal heart rate may increase stress and support priority.
 
 true`;
-          }
+        }
 
-          if (normalized.startsWith("queue_priority")) {
-            return `?- ${query}
+        function formatFinalSummary(query, state) {
+          const selected = state.bestStrategies[0];
+          return `?- ${query}
 
-Queue = ${fuzzy.queue || "--"}
-WaitTime = ${fuzzy.waitTime || "--"}
-Position = ${fuzzy.position || "--"}
-Action = ${fuzzy.action || "--"}
-
-true`;
-          }
-
-          if (normalized.startsWith("high_risk")) {
-            return `?- ${query}
-
-Degree = ${Math.min(payload.stress, payload.urgency).toFixed(2)}
+Final AI Support Summary
+User: ${state.person}
+Risk score: ${formatValue(state.finalRisk)}
+Risk category: ${state.category}
+Support priority: '${state.queueAssignment.queue}'
+Recommended strategy: ${selected.strategy}
+Updated risk with IoT: ${formatValue(state.finalRiskWithIot)}
+Decision explained using XAI principles.
 
 true`;
+        }
+
+        function formatQueryResult(query, person) {
+          const state = getComputedState(person);
+          const normalized = query.toLowerCase();
+
+          const simpleNumericPredicates = [
+            { predicate: "stress", value: state.payload.stress, variable: "Degree" },
+            { predicate: "urgency", value: state.payload.urgency, variable: "Degree" },
+            { predicate: "no_support", value: state.payload.support, variable: "Degree" },
+            { predicate: "support_risk", value: state.payload.support, variable: "Degree" },
+            { predicate: "social_isolation", value: state.payload.isolation, variable: "Degree" },
+            { predicate: "isolation_risk", value: state.payload.isolation, variable: "Degree" },
+            { predicate: "high_risk", value: state.highRisk, variable: "Degree" },
+            { predicate: "final_risk", value: state.finalRisk, variable: "Degree" },
+            { predicate: "heart_rate", value: state.payload.heartRate, variable: "HR" },
+            { predicate: "sleep_hours", value: state.payload.sleepHours, variable: "Sleep" },
+            { predicate: "iot_risk", value: state.iotRisk, variable: "Score" },
+            { predicate: "final_risk_with_iot", value: state.finalRiskWithIot, variable: "FinalScore" }
+          ];
+
+          for (const item of simpleNumericPredicates) {
+            const args = parseQueryArgs(query, item.predicate);
+            if (args) {
+              const requestedPerson = normalizeToken(args[0]).toLowerCase();
+              const requestedState = getComputedState(requestedPerson);
+              const resolvedValue = item.predicate === "stress" ? requestedState.payload.stress
+                : item.predicate === "urgency" ? requestedState.payload.urgency
+                  : item.predicate === "no_support" || item.predicate === "support_risk" ? requestedState.payload.support
+                    : item.predicate === "social_isolation" || item.predicate === "isolation_risk" ? requestedState.payload.isolation
+                      : item.predicate === "high_risk" ? requestedState.highRisk
+                        : item.predicate === "final_risk" ? requestedState.finalRisk
+                          : item.predicate === "heart_rate" ? requestedState.payload.heartRate
+                            : item.predicate === "sleep_hours" ? requestedState.payload.sleepHours
+                              : item.predicate === "iot_risk" ? requestedState.iotRisk
+                                : requestedState.finalRiskWithIot;
+              const outputVar = args[1] || item.variable;
+              return isVariable(outputVar)
+                ? formatBindingOutput(query, [[`${outputVar} = ${formatValue(resolvedValue)}`]])
+                : `?- ${query}\n\n${Number(normalizeToken(outputVar)) === resolvedValue ? "true" : "false"}`;
+            }
           }
 
-          if (normalized.startsWith("support_risk")) {
-            return `?- ${query}
-
-Degree = ${payload.support.toFixed(2)}
-
-true`;
+          const activityArgs = parseQueryArgs(query, "activity_level");
+          if (activityArgs) {
+            const requestedPerson = normalizeToken(activityArgs[0]).toLowerCase();
+            const requestedState = getComputedState(requestedPerson);
+            const outputVar = activityArgs[1] || "Activity";
+            return isVariable(outputVar)
+              ? formatBindingOutput(query, [[`${outputVar} = ${formatValue(requestedState.payload.activity)}`]])
+              : `?- ${query}\n\n${normalizeToken(outputVar).toLowerCase() === requestedState.payload.activity ? "true" : "false"}`;
           }
 
-          if (normalized.startsWith("isolation_risk")) {
-            return `?- ${query}
-
-Degree = ${payload.isolation.toFixed(2)}
-
-true`;
+          const fuzzyAndArgs = parseQueryArgs(query, "fuzzy_and");
+          if (fuzzyAndArgs && fuzzyAndArgs.length === 3) {
+            const result = Math.min(Number(fuzzyAndArgs[0]), Number(fuzzyAndArgs[1]));
+            return formatBindingOutput(query, [[`${fuzzyAndArgs[2]} = ${formatValue(result)}`]]);
           }
 
-          if (normalized.startsWith("best_strategy")) {
-            return `?- ${query}
-
-Strategy = ${strategy.selected || "--"}
-
-true`;
+          const fuzzyOrArgs = parseQueryArgs(query, "fuzzy_or");
+          if (fuzzyOrArgs && fuzzyOrArgs.length === 3) {
+            const result = Math.max(Number(fuzzyOrArgs[0]), Number(fuzzyOrArgs[1]));
+            return formatBindingOutput(query, [[`${fuzzyOrArgs[2]} = ${formatValue(result)}`]]);
           }
 
-          if (!normalized.startsWith("run_full_system")) {
-            return `?- ${query}
+          const queueArgs = parseQueryArgs(query, "queue_priority");
+          if (queueArgs && queueArgs.length === 5) {
+            const rows = getAllPersons().map((name) => {
+              const item = getComputedState(name);
+              return [
+                `${queueArgs[0]} = ${formatValue(name)}`,
+                `${queueArgs[1]} = ${formatValue(item.queueAssignment.queue)}`,
+                `${queueArgs[2]} = ${formatValue(item.queueAssignment.waitTime)}`,
+                `${queueArgs[3]} = ${formatValue(item.queueAssignment.position)}`,
+                `${queueArgs[4]} = ${formatValue(item.queueAssignment.action)}`
+              ];
+            });
+            return formatBindingOutput(query, rows);
+          }
 
-This local demo supports common PathWise queries:
-system_pipeline.
-show_ethics.
-ethical_principle.
-ethical_principle(Type, Description).
-run_full_system(Person).
-multi_agent_report(Person).
-strategy_report(Person).
-iot_report(Person).
-xai_report(Person).
-final_risk(Person, Score).
-risk_category(Person, Category).
-queue_priority(Person, Queue, WaitTime, Position, Action).
+          const agentArgs = parseQueryArgs(query, "agent");
+          if (agentArgs && agentArgs.length === 1) {
+            return formatBindingOutput(query, getAgentList().map((agentName) => [`${agentArgs[0]} = ${formatValue(agentName)}`]));
+          }
 
-Tip: use Person as ryan, pinky, zarul, or add matching facts in the program editor.
+          const detectionArgs = parseQueryArgs(query, "detection_agent");
+          if (detectionArgs && detectionArgs.length === 2) {
+            const requestedState = getComputedState(normalizeToken(detectionArgs[0]).toLowerCase());
+            return formatBindingOutput(query, [[`${detectionArgs[1]} = ${formatValue(requestedState.finalRisk)}`]]);
+          }
+
+          const decisionArgs = parseQueryArgs(query, "decision_agent");
+          if (decisionArgs && decisionArgs.length === 2) {
+            const requestedState = getComputedState(normalizeToken(decisionArgs[0]).toLowerCase());
+            return formatBindingOutput(query, [[`${decisionArgs[1]} = ${formatValue(requestedState.category)}`]]);
+          }
+
+          const planningArgs = parseQueryArgs(query, "planning_agent");
+          if (planningArgs && planningArgs.length === 2) {
+            const requestedState = getComputedState(normalizeToken(planningArgs[0]).toLowerCase());
+            return formatBindingOutput(query, [[`${planningArgs[1]} = ${formatValue(requestedState.planningPlan)}`]]);
+          }
+
+          const supportArgs = parseQueryArgs(query, "support_agent");
+          if (supportArgs && supportArgs.length === 5) {
+            const requestedState = getComputedState(normalizeToken(supportArgs[0]).toLowerCase());
+            return formatBindingOutput(query, [[
+              `${supportArgs[1]} = ${formatValue(requestedState.queueAssignment.queue)}`,
+              `${supportArgs[2]} = ${formatValue(requestedState.queueAssignment.waitTime)}`,
+              `${supportArgs[3]} = ${formatValue(requestedState.queueAssignment.position)}`,
+              `${supportArgs[4]} = ${formatValue(requestedState.queueAssignment.action)}`
+            ]]);
+          }
+
+          const resourceArgs = parseQueryArgs(query, "resource_option");
+          if (resourceArgs && resourceArgs.length === 2) {
+            return formatBindingOutput(query, getResourceOptions().map((item) => [
+              `${resourceArgs[0]} = ${formatValue(item.name)}`,
+              `${resourceArgs[1]} = ${formatValue(item.value)}`
+            ]));
+          }
+
+          const constraintArgs = parseQueryArgs(query, "constraint");
+          if (constraintArgs && constraintArgs.length === 2) {
+            return formatBindingOutput(query, getConstraintList().map((item) => [
+              `${constraintArgs[0]} = ${formatValue(item.name)}`,
+              `${constraintArgs[1]} = ${formatValue(item.value)}`
+            ]));
+          }
+
+          const utilityArgs = parseQueryArgs(query, "strategy_utility");
+          if (utilityArgs && utilityArgs.length === 3) {
+            const strategy = normalizeToken(utilityArgs[0]).toLowerCase();
+            const constraint = normalizeToken(utilityArgs[1]).toLowerCase();
+            const baseUtility = getResourceOptions().find((item) => item.name === strategy)?.value;
+            const penalty = getConstraintList().find((item) => item.name === constraint)?.value;
+
+            if (typeof baseUtility === "number" && typeof penalty === "number") {
+              return formatBindingOutput(query, [[`${utilityArgs[2]} = ${formatValue(baseUtility - penalty)}`]]);
+            }
+          }
+
+          const candidateArgs = parseQueryArgs(query, "candidate_strategy");
+          if (candidateArgs && candidateArgs.length === 2) {
+            const requestedState = getComputedState(normalizeToken(candidateArgs[0]).toLowerCase());
+            return formatBindingOutput(query, [[`${candidateArgs[1]} = ${formatValue(requestedState.candidateStrategy)}`]]);
+          }
+
+          const bestArgs = parseQueryArgs(query, "best_strategy");
+          if (bestArgs && bestArgs.length === 4) {
+            const requestedState = getComputedState(normalizeToken(bestArgs[0]).toLowerCase());
+            return formatBindingOutput(query, requestedState.bestStrategies.map((item) => [
+              `${bestArgs[1]} = ${formatValue(item.strategy)}`,
+              `${bestArgs[2]} = ${formatValue(item.constraint)}`,
+              `${bestArgs[3]} = ${formatValue(item.utility)}`
+            ]));
+          }
+
+          if (normalized.startsWith("multi_agent_report(")) {
+            return formatMultiAgentReport(query, state);
+          }
+
+          if (normalized.startsWith("strategy_report(")) {
+            return formatStrategyReport(query, state);
+          }
+
+          if (normalized.startsWith("explain_decision(")) {
+            return formatExplainDecision(query, state);
+          }
+
+          if (normalized.startsWith("iot_report(")) {
+            return formatIotReport(query, state);
+          }
+
+          if (normalized.startsWith("final_summary(")) {
+            return formatFinalSummary(query, state);
+          }
+
+          return `?- ${query}
+
+This SWISH editor currently supports the project queries for:
+stress, urgency, no_support, fuzzy_and, fuzzy_or, high_risk, final_risk,
+queue_priority, agent, detection_agent, decision_agent, planning_agent,
+support_agent, multi_agent_report, resource_option, constraint,
+strategy_utility, candidate_strategy, best_strategy, strategy_report,
+explain_decision, heart_rate, sleep_hours, activity_level, iot_risk,
+final_risk_with_iot, iot_report, and final_summary.
 
 false`;
-          }
+        }
 
-          return formatSwishReport(person, payload, result);
+        function loadSavedSwishProgram() {
+          try {
+            const savedProgram = localStorage.getItem(swishProgramStorageKey);
+            setSwishProgramText(savedProgram || defaultSwishProgram);
+          } catch (error) {
+            console.warn("Unable to access localStorage for SWISH program persistence:", error);
+            setSwishProgramText(defaultSwishProgram);
+          }
+        }
+
+        function saveSwishProgram() {
+          try {
+            localStorage.setItem(swishProgramStorageKey, getSwishProgramText());
+            if (swishReportOutput) {
+              swishReportOutput.textContent = "Program saved locally. Refresh the page and your latest SWISH editor code will still be here.";
+            }
+          } catch (error) {
+            console.warn("Unable to save SWISH program locally:", error);
+            if (swishReportOutput) {
+              swishReportOutput.textContent = "Saving failed in this browser. You can still edit and download the Prolog code.";
+            }
+          }
+        }
+
+        function downloadSwishProgram() {
+          const code = getSwishProgramText();
+          const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "pathwise_final_project_logic.pl";
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(link.href);
         }
 
         async function runSwishPrologDemo() {
-          const query = cleanSwishQuery(swishQueryInput ? swishQueryInput.value : "run_full_system(zarul).");
-          const normalized = query.toLowerCase();
+          const query = cleanSwishQuery(swishQueryInput ? swishQueryInput.value : "final_summary(zarul).");
 
           if (swishQueryInput) {
             swishQueryInput.value = query;
           }
 
-          if (normalized.startsWith("system_pipeline")) {
-            setSwishStatus("Local Prolog-style query rendered", true);
-            if (swishReportOutput) {
-              swishReportOutput.textContent = formatPipelineQuery(query);
-            }
-            return;
-          }
-
-          if (normalized.startsWith("show_ethics") || normalized.startsWith("ethical_principle")) {
-            setSwishStatus("Local Prolog-style query rendered", true);
-            if (swishReportOutput) {
-              swishReportOutput.textContent = formatEthicsQuery(query);
-            }
-            return;
-          }
-
-          const person = extractPersonFromQuery(query);
-          const payload = buildPayloadFromProgram(person);
-
-          setSwishStatus("Running Prolog query...", true);
           if (swishReportOutput) {
-            swishReportOutput.textContent = `?- ${query}\n\nRunning local SWI-Prolog backend query...`;
-          }
-
-          const backend = await requestSwishBackend(payload);
-          if (!backend) {
-            setSwishStatus("Prolog-style local fallback", true);
-            if (swishReportOutput) {
-              swishReportOutput.textContent = formatQueryResult(query, person, payload, localSwishResult(person, payload));
-            }
-            return;
-          }
-
-          setSwishStatus(`Prolog connected: ${backend.endpoint}`, true);
-          if (swishReportOutput) {
-            swishReportOutput.textContent = formatQueryResult(query, person, payload, backend.data);
+            swishReportOutput.textContent = formatQueryResult(query, extractPersonFromQuery(query));
           }
         }
+
+        loadSavedSwishProgram();
 
         if (swishRunBtn) {
           swishRunBtn.addEventListener("click", runSwishPrologDemo);
         }
 
-        if (swishDownloadBtn) {
-          swishDownloadBtn.addEventListener("click", () => {
-            const code = getSwishProgramText();
-            const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "pathwise_prolog_logic.pl";
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            URL.revokeObjectURL(link.href);
+        if (swishFileMenuButton) {
+          swishFileMenuButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            toggleSwishFileDropdown();
           });
         }
+
+        if (swishFileSaveBtn) {
+          swishFileSaveBtn.addEventListener("click", () => {
+            saveSwishProgram();
+            toggleSwishFileDropdown(false);
+          });
+        }
+
+        if (swishDownloadBtn) {
+          swishDownloadBtn.addEventListener("click", () => {
+            downloadSwishProgram();
+            toggleSwishFileDropdown(false);
+          });
+        }
+
+        document.addEventListener("click", (event) => {
+          if (swishFileDropdown && !swishFileDropdown.hidden && !event.target.closest(".swish-menu-group")) {
+            toggleSwishFileDropdown(false);
+          }
+        });
 
         if (swishQueryInput) {
           swishQueryInput.addEventListener("keydown", (event) => {
