@@ -215,6 +215,49 @@
         box-shadow: 0 12px 24px rgba(107, 63, 242, 0.14);
       }
 
+      @media (min-width: 901px) {
+        .topbar {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 26px;
+        }
+
+        .header-brand {
+          flex: 0 0 auto;
+          margin-right: 4px;
+        }
+
+        .brand-text {
+          display: flex;
+          align-items: center;
+        }
+
+        .brand-text strong {
+          font-size: 2rem;
+          line-height: 1;
+        }
+
+        .main-nav {
+          display: flex;
+          flex: 1 1 auto;
+          flex-wrap: nowrap;
+          align-items: center;
+          gap: 18px;
+          margin-left: 0;
+          min-width: 0;
+        }
+
+        .main-nav a {
+          white-space: nowrap;
+          font-size: 0.96rem;
+        }
+
+        .topbar-actions {
+          margin-left: 0;
+        }
+      }
+
       @media (max-width: 900px) {
         .swish-demo-body {
           grid-template-columns: 1fr;
@@ -252,14 +295,8 @@
     <div class="site-shell">
       <header class="topbar" id="home">
         <div class="header-brand">
-          <div class="brand-cluster">
-            <div class="logo-chip logo-upm">UPM</div>
-            <div class="logo-chip logo-putra">PUTRA</div>
-            <div class="logo-chip logo-msu">MSU</div>
-          </div>
           <div class="brand-text">
             <strong>PathWise AI</strong>
-            <span>Hackathon demo for career guidance and wellbeing support</span>
           </div>
         </div>
 
@@ -282,10 +319,6 @@
         </nav>
 
         <div class="topbar-actions">
-          <a class="header-pill" href="#interview-demo">Nextara Demo</a>
-          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-            <span class="theme-icon">◐</span>
-          </button>
           <button class="login-btn" id="loginTriggerBtn" type="button">Login</button>
         </div>
       </header>
